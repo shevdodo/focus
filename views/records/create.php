@@ -228,29 +228,60 @@
                 </table>
             </div>
 
-            <!-- Pupillary Distance (PD) & Catatan Medis -->
-            <div class="row-layout mt-3">
-                <div class="col-6 mb-2">
-                    <div style="background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; height: 100%;">
-                        <div style="display: flex; align-items: center; gap: 0.6rem;">
-                            <ion-icon name="resize-outline" style="font-size: 1.4rem; color: var(--color-primary);"></ion-icon>
-                            <div>
-                                <strong style="color: var(--color-dark); font-size: 0.95rem;">Pupillary Distance (PD)</strong>
-                                <p class="text-muted text-xs" style="margin: 0;">Jarak antar titik pusat pupil (mm)</p>
-                            </div>
-                        </div>
+            <!-- Pupillary Distance (PD) -->
+            <div style="background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <ion-icon name="resize-outline" style="font-size: 1.4rem; color: var(--color-primary);"></ion-icon>
+                    <div>
+                        <strong style="color: var(--color-dark); font-size: 0.95rem;">Pupillary Distance (PD)</strong>
+                        <p class="text-muted text-xs" style="margin: 0;">Jarak antar titik pusat pupil mata (dalam milimeter)</p>
+                    </div>
+                </div>
 
-                        <div style="display: flex; align-items: center; gap: 0.4rem;">
-                            <input type="number" step="0.5" min="40" max="80" name="pd" id="pd" class="form-control text-center" style="width: 100px; font-size: 1.05rem; font-weight: 700; color: var(--color-primary);" value="62">
-                            <span style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem;">mm</span>
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                    <input type="number" step="0.5" min="40" max="80" name="pd" id="pd" class="form-control text-center" style="width: 100px; font-size: 1.05rem; font-weight: 700; color: var(--color-primary);" value="62">
+                    <span style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem;">mm</span>
+                </div>
+            </div>
+
+            <!-- Diagnosa & Catatan Medis -->
+            <div class="row-layout">
+                <!-- Pilihan Diagnosa Multi-Choice -->
+                <div class="col-6 mb-3">
+                    <div class="form-group">
+                        <label style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
+                            <ion-icon name="medical-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                            <span>Diagnosa Refraksi (Dapat Pilih Banyak)</span>
+                        </label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 0.85rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" value="Miopia (-)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Miopia (-)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" value="Hipermetropia (+)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Hipermetropia (+)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" value="Astigmatisme (cyl)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Astigmatisme (cyl)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" value="Presbiopi (add)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Presbiopi (add)</span>
+                            </label>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-6 mb-2">
+                <!-- Input Catatan Medis Manual -->
+                <div class="col-6 mb-3">
                     <div class="form-group">
-                        <label for="notes" style="font-weight: 600;">Catatan Medis / Diagnosa</label>
-                        <textarea name="notes" id="notes" class="form-control" rows="2" placeholder="Keluhan pasien (misal: mata pegal, asthenopia) & saran penggunaan..."></textarea>
+                        <label for="notes" style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
+                            <ion-icon name="document-text-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                            <span>Catatan Medis Manual</span>
+                        </label>
+                        <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Masukkan keluhan fisik pasien (misal: mata sering pegal, asthenopia) & saran pemakaian..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 95px;"></textarea>
                     </div>
                 </div>
             </div>

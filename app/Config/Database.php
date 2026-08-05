@@ -80,6 +80,10 @@ class Database {
             $db->exec("ALTER TABLE patients ADD COLUMN bpjs_number TEXT;");
         } catch (\PDOException $e) {}
 
+        try {
+            $db->exec("ALTER TABLE medical_records ADD COLUMN diagnosis TEXT;");
+        } catch (\PDOException $e) {}
+
         // 3. Create medical_records table (Pemeriksaan Refraksi & Resep Kacamata)
         $db->exec("
             CREATE TABLE IF NOT EXISTS medical_records (
@@ -107,6 +111,7 @@ class Database {
                 pd REAL DEFAULT 62.0,
                 lens_type TEXT NOT NULL,
                 frame_code TEXT,
+                diagnosis TEXT,
                 notes TEXT,
                 total_price REAL DEFAULT 0.00,
                 created_at TEXT NOT NULL,

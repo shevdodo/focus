@@ -143,6 +143,16 @@ class MedicalRecord {
                 $patientId = $this->db->lastInsertId();
             }
 
+            // Prepare diagnosis string from array or text
+            $diagnosisStr = '';
+            if (isset($data['diagnosis'])) {
+                if (is_array($data['diagnosis'])) {
+                    $diagnosisStr = implode(', ', array_filter($data['diagnosis']));
+                } else {
+                    $diagnosisStr = trim($data['diagnosis']);
+                }
+            }
+
             // Create medical record entry
             $recordNumber = 'REC-' . date('Ymd') . '-' . rand(100, 999);
             $stmtR = $this->db->prepare("
@@ -150,12 +160,12 @@ class MedicalRecord {
                     patient_id, record_number, exam_date, examiner_name,
                     od_sph, od_cyl, od_axis, od_add, od_va,
                     os_sph, os_cyl, os_axis, os_add, os_va,
-                    pd, lens_type, frame_code, notes, total_price, created_at
+                    pd, lens_type, frame_code, diagnosis, notes, total_price, created_at
                 ) VALUES (
                     :patient_id, :record_number, :exam_date, :examiner_name,
                     :od_sph, :od_cyl, :od_axis, :od_add, :od_va,
                     :os_sph, :os_cyl, :os_axis, :os_add, :os_va,
-                    :pd, :lens_type, :frame_code, :notes, :total_price, :created_at
+                    :pd, :lens_type, :frame_code, :diagnosis, :notes, :total_price, :created_at
                 )
             ");
 
@@ -177,6 +187,7 @@ class MedicalRecord {
                 ':pd' => (float)($data['pd'] ?? 62.0),
                 ':lens_type' => $data['lens_type'] ?? 'Single Vision Antiradiasi',
                 ':frame_code' => trim($data['frame_code'] ?? ''),
+                ':diagnosis' => $diagnosisStr,
                 ':notes' => trim($data['notes'] ?? ''),
                 ':total_price' => (float)($data['total_price'] ?? 0),
                 ':created_at' => date('Y-m-d H:i:s')
