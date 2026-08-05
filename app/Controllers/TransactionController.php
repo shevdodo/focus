@@ -44,7 +44,8 @@ class TransactionController {
      */
     public function create(): void {
         $patients = $this->recordModel->getAllPatients();
-        $title = "Input Rekam Medis Optik - OPTIK FOCUS";
+        $title = "Input Rekam Medis Pasien";
+        $subtitle = "Formulir registrasi rekam medis & resep kacamata Klinik OPTIK FOCUS";
 
         require dirname(__DIR__, 2) . '/views/templates/header.php';
         require dirname(__DIR__, 2) . '/views/records/create.php';

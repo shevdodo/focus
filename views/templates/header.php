@@ -130,7 +130,7 @@
             <header class="topbar">
                 <div class="topbar-title">
                     <h1><?= $title ?? 'Dashboard' ?></h1>
-                    <p class="text-muted text-sm">Pencatatan Rekam Medis & Pemeriksaan Mata - Klinik OPTIK FOCUS</p>
+                    <p class="text-muted text-sm"><?= $subtitle ?? 'Pencatatan Rekam Medis & Pemeriksaan Mata - Klinik OPTIK FOCUS' ?></p>
                 </div>
                 <div class="topbar-actions">
                     <div class="current-date-badge">

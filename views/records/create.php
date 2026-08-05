@@ -7,23 +7,16 @@
 <div class="animate-fade-in" style="max-width: 1000px; margin: 0 auto; padding-bottom: 3rem;">
     
     <!-- Top Action Bar -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-            <a href="<?= baseUrl('transactions') ?>" class="btn-link" style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-muted); font-size: 0.9rem; text-decoration: none; margin-bottom: 0.5rem;">
+            <a href="<?= baseUrl('transactions') ?>" class="btn-link" style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-muted); font-size: 0.9rem; text-decoration: none; font-weight: 600;">
                 <ion-icon name="arrow-back-outline"></ion-icon>
                 <span>Kembali ke Daftar Rekam Medis</span>
             </a>
-            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--color-dark); margin: 0; display: flex; align-items: center; gap: 0.6rem;">
-                <ion-icon name="add-circle-outline" style="color: var(--color-primary);"></ion-icon>
-                Form Input Rekam Medis Optik Baru
-            </h2>
-            <p class="text-muted text-sm" style="margin-top: 0.25rem;">
-                Isi data pemeriksaan refraksi mata pasien, resep kacamata, dan fitting lensa Klinik OPTIK FOCUS.
-            </p>
         </div>
 
         <div>
-            <a href="<?= baseUrl('transactions') ?>" class="btn btn-secondary px-3 py-2">
+            <a href="<?= baseUrl('transactions') ?>" class="btn btn-secondary px-3 py-1.5" style="border-radius: 6px; font-weight: 600;">
                 <ion-icon name="close-outline" class="mr-1"></ion-icon>
                 Batal
             </a>
