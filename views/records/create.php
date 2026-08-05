@@ -248,12 +248,12 @@
             <div class="row-layout">
                 <!-- Pilihan Diagnosa Multi-Choice -->
                 <div class="col-6 mb-3">
-                    <div class="form-group">
+                    <div class="form-group" style="height: 100%;">
                         <label style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
                             <ion-icon name="medical-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
                             <span>Diagnosa Refraksi (Dapat Pilih Banyak)</span>
                         </label>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 0.85rem;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 0.85rem; height: calc(100% - 28px);">
                             <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
                                 <input type="checkbox" name="diagnosis[]" value="Miopia (-)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
                                 <span>Miopia (-)</span>
@@ -274,14 +274,14 @@
                     </div>
                 </div>
 
-                <!-- Input Catatan Medis Manual -->
+                <!-- Input Anamnesa / Catatan Medis -->
                 <div class="col-6 mb-3">
-                    <div class="form-group">
+                    <div class="form-group" style="height: 100%;">
                         <label for="notes" style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
                             <ion-icon name="document-text-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
                             <span>Anamnesa / Catatan Medis</span>
                         </label>
-                        <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Masukkan keluhan fisik pasien (misal: mata sering pegal, asthenopia) & saran pemakaian..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 95px;"></textarea>
+                        <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Masukkan keluhan fisik pasien (misal: mata sering pegal, asthenopia) & saran pemakaian..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 105px;"></textarea>
                     </div>
                 </div>
             </div>
