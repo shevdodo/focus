@@ -208,6 +208,15 @@ class MedicalRecord {
      */
     public function updateRecord(int $id, array $data): bool {
         try {
+            $diagnosisStr = '';
+            if (isset($data['diagnosis'])) {
+                if (is_array($data['diagnosis'])) {
+                    $diagnosisStr = implode(', ', array_filter($data['diagnosis']));
+                } else {
+                    $diagnosisStr = trim($data['diagnosis']);
+                }
+            }
+
             $stmt = $this->db->prepare("
                 UPDATE medical_records SET
                     exam_date = :exam_date,
@@ -225,6 +234,7 @@ class MedicalRecord {
                     pd = :pd,
                     lens_type = :lens_type,
                     frame_code = :frame_code,
+                    diagnosis = :diagnosis,
                     notes = :notes,
                     total_price = :total_price
                 WHERE id = :id
@@ -246,7 +256,8 @@ class MedicalRecord {
                 ':pd' => (float)$data['pd'],
                 ':lens_type' => $data['lens_type'],
                 ':frame_code' => $data['frame_code'],
-                ':notes' => $data['notes'],
+                ':diagnosis' => $diagnosisStr,
+                ':notes' => $data['notes'] ?? '',
                 ':total_price' => (float)$data['total_price'],
                 ':id' => $id
             ]);

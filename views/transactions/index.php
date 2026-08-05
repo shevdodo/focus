@@ -168,9 +168,21 @@ if (!function_exists('formatRupiah')) {
                                 </table>
                             </div>
 
-                            <?php if (!empty($rec['notes'])): ?>
-                                <div style="background-color: rgba(255, 255, 255, 0.6); padding: 0.6rem 0.85rem; border-radius: 8px; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; border-left: 3px solid var(--color-primary);">
-                                    <strong>Catatan Medis / Diagnosa:</strong> <?= htmlspecialchars($rec['notes']) ?>
+                            <?php if (!empty($rec['diagnosis']) || !empty($rec['notes'])): ?>
+                                <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem;">
+                                    <?php if (!empty($rec['diagnosis'])): ?>
+                                        <div style="background-color: rgba(99, 102, 241, 0.05); padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.82rem; color: var(--color-dark); border-left: 3px solid var(--color-primary); display: flex; align-items: center; gap: 0.5rem;">
+                                            <strong style="color: var(--color-primary); flex-shrink: 0;"><ion-icon name="medical-outline" style="vertical-align: middle; font-size: 0.95rem;"></ion-icon> Diagnosa Refraksi:</strong>
+                                            <span style="font-weight: 600;"><?= htmlspecialchars($rec['diagnosis']) ?></span>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($rec['notes'])): ?>
+                                        <div style="background-color: rgba(245, 158, 11, 0.05); padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.82rem; color: var(--text-muted); border-left: 3px solid #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem;">
+                                            <strong style="color: #d97706; flex-shrink: 0;"><ion-icon name="document-text-outline" style="vertical-align: middle; font-size: 0.95rem;"></ion-icon> Anamnesa / Catatan Medis:</strong>
+                                            <span><?= htmlspecialchars($rec['notes']) ?></span>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
 
@@ -292,9 +304,14 @@ if (!function_exists('formatRupiah')) {
                 <input type="number" name="total_price" id="edit_total_price" class="form-control">
             </div>
 
+            <div class="form-group mb-3">
+                <label for="edit_diagnosis">Diagnosa Refraksi</label>
+                <input type="text" name="diagnosis" id="edit_diagnosis" class="form-control" placeholder="Contoh: Miopia (-), Astigmatisme (cyl)">
+            </div>
+
             <div class="form-group mb-4">
-                <label for="edit_notes">Catatan Medis</label>
-                <textarea name="notes" id="edit_notes" class="form-control" rows="2"></textarea>
+                <label for="edit_notes">Anamnesa / Catatan Medis</label>
+                <textarea name="notes" id="edit_notes" class="form-control" rows="2" placeholder="Keluhan fisik pasien & saran..."></textarea>
             </div>
 
             <div style="display: flex; gap: 0.75rem; justify-content: flex-end; border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
@@ -361,12 +378,17 @@ if (!function_exists('formatRupiah')) {
             </tbody>
         </table>
 
-        <div style="font-size: 0.85rem; color: #334155; margin-bottom: 1.5rem; display: flex; justify-content: space-between;">
+        <div style="font-size: 0.85rem; color: #334155; margin-bottom: 0.85rem; display: flex; justify-content: space-between;">
             <div><strong>Jenis Lensa:</strong> <span id="rxLensType">-</span></div>
             <div><strong>Kode Frame:</strong> <span id="rxFrameCode">-</span></div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 2rem;">
+        <div style="font-size: 0.82rem; color: #334155; margin-bottom: 1.25rem; background: #f8fafc; padding: 0.75rem; border-radius: 8px; border-left: 3px solid #6366f1;">
+            <div style="margin-bottom: 0.35rem;"><strong>Diagnosa Refraksi:</strong> <span id="rxDiagnosis" style="font-weight: 600;">-</span></div>
+            <div><strong>Anamnesa / Catatan:</strong> <span id="rxNotes">-</span></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 1.5rem;">
             <div style="font-size: 0.75rem; color: #94a3b8;">
                 *Kartu resep kacamata sah dari Optik Focus
             </div>
@@ -405,6 +427,7 @@ function openEditRecordModal(rec) {
     document.getElementById('edit_lens_type').value = rec.lens_type;
     document.getElementById('edit_frame_code').value = rec.frame_code || '';
     document.getElementById('edit_total_price').value = rec.total_price;
+    document.getElementById('edit_diagnosis').value = rec.diagnosis || '';
     document.getElementById('edit_notes').value = rec.notes || '';
 
     document.getElementById('editRecordModal').style.display = 'flex';
@@ -436,6 +459,8 @@ function printPrescription(rec) {
     document.getElementById('rxPd').textContent = rec.pd + ' mm';
     document.getElementById('rxLensType').textContent = rec.lens_type;
     document.getElementById('rxFrameCode').textContent = rec.frame_code || '-';
+    document.getElementById('rxDiagnosis').textContent = rec.diagnosis || '-';
+    document.getElementById('rxNotes').textContent = rec.notes || '-';
     document.getElementById('rxSignExaminer').textContent = rec.examiner_name;
 
     document.getElementById('printPrescriptionModal').style.display = 'flex';
