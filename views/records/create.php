@@ -244,8 +244,58 @@
                 </div>
             </div>
 
-            <!-- Diagnosa & Catatan Medis -->
+            </div>
+        </div>
+
+        <!-- SECTION 4: LENSA, FRAME & TRANSAKSI -->
+        <div class="card-widget mb-4" style="border-top: 4px solid #f59e0b;">
+            <div class="card-widget-header">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        <ion-icon name="pricetag-outline"></ion-icon>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.1rem;">4. Spesifikasi Lensa, Bingkai & Catatan Diagnosa</h3>
+                        <p class="text-muted text-xs" style="margin: 0;">Pilihan jenis lensa, bingkai, nominal biaya, diagnosa refraksi dan anamnesa medis</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="row-layout">
+                <div class="col-4 mb-3">
+                    <div class="form-group">
+                        <label for="lens_type" style="font-weight: 600;">Jenis Lensa Kacamata <span class="text-danger">*</span></label>
+                        <select name="lens_type" id="lens_type" class="form-control" style="font-size: 0.95rem;" required>
+                            <option value="Single Vision Antiradiasi">Single Vision Antiradiasi</option>
+                            <option value="Photocromic Bluecut">Photocromic Bluecut</option>
+                            <option value="Progressive Office">Progressive Office</option>
+                            <option value="Bifokal Kryptok">Bifokal Kryptok</option>
+                            <option value="Bluecut Hi-Index 1.67">Bluecut Hi-Index 1.67</option>
+                            <option value="Drivewear Polarized">Drivewear Polarized</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <div class="form-group">
+                        <label for="frame_code" style="font-weight: 600;">Kode / Merk Frame</label>
+                        <input type="text" name="frame_code" id="frame_code" class="form-control" placeholder="Contoh: Ray-Ban RB5228 Matte Black">
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <div class="form-group">
+                        <label for="total_price" style="font-weight: 600;">Total Biaya (Rupiah)</label>
+                        <div class="input-currency-wrapper">
+                            <span class="currency-prefix">Rp</span>
+                            <input type="number" name="total_price" id="total_price" class="form-control" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagnosa & Catatan Medis (Paling Bawah) -->
+            <div class="row-layout mt-2">
                 <!-- Pilihan Diagnosa Multi-Choice -->
                 <div class="col-6 mb-3">
                     <div class="form-group" style="height: 100%;">
@@ -282,54 +332,6 @@
                             <span>Anamnesa / Catatan Medis</span>
                         </label>
                         <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Masukkan keluhan fisik pasien (misal: mata sering pegal, asthenopia) & saran pemakaian..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 105px;"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 4: LENSA, FRAME & TRANSAKSI -->
-        <div class="card-widget mb-4" style="border-top: 4px solid #f59e0b;">
-            <div class="card-widget-header">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                        <ion-icon name="pricetag-outline"></ion-icon>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 1.1rem;">4. Spesifikasi Lensa, Bingkai & Biaya Transaksi</h3>
-                        <p class="text-muted text-xs" style="margin: 0;">Pilihan jenis lensa, bingkai kacamata, dan total nominal biaya</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-layout">
-                <div class="col-4 mb-3">
-                    <div class="form-group">
-                        <label for="lens_type" style="font-weight: 600;">Jenis Lensa Kacamata <span class="text-danger">*</span></label>
-                        <select name="lens_type" id="lens_type" class="form-control" style="font-size: 0.95rem;" required>
-                            <option value="Single Vision Antiradiasi">Single Vision Antiradiasi</option>
-                            <option value="Photocromic Bluecut">Photocromic Bluecut</option>
-                            <option value="Progressive Office">Progressive Office</option>
-                            <option value="Bifokal Kryptok">Bifokal Kryptok</option>
-                            <option value="Bluecut Hi-Index 1.67">Bluecut Hi-Index 1.67</option>
-                            <option value="Drivewear Polarized">Drivewear Polarized</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-4 mb-3">
-                    <div class="form-group">
-                        <label for="frame_code" style="font-weight: 600;">Kode / Merk Frame</label>
-                        <input type="text" name="frame_code" id="frame_code" class="form-control" placeholder="Contoh: Ray-Ban RB5228 Matte Black">
-                    </div>
-                </div>
-
-                <div class="col-4 mb-3">
-                    <div class="form-group">
-                        <label for="total_price" style="font-weight: 600;">Total Biaya (Rupiah)</label>
-                        <div class="input-currency-wrapper">
-                            <span class="currency-prefix">Rp</span>
-                            <input type="number" name="total_price" id="total_price" class="form-control" placeholder="0" min="0">
-                        </div>
                     </div>
                 </div>
             </div>
