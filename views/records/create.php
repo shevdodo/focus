@@ -279,7 +279,7 @@
                     <div class="form-group">
                         <label for="notes" style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
                             <ion-icon name="document-text-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
-                            <span>Catatan Medis Manual</span>
+                            <span>Anamnesa / Catatan Medis</span>
                         </label>
                         <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Masukkan keluhan fisik pasien (misal: mata sering pegal, asthenopia) & saran pemakaian..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 95px;"></textarea>
                     </div>
