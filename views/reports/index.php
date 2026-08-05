@@ -309,9 +309,8 @@ if (!function_exists('extractBpjsClassNum')) {
                 <thead>
                     <!-- Column Identifier Row (A, B, C, D, E, F, G, H, I, J, K, L) -->
                     <tr style="background: #e6e6e6; text-align: center; font-weight: bold; color: #555; border-bottom: 1px solid #b0b0b0;">
-                        <th style="width: 35px; border: 1px solid #c0c0c0; background: #d9d9d9; padding: 3px;">#</th>
-                        <th style="border: 1px solid #c0c0c0; width: 75px; padding: 3px;">A</th>
-                        <th style="border: 1px solid #c0c0c0; width: 35px; padding: 3px;">B</th>
+                        <th style="border: 1px solid #c0c0c0; width: 40px; padding: 3px;">A</th>
+                        <th style="border: 1px solid #c0c0c0; width: 85px; padding: 3px;">B</th>
                         <th style="border: 1px solid #c0c0c0; width: 110px; padding: 3px;">C</th>
                         <th style="border: 1px solid #c0c0c0; width: 120px; padding: 3px;">D</th>
                         <th style="border: 1px solid #c0c0c0; width: 140px; padding: 3px;">E</th>
@@ -324,9 +323,8 @@ if (!function_exists('extractBpjsClassNum')) {
                     </tr>
                     <!-- Data Header Row -->
                     <tr style="background: #f2f2f2; font-weight: bold; text-align: center; border-bottom: 2px solid #a0a0a0;">
-                        <th style="border: 1px solid #c0c0c0; background: #e6e6e6; padding: 6px;">Row</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Tanggal</th>
                         <th style="border: 1px solid #c0c0c0; padding: 6px;">No</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Tanggal</th>
                         <th style="border: 1px solid #c0c0c0; padding: 6px;">No. RM</th>
                         <th style="border: 1px solid #c0c0c0; padding: 6px;">No. BPJS</th>
                         <th style="border: 1px solid #c0c0c0; padding: 6px;">Nama Pasien</th>
@@ -340,17 +338,16 @@ if (!function_exists('extractBpjsClassNum')) {
                 </thead>
                 <tbody>
                     <?php if (empty($records)): ?>
-                        <tr><td colspan="12" style="text-align: center; padding: 15px; border: 1px solid #c0c0c0; color: #888;">Belum ada data rekam medis pada periode ini.</td></tr>
+                        <tr><td colspan="11" style="text-align: center; padding: 15px; border: 1px solid #c0c0c0; color: #888;">Belum ada data rekam medis pada periode ini.</td></tr>
                     <?php else: ?>
-                        <?php $rowNum = 310; $no = 1; foreach ($records as $rec): ?>
+                        <?php $no = 1; foreach ($records as $rec): ?>
                             <?php 
                                 $bpjsNum = $rec['patient_bpjs_number'] ?? $rec['bpjs_number'] ?? '';
                                 $bpjsClass = $rec['patient_bpjs_class'] ?? $rec['bpjs_class'] ?? '';
                             ?>
                             <tr style="border-bottom: 1px solid #d9d9d9;">
-                                <td style="border: 1px solid #c0c0c0; background: #f2f2f2; text-align: center; font-weight: bold; color: #666; font-size: 10px;"><?= $rowNum++ ?></td>
-                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= date('d/m/Y', strtotime($rec['exam_date'])) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= $no ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= date('d/m/Y', strtotime($rec['exam_date'])) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10px; text-align: center; font-weight: 600; color: var(--color-primary);"><?= htmlspecialchars($rec['mr_number']) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10px; text-align: center;"><?= htmlspecialchars($bpjsNum ?: '-') ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-weight: 600;"><?= htmlspecialchars($rec['patient_name']) ?></td>
@@ -464,7 +461,7 @@ function exportToExcelCSV() {
     }
 
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Tanggal,No,No. RM,No. BPJS,Nama Pasien,Alamat & Telepon,Kode Frame,Jenis Lensa,Ukuran Refraksi (Resep),Kelas BPJS,Nominal (Rp)\n";
+    csvContent += "No,Tanggal,No. RM,No. BPJS,Nama Pasien,Alamat & Telepon,Kode Frame,Jenis Lensa,Ukuran Refraksi (Resep),Kelas BPJS,Nominal (Rp)\n";
 
     records.forEach((r, idx) => {
         const tgl = r.exam_date;
@@ -489,7 +486,7 @@ function exportToExcelCSV() {
         const kelas = r.patient_bpjs_class || r.bpjs_class || '-';
         const nominal = r.total_price || 0;
 
-        csvContent += `${tgl},${no},${rm},${bpjs},${nama},${alamat},${frame},${lensa},${rx},${kelas},${nominal}\n`;
+        csvContent += `${no},${tgl},${rm},${bpjs},${nama},${alamat},${frame},${lensa},${rx},${kelas},${nominal}\n`;
     });
 
     const encodedUri = encodeURI(csvContent);
