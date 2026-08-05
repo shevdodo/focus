@@ -58,22 +58,42 @@
                 </div>
             </div>
 
-            <!-- Existing Patient Select Wrapper (Hidden by default) -->
-            <div id="existingPatientSection" style="display: none; background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
-                <label for="select_existing_patient" style="font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;">
+            <!-- Existing Patient Select Wrapper (Live Autocomplete Search) -->
+            <div id="existingPatientSection" style="display: none; background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; position: relative;">
+                <label for="patient_search_input" style="font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;">
                     <ion-icon name="search-circle-outline" style="font-size: 1.3rem;"></ion-icon>
-                    <span>Cari / Pilih Pasien Terdaftar (Berdasarkan No. RM / Nama / No. HP)</span>
+                    <span>Cari Pasien Terdaftar (Ketik Nama / No. RM / No. HP / No. BPJS)</span>
                 </label>
-                <select id="select_existing_patient" class="form-control" style="font-weight: 600; font-size: 0.95rem; border-radius: 10px;" onchange="onSelectExistingPatient(this)">
-                    <option value="">-- Pilih Pasien Lama dari Database --</option>
-                    <?php if (!empty($patients)): ?>
-                        <?php foreach ($patients as $p): ?>
-                            <option value="<?= htmlspecialchars(json_encode($p)) ?>">
-                                [<?= htmlspecialchars($p['mr_number']) ?>] <?= htmlspecialchars($p['name']) ?> - HP: <?= htmlspecialchars($p['phone'] ?: '-') ?> <?= !empty($p['bpjs_number']) ? ' (BPJS: ' . htmlspecialchars($p['bpjs_number']) . ')' : '' ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
+
+                <div style="position: relative;">
+                    <input type="text" id="patient_search_input" class="form-control" 
+                           placeholder="🔎 Ketik nama, nomor RM (misal: RM-2026-000001), no HP, atau no BPJS..." 
+                           style="font-size: 0.95rem; font-weight: 600; padding-right: 2.5rem; border-radius: 10px;"
+                           oninput="filterPatientResults(this.value)" 
+                           onfocus="filterPatientResults(this.value)"
+                           autocomplete="off">
+                    
+                    <button type="button" id="btnClearPatientSearch" onclick="resetSelectedPatient()" 
+                            style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; color: #ef4444; cursor: pointer;">
+                        <ion-icon name="close-circle"></ion-icon>
+                    </button>
+                </div>
+
+                <!-- Floating Dynamic Dropdown Results -->
+                <div id="patient_search_results" 
+                     style="display: none; position: absolute; left: 1.25rem; right: 1.25rem; top: 100%; z-index: 1000; background: #ffffff; border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15); max-height: 250px; overflow-y: auto; margin-top: 4px;">
+                </div>
+
+                <!-- Selected Patient Status Badge -->
+                <div id="selectedPatientBadge" style="display: none; margin-top: 0.75rem; background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.85rem; color: #047857; font-weight: 600; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <ion-icon name="checkmark-circle" style="font-size: 1.1rem; color: #10b981;"></ion-icon>
+                        <span id="selectedPatientInfo">Pasien Dipilih: -</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="resetSelectedPatient()" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">
+                        Ganti Pasien
+                    </button>
+                </div>
             </div>
 
             <!-- Hidden input for patient_id -->
@@ -383,13 +403,12 @@
 </div>
 
 <script>
+const patientsList = <?= json_encode($patients ?? []) ?>;
+
 function switchPatientMode(mode) {
     const secExist = document.getElementById('existingPatientSection');
     const lblNew = document.getElementById('lblNewPatient');
     const lblExist = document.getElementById('lblExistingPatient');
-    const patientIdInput = document.getElementById('patient_id');
-    const nameInput = document.getElementById('patient_name');
-    const selectElem = document.getElementById('select_existing_patient');
 
     if (mode === 'existing') {
         secExist.style.display = 'block';
@@ -397,44 +416,117 @@ function switchPatientMode(mode) {
         lblExist.style.color = '#ffffff';
         lblNew.style.background = 'transparent';
         lblNew.style.color = 'var(--text-muted)';
-        if (selectElem.value) {
-            onSelectExistingPatient(selectElem);
-        }
+        document.getElementById('patient_search_input').focus();
     } else {
         secExist.style.display = 'none';
         lblNew.style.background = 'var(--color-primary)';
         lblNew.style.color = '#ffffff';
         lblExist.style.background = 'transparent';
         lblExist.style.color = 'var(--text-muted)';
-        
-        patientIdInput.value = '';
-        nameInput.value = '';
-        nameInput.readOnly = false;
-        document.getElementById('patient_phone').value = '';
-        document.getElementById('patient_gender').value = 'L';
-        document.getElementById('patient_dob').value = '';
-        document.getElementById('patient_address').value = '';
-        document.getElementById('bpjs_class').value = 'Non-BPJS';
-        document.getElementById('bpjs_number').value = '';
-        selectElem.value = '';
+        resetSelectedPatient();
     }
 }
 
-function onSelectExistingPatient(elem) {
-    if (!elem.value) return;
-    try {
-        const p = JSON.parse(elem.value);
-        document.getElementById('patient_id').value = p.id;
-        document.getElementById('patient_name').value = p.name;
-        document.getElementById('patient_name').readOnly = true;
-        document.getElementById('patient_phone').value = p.phone || '';
-        document.getElementById('patient_gender').value = p.gender || 'L';
-        document.getElementById('patient_dob').value = p.dob || '';
-        document.getElementById('patient_address').value = p.address || '';
-        document.getElementById('bpjs_class').value = p.bpjs_class || 'Non-BPJS';
-        document.getElementById('bpjs_number').value = p.bpjs_number || '';
-    } catch(e) {
-        console.error(e);
+function filterPatientResults(query) {
+    const resultsContainer = document.getElementById('patient_search_results');
+    const q = query.trim().toLowerCase();
+
+    if (!q) {
+        // Show top 5 recent patients if empty
+        renderPatientList(patientsList.slice(0, 5), resultsContainer);
+        return;
     }
+
+    const filtered = patientsList.filter(p => {
+        return (p.name && p.name.toLowerCase().includes(q)) ||
+               (p.mr_number && p.mr_number.toLowerCase().includes(q)) ||
+               (p.phone && p.phone.toLowerCase().includes(q)) ||
+               (p.bpjs_number && p.bpjs_number.toLowerCase().includes(q));
+    });
+
+    renderPatientList(filtered, resultsContainer);
 }
+
+function renderPatientList(list, container) {
+    if (list.length === 0) {
+        container.innerHTML = '<div style="padding: 0.85rem 1rem; color: var(--text-muted); font-size: 0.85rem;">Tidak ditemukan pasien yang cocok.</div>';
+        container.style.display = 'block';
+        return;
+    }
+
+    let html = '';
+    list.forEach(p => {
+        const bpjsTxt = p.bpjs_number ? ` &bull; BPJS: ${escapeHtml(p.bpjs_number)}` : '';
+        const phoneTxt = p.phone ? ` &bull; HP: ${escapeHtml(p.phone)}` : '';
+        html += `
+            <div class="patient-search-item" onclick='selectPatient(${JSON.stringify(p)})' 
+                 style="padding: 0.65rem 1rem; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: background 0.15s ease;"
+                 onmouseover="this.style.background='rgba(99, 102, 241, 0.08)'" 
+                 onmouseout="this.style.background='transparent'">
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--color-dark); display: flex; align-items: center; justify-content: space-between;">
+                    <span>${escapeHtml(p.name)}</span>
+                    <span style="font-size: 0.78rem; background: rgba(99, 102, 241, 0.1); color: var(--color-primary); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700;">${escapeHtml(p.mr_number)}</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">
+                    Gender: ${p.gender === 'P' ? 'Perempuan' : 'Laki-laki'}${phoneTxt}${bpjsTxt}
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+    container.style.display = 'block';
+}
+
+function selectPatient(p) {
+    document.getElementById('patient_id').value = p.id;
+    document.getElementById('patient_name').value = p.name;
+    document.getElementById('patient_name').readOnly = true;
+    document.getElementById('patient_phone').value = p.phone || '';
+    document.getElementById('patient_gender').value = p.gender || 'L';
+    document.getElementById('patient_dob').value = p.dob || '';
+    document.getElementById('patient_address').value = p.address || '';
+    document.getElementById('bpjs_class').value = p.bpjs_class || 'Non-BPJS';
+    document.getElementById('bpjs_number').value = p.bpjs_number || '';
+
+    document.getElementById('patient_search_input').value = `[${p.mr_number}] ${p.name}`;
+    document.getElementById('patient_search_results').style.display = 'none';
+    document.getElementById('btnClearPatientSearch').style.display = 'block';
+
+    const badge = document.getElementById('selectedPatientBadge');
+    document.getElementById('selectedPatientInfo').innerHTML = `<strong>${escapeHtml(p.name)}</strong> (${escapeHtml(p.mr_number)}) &bull; HP: ${escapeHtml(p.phone || '-')}`;
+    badge.style.display = 'flex';
+}
+
+function resetSelectedPatient() {
+    document.getElementById('patient_id').value = '';
+    const nameInput = document.getElementById('patient_name');
+    nameInput.value = '';
+    nameInput.readOnly = false;
+    document.getElementById('patient_phone').value = '';
+    document.getElementById('patient_gender').value = 'L';
+    document.getElementById('patient_dob').value = '';
+    document.getElementById('patient_address').value = '';
+    document.getElementById('bpjs_class').value = 'Non-BPJS';
+    document.getElementById('bpjs_number').value = '';
+
+    document.getElementById('patient_search_input').value = '';
+    document.getElementById('patient_search_results').style.display = 'none';
+    document.getElementById('btnClearPatientSearch').style.display = 'none';
+    document.getElementById('selectedPatientBadge').style.display = 'none';
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+// Close search dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const sec = document.getElementById('existingPatientSection');
+    const results = document.getElementById('patient_search_results');
+    if (sec && !sec.contains(e.target) && results) {
+        results.style.display = 'none';
+    }
+});
 </script>
