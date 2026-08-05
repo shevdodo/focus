@@ -1,0 +1,17 @@
+# Database files (ignored so live transaction data on server won't conflict with Git pull)
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# OS & Environment files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.env
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Log files
+*.log
