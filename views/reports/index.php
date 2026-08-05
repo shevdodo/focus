@@ -331,11 +331,15 @@ if (!function_exists('extractBpjsClassNum')) {
                         <tr><td colspan="11" style="text-align: center; padding: 15px; border: 1px solid #c0c0c0; color: #888;">Belum ada data rekam medis pada periode ini.</td></tr>
                     <?php else: ?>
                         <?php $rowNum = 310; $no = 1; foreach ($records as $rec): ?>
+                            <?php 
+                                $bpjsNum = $rec['patient_bpjs_number'] ?? $rec['bpjs_number'] ?? '';
+                                $bpjsClass = $rec['patient_bpjs_class'] ?? $rec['bpjs_class'] ?? '';
+                            ?>
                             <tr style="border-bottom: 1px solid #d9d9d9;">
                                 <td style="border: 1px solid #c0c0c0; background: #f2f2f2; text-align: center; font-weight: bold; color: #666; font-size: 10px;"><?= $rowNum++ ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= date('d/m/Y', strtotime($rec['exam_date'])) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= $no ?></td>
-                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10.5px;"><?= htmlspecialchars($rec['bpjs_number'] ?: $rec['mr_number']) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10.5px;"><?= htmlspecialchars($bpjsNum ?: $rec['mr_number']) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-weight: 600;"><?= htmlspecialchars($rec['patient_name']) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-size: 10.5px; word-break: break-word;">
                                     <?= htmlspecialchars($rec['patient_address'] ?: '-') ?> <?= !empty($rec['patient_phone']) ? '. ' . htmlspecialchars($rec['patient_phone']) : '' ?>
@@ -343,7 +347,7 @@ if (!function_exists('extractBpjsClassNum')) {
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= htmlspecialchars($rec['frame_code'] ?: '-') ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px;"><?= htmlspecialchars($rec['lens_type']) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10px; font-weight: 600;"><?= formatExcelRx($rec) ?></td>
-                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= extractBpjsClassNum($rec['bpjs_class']) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= extractBpjsClassNum($bpjsClass) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: right; font-weight: bold;"><?= formatRupiah($rec['total_price']) ?></td>
                             </tr>
                         <?php $no++; endforeach; ?>
@@ -437,7 +441,7 @@ function exportToExcelCSV() {
     records.forEach((r, idx) => {
         const tgl = r.exam_date;
         const no = idx + 1;
-        const rm = r.bpjs_number || r.mr_number;
+        const rm = r.patient_bpjs_number || r.bpjs_number || r.mr_number;
         const nama = `"${(r.patient_name || '').replace(/"/g, '""')}"`;
         const alamat = `"${((r.patient_address || '') + ' ' + (r.patient_phone || '')).replace(/"/g, '""')}"`;
         const frame = `"${(r.frame_code || '-').replace(/"/g, '""')}"`;
@@ -453,7 +457,7 @@ function exportToExcelCSV() {
         if (r.od_add || r.os_add) rxStr += `ADD:${r.od_add || r.os_add}`;
         
         const rx = `"${rxStr.trim().replace(/"/g, '""')}"`;
-        const kelas = r.bpjs_class || '-';
+        const kelas = r.patient_bpjs_class || r.bpjs_class || '-';
         const nominal = r.total_price || 0;
 
         csvContent += `${tgl},${no},${rm},${nama},${alamat},${frame},${lensa},${rx},${kelas},${nominal}\n`;
