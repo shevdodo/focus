@@ -307,33 +307,19 @@ if (!function_exists('extractBpjsClassNum')) {
         <div style="overflow-x: auto;">
             <table id="excelReportTable" style="width: 100%; border-collapse: collapse; font-size: 11px; color: #000000; background: #ffffff;">
                 <thead>
-                    <!-- Column Identifier Row (A, B, C, D, E, F, G, H, I, J, K, L) -->
-                    <tr style="background: #e6e6e6; text-align: center; font-weight: bold; color: #555; border-bottom: 1px solid #b0b0b0;">
-                        <th style="border: 1px solid #c0c0c0; width: 40px; padding: 3px;">A</th>
-                        <th style="border: 1px solid #c0c0c0; width: 85px; padding: 3px;">B</th>
-                        <th style="border: 1px solid #c0c0c0; width: 110px; padding: 3px;">C</th>
-                        <th style="border: 1px solid #c0c0c0; width: 120px; padding: 3px;">D</th>
-                        <th style="border: 1px solid #c0c0c0; width: 140px; padding: 3px;">E</th>
-                        <th style="border: 1px solid #c0c0c0; width: 200px; padding: 3px;">F</th>
-                        <th style="border: 1px solid #c0c0c0; width: 85px; padding: 3px;">G</th>
-                        <th style="border: 1px solid #c0c0c0; width: 95px; padding: 3px;">H</th>
-                        <th style="border: 1px solid #c0c0c0; width: 240px; padding: 3px;">I</th>
-                        <th style="border: 1px solid #c0c0c0; width: 45px; padding: 3px;">J/K</th>
-                        <th style="border: 1px solid #c0c0c0; width: 95px; padding: 3px;">L</th>
-                    </tr>
                     <!-- Data Header Row -->
                     <tr style="background: #f2f2f2; font-weight: bold; text-align: center; border-bottom: 2px solid #a0a0a0;">
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">No</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Tanggal</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">No. RM</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">No. BPJS</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Nama Pasien</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Alamat & Telepon</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Kode Frame</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Jenis Lensa</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Ukuran Refraksi (Resep)</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Kelas</th>
-                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Nominal (Rp)</th>
+                        <th style="border: 1px solid #c0c0c0; width: 40px; padding: 6px;">No</th>
+                        <th style="border: 1px solid #c0c0c0; width: 85px; padding: 6px;">Tanggal</th>
+                        <th style="border: 1px solid #c0c0c0; width: 110px; padding: 6px;">No. RM</th>
+                        <th style="border: 1px solid #c0c0c0; width: 120px; padding: 6px;">No. BPJS</th>
+                        <th style="border: 1px solid #c0c0c0; width: 140px; padding: 6px;">Nama Pasien</th>
+                        <th style="border: 1px solid #c0c0c0; width: 200px; padding: 6px;">Alamat & Telepon</th>
+                        <th style="border: 1px solid #c0c0c0; width: 85px; padding: 6px;">Kode Frame</th>
+                        <th style="border: 1px solid #c0c0c0; width: 95px; padding: 6px;">Jenis Lensa</th>
+                        <th style="border: 1px solid #c0c0c0; width: 240px; padding: 6px;">Ukuran Refraksi (Resep)</th>
+                        <th style="border: 1px solid #c0c0c0; width: 45px; padding: 6px;">Kelas</th>
+                        <th style="border: 1px solid #c0c0c0; width: 95px; padding: 6px;">Nominal (Rp)</th>
                     </tr>
                 </thead>
                 <tbody>
