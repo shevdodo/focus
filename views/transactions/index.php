@@ -458,6 +458,7 @@ function openEditRecordModal(rec) {
     document.getElementById('edit_pd').value = rec.pd;
     document.getElementById('edit_lens_type').value = rec.lens_type;
     document.getElementById('edit_frame_code').value = rec.frame_code || '';
+    document.getElementById('edit_total_price').value = rec.total_price !== undefined && rec.total_price !== null ? rec.total_price : '';
     const diagStr = rec.diagnosis || '';
     document.getElementById('edit_diag_miopia').checked = diagStr.includes('Miopia');
     document.getElementById('edit_diag_hipermetropia').checked = diagStr.includes('Hipermetropia');
