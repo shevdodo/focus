@@ -68,30 +68,23 @@ if (!function_exists('extractBpjsClassNum')) {
 <div class="report-wrapper animate-fade-in">
     <!-- Top Filter Bar & Toolbar -->
     <div class="card-widget report-filter-card mb-4 no-print">
-        <div class="report-filter-header" style="flex-wrap: wrap; gap: 1rem;">
-            <div class="report-title-section">
-                <div class="report-icon-badge" style="background-color: rgba(99, 102, 241, 0.1); color: #6366f1;">
-                    <ion-icon name="document-text-outline"></ion-icon>
-                </div>
-                <div>
-                    <h2 class="report-title">Laporan Rekam Medis & Rekap Optik</h2>
-                    <p class="text-muted text-sm">
-                        Laporan Rekapitulasi Pemeriksaan Pasien & Resep Kacamata Klinik <strong>OPTIK FOCUS</strong>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Action controls, View Switcher & Month selection -->
-            <div class="report-controls" style="flex-wrap: wrap; gap: 0.5rem;">
-                <form action="<?= baseUrl('reports') ?>" method="GET" class="month-picker-form" id="monthForm">
+        <div class="report-filter-header" style="flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+            <div class="month-selector-container" style="display: flex; align-items: center; gap: 0.6rem;">
+                <label style="font-weight: 700; font-size: 0.88rem; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem; margin: 0;">
+                    <ion-icon name="calendar-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                    <span>Filter Periode:</span>
+                </label>
+                <form action="<?= baseUrl('reports') ?>" method="GET" class="month-picker-form" id="monthForm" style="margin: 0;">
                     <div class="month-selector-group">
                         <div class="select-wrapper">
-                            <ion-icon name="calendar-outline" class="select-icon"></ion-icon>
-                            <input type="month" name="month" value="<?= htmlspecialchars($_GET['month'] ?? date('Y-m')) ?>" class="form-control select-month-input" onchange="document.getElementById('monthForm').submit();">
+                            <input type="month" name="month" value="<?= htmlspecialchars($_GET['month'] ?? date('Y-m')) ?>" class="form-control select-month-input" onchange="document.getElementById('monthForm').submit();" style="padding-left: 0.75rem;">
                         </div>
                     </div>
                 </form>
+            </div>
 
+            <!-- Action controls & View Switcher -->
+            <div class="report-controls" style="flex-wrap: wrap; gap: 0.5rem; align-items: center;">
                 <!-- Mode Switcher -->
                 <div style="display: flex; background: rgba(15, 23, 42, 0.06); border-radius: 8px; padding: 3px; gap: 3px;">
                     <button type="button" id="btnModeStandard" onclick="switchReportMode('standard')" 

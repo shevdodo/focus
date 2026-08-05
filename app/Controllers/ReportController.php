@@ -36,7 +36,8 @@ class ReportController {
             'end_date' => $end_date
         ]);
 
-        $title = "Laporan Rekam Medis & Resep Optik - OPTIK FOCUS";
+        $title = "Laporan Rekam Medis & Rekap Optik";
+        $subtitle = "Laporan rekapitulasi pemeriksaan pasien & resep kacamata Klinik OPTIK FOCUS";
 
         // Render views
         require dirname(__DIR__, 2) . '/views/templates/header.php';

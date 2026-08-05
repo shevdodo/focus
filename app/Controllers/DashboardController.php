@@ -30,7 +30,8 @@ class DashboardController {
         $recentRecords = array_slice($allRecords, 0, 5);
 
         // View titles
-        $title = "Dashboard Rekam Medis - OPTIK FOCUS";
+        $title = "Dashboard Utama";
+        $subtitle = "Ikhtisar rekam medis, statistik lensa & aktivitas klinik OPTIK FOCUS";
         
         // Render views
         require dirname(__DIR__, 2) . '/views/templates/header.php';

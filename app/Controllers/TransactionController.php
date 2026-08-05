@@ -31,7 +31,8 @@ class TransactionController {
         // Summary stats for filtered view
         $summary = $this->recordModel->getSummaryStats($filters);
 
-        $title = "Daftar Rekam Medis & Resep Optik";
+        $title = "Daftar Rekam Medis";
+        $subtitle = "Riwayat pemeriksaan refraksi & resep kacamata Klinik OPTIK FOCUS";
 
         // Render views
         require dirname(__DIR__, 2) . '/views/templates/header.php';

@@ -16,7 +16,8 @@ class UserController {
         $stmt = $db->query("SELECT id, username, name, role FROM users ORDER BY name ASC");
         $users = $stmt->fetchAll();
 
-        $title = "Kelola Pengguna - OPTIK FOCUS";
+        $title = "Kelola Pengguna Sistem";
+        $subtitle = "Manajemen akun pengguna & hak akses staf Klinik OPTIK FOCUS";
         
         require dirname(__DIR__, 2) . '/views/templates/header.php';
         require dirname(__DIR__, 2) . '/views/users/index.php';
