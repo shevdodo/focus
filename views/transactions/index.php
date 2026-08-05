@@ -288,26 +288,10 @@ if (!function_exists('formatRupiah')) {
                 </div>
             </div>
 
-            <div style="display: flex; gap: 0.75rem;" class="mb-3">
-                <div class="form-group" style="flex: 1;">
-                    <label for="edit_lens_type">Jenis Lensa</label>
-                    <input type="text" name="lens_type" id="edit_lens_type" class="form-control" required>
-                </div>
-                <div class="form-group" style="flex: 1;">
-                    <label for="edit_frame_code">Kode Frame</label>
-                    <input type="text" name="frame_code" id="edit_frame_code" class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group mb-3">
-                <label for="edit_total_price">Total Biaya (Rupiah)</label>
-                <input type="number" name="total_price" id="edit_total_price" class="form-control">
-            </div>
-
             <!-- Diagnosa & Catatan Medis (2 Kolom Sama Rata) -->
-            <div class="row-layout" style="display: flex; gap: 1rem;">
+            <div class="row-layout" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
                 <!-- Pilihan Diagnosa Multi-Choice -->
-                <div class="col-6 mb-3" style="flex: 1;">
+                <div class="col-6" style="flex: 1;">
                     <div class="form-group" style="height: 100%;">
                         <label style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
                             <ion-icon name="medical-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
@@ -335,7 +319,7 @@ if (!function_exists('formatRupiah')) {
                 </div>
 
                 <!-- Input Anamnesa / Catatan Medis -->
-                <div class="col-6 mb-3" style="flex: 1;">
+                <div class="col-6" style="flex: 1;">
                     <div class="form-group" style="height: 100%;">
                         <label for="edit_notes" style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
                             <ion-icon name="document-text-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
@@ -344,6 +328,22 @@ if (!function_exists('formatRupiah')) {
                         <textarea name="notes" id="edit_notes" class="form-control" rows="3" placeholder="Keluhan fisik pasien & saran..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 105px;"></textarea>
                     </div>
                 </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;" class="mb-3">
+                <div class="form-group" style="flex: 1;">
+                    <label for="edit_lens_type">Jenis Lensa</label>
+                    <input type="text" name="lens_type" id="edit_lens_type" class="form-control" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="edit_frame_code">Kode Frame</label>
+                    <input type="text" name="frame_code" id="edit_frame_code" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="edit_total_price">Total Biaya (Rupiah)</label>
+                <input type="number" name="total_price" id="edit_total_price" class="form-control">
             </div>
 
             <div style="display: flex; gap: 0.75rem; justify-content: flex-end; border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
