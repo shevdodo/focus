@@ -240,7 +240,7 @@ if (!function_exists('formatRupiah')) {
 
 <!-- MODAL UBAH REKAM MEDIS & PRINT MODAL -->
 <div id="editRecordModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 1.5rem;">
-    <div class="monthly-breakdown-card" style="width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; margin-bottom: 0; border-radius: var(--radius-lg);">
+    <div class="monthly-breakdown-card" style="width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto; margin-bottom: 0; border-radius: var(--radius-lg);">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem; margin-bottom: 1.5rem;">
             <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--color-dark);">Ubah Rekam Medis Pasien</h3>
             <button onclick="closeEditRecordModal()" style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
@@ -263,7 +263,7 @@ if (!function_exists('formatRupiah')) {
             </div>
 
             <!-- Prescription Grid OD & OS -->
-            <div style="border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 0.85rem;" class="mb-3">
+            <div style="background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 10px; padding: 0.85rem; margin-bottom: 1rem;">
                 <div style="font-weight: 700; font-size: 0.78rem; color: var(--color-primary);" class="mb-1">OD (Mata Kanan):</div>
                 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem;" class="mb-2">
                     <input type="number" step="0.25" name="od_sph" id="edit_od_sph" placeholder="SPH" class="form-control" style="font-size: 0.8rem; padding: 0.35rem;">
@@ -304,34 +304,46 @@ if (!function_exists('formatRupiah')) {
                 <input type="number" name="total_price" id="edit_total_price" class="form-control">
             </div>
 
-            <div class="form-group mb-3">
-                <label style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
-                    <ion-icon name="medical-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
-                    <span>Diagnosa Refraksi (Dapat Pilih Banyak)</span>
-                </label>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 0.85rem;">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
-                        <input type="checkbox" name="diagnosis[]" id="edit_diag_miopia" value="Miopia (-)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
-                        <span>Miopia (-)</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
-                        <input type="checkbox" name="diagnosis[]" id="edit_diag_hipermetropia" value="Hipermetropia (+)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
-                        <span>Hipermetropia (+)</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
-                        <input type="checkbox" name="diagnosis[]" id="edit_diag_astigmatisme" value="Astigmatisme (cyl)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
-                        <span>Astigmatisme (cyl)</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
-                        <input type="checkbox" name="diagnosis[]" id="edit_diag_presbiopi" value="Presbiopi (add)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
-                        <span>Presbiopi (add)</span>
-                    </label>
+            <!-- Diagnosa & Catatan Medis (2 Kolom Sama Rata) -->
+            <div class="row-layout" style="display: flex; gap: 1rem;">
+                <!-- Pilihan Diagnosa Multi-Choice -->
+                <div class="col-6 mb-3" style="flex: 1;">
+                    <div class="form-group" style="height: 100%;">
+                        <label style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
+                            <ion-icon name="medical-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                            <span>Diagnosa Refraksi (Dapat Pilih Banyak)</span>
+                        </label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 0.85rem; height: calc(100% - 28px);">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" id="edit_diag_miopia" value="Miopia (-)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Miopia (-)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" id="edit_diag_hipermetropia" value="Hipermetropia (+)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Hipermetropia (+)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" id="edit_diag_astigmatisme" value="Astigmatisme (cyl)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Astigmatisme (cyl)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                                <input type="checkbox" name="diagnosis[]" id="edit_diag_presbiopi" value="Presbiopi (add)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                                <span>Presbiopi (add)</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group mb-4">
-                <label for="edit_notes">Anamnesa / Catatan Medis</label>
-                <textarea name="notes" id="edit_notes" class="form-control" rows="2" placeholder="Keluhan fisik pasien & saran..."></textarea>
+                <!-- Input Anamnesa / Catatan Medis -->
+                <div class="col-6 mb-3" style="flex: 1;">
+                    <div class="form-group" style="height: 100%;">
+                        <label for="edit_notes" style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
+                            <ion-icon name="document-text-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                            <span>Anamnesa / Catatan Medis</span>
+                        </label>
+                        <textarea name="notes" id="edit_notes" class="form-control" rows="3" placeholder="Keluhan fisik pasien & saran..." style="border-radius: 12px; height: calc(100% - 28px); min-height: 105px;"></textarea>
+                    </div>
+                </div>
             </div>
 
             <div style="display: flex; gap: 0.75rem; justify-content: flex-end; border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
