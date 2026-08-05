@@ -157,8 +157,13 @@
                 </div>
             </div>
 
-            <div class="table-responsive mb-3" style="border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden;">
-                <table class="table" style="width: 100%; text-align: center; margin: 0; font-size: 0.95rem;">
+            <div class="mb-2" style="display: flex; align-items: center; gap: 0.35rem; color: var(--color-primary); font-size: 0.78rem; font-weight: 600;">
+                <ion-icon name="swap-horizontal-outline" style="font-size: 1.1rem;"></ion-icon>
+                <span>Geser tabel ke samping pada layar HP untuk mengisi kolom lengkap</span>
+            </div>
+
+            <div class="refraction-table-container mb-3">
+                <table class="table" style="text-align: center; margin: 0; font-size: 0.95rem;">
                     <thead style="background: rgba(15, 23, 42, 0.05); font-weight: 700;">
                         <tr>
                             <th style="text-align: left; padding: 0.75rem 1rem; width: 160px;">POSISI MATA</th>

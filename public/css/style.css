@@ -1764,6 +1764,37 @@ ion-icon {
     color: #ffffff !important;
 }
 
+/* Responsive Mobile Optimization for Refraction Table Inputs */
+.refraction-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.refraction-table-container table {
+    min-width: 640px;
+    width: 100%;
+}
+
+.refraction-table-container input[type="number"],
+.refraction-table-container input[type="text"] {
+    min-width: 75px;
+    font-size: 0.95rem;
+    padding: 0.55rem 0.4rem;
+}
+
+/* Hide spin buttons inside compact refraction inputs for clean mobile tapping */
+.refraction-table-container input[type="number"]::-webkit-inner-spin-button,
+.refraction-table-container input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.refraction-table-container input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 /* Print CSS Styles */
 @media print {
     .sidebar, .bottom-nav, .topbar, .no-print {
