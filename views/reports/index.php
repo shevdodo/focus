@@ -482,7 +482,7 @@ function exportToExcelCSV() {
         if (r.os_axis) rxStr += `X:${r.os_axis} `;
         if (r.od_add || r.os_add) rxStr += `ADD:${r.od_add || r.os_add}`;
         
-        const rx = `"${rxStr.trim().replace(/"/g, '""')}"`;
+        const rx = `"${(rxStr.trim() || 'Plano').replace(/"/g, '""')}"`;
         const kelas = r.patient_bpjs_class || r.bpjs_class || '-';
         const nominal = r.total_price || 0;
 
