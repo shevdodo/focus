@@ -1601,78 +1601,179 @@ ion-icon {
 /* ==========================================================================
    MODERN TRANSACTION CARD LIST STYLING
    ========================================================================== */
+/* ==========================================================================
+   MODERN TRANSACTION CARD LIST STYLING
+   ========================================================================== */
 .tx-cards-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
 }
 
 .tx-card-item {
     background: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    padding: 0.85rem 1.05rem;
+    padding: 1.1rem 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.75rem;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
 }
 
 .tx-card-item:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
     transform: translateY(-1px);
 }
 
 .tx-card-header-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
+    align-items: flex-start;
+    gap: 0.85rem;
 }
 
 .tx-card-title-group {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.75rem;
     min-width: 0;
     flex-grow: 1;
 }
 
 .tx-icon-avatar {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     flex-shrink: 0;
 }
 
-.tx-description-text {
-    font-size: 0.92rem;
+.tx-patient-info-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.tx-patient-name-container {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.patient-name-text {
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--color-dark);
-    line-height: 1.35;
-    word-break: break-word;
+    letter-spacing: -0.2px;
+}
+
+.mr-badge {
+    font-size: 0.75rem;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.bpjs-badge {
+    font-size: 0.75rem;
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #047857;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.patient-sub-info {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tx-card-price-block {
+    text-align: right;
+    flex-shrink: 0;
 }
 
 .tx-amount-value {
-    font-size: 1.02rem;
+    font-size: 1.2rem;
     font-weight: 800;
     white-space: nowrap;
-    flex-shrink: 0;
     letter-spacing: -0.3px;
+    display: block;
 }
 
+.tx-exam-no {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    display: block;
+    margin-top: 0.1rem;
+}
+
+/* Medical info boxes (Diagnosa & Notes) */
+.tx-card-medical-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 0.25rem;
+}
+
+.medical-info-box {
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.diagnosis-box {
+    background-color: rgba(99, 102, 241, 0.05);
+    color: var(--color-dark);
+    border-left: 3px solid var(--color-primary);
+}
+
+.notes-box {
+    background-color: rgba(245, 158, 11, 0.05);
+    color: var(--text-muted);
+    border-left: 3px solid #f59e0b;
+}
+
+.info-label {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.diagnosis-box .info-label { color: var(--color-primary); }
+.notes-box .info-label { color: #d97706; }
+
+.info-text {
+    font-weight: 600;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* Footer & Actions */
 .tx-card-footer-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    padding-top: 0.45rem;
+    gap: 0.6rem;
+    padding-top: 0.6rem;
     border-top: 1px dashed var(--color-border);
 }
 
@@ -1687,7 +1788,7 @@ ion-icon {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
     font-weight: 600;
 }
@@ -1696,16 +1797,124 @@ ion-icon {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    padding: 0.12rem 0.55rem;
+    padding: 0.15rem 0.6rem;
     border-radius: 50px;
 }
+
+.pill-emerald { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
+.pill-purple { background-color: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
 
 .tx-card-actions {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-history-action {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--color-primary);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-weight: 600;
+}
+
+.btn-print-action {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    background: var(--color-white);
+    color: var(--color-dark);
+    border: 1px solid var(--color-border);
+    font-weight: 600;
+}
+
+.btn-action-icon {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    padding: 0.35rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-action-edit { color: var(--color-primary); }
+.btn-action-edit:hover { background: rgba(99, 102, 241, 0.1); }
+
+/* MOBILE RESPONSIVE OPTIMIZATION (< 640px) */
+@media (max-width: 640px) {
+    .tx-card-item {
+        padding: 0.95rem;
+    }
+    
+    .tx-card-header-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+    }
+    
+    .tx-card-price-block {
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 0.5rem;
+        border-top: 1px dashed var(--color-border);
+        width: 100%;
+    }
+    
+    .tx-amount-value {
+        font-size: 1.1rem;
+    }
+    
+    .medical-info-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+        padding: 0.55rem 0.75rem;
+    }
+    
+    .info-label {
+        font-size: 0.8rem;
+    }
+    
+    .info-text {
+        font-size: 0.85rem;
+        width: 100%;
+    }
+    
+    .tx-card-footer-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .tx-sub-meta {
+        width: 100%;
+    }
+    
+    .tx-card-actions {
+        width: 100%;
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+    }
+    
+    .btn-history-action,
+    .btn-print-action {
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+        padding: 0.45rem 0.4rem;
+        font-size: 0.78rem !important;
+    }
 }
 
 /* Category Filter Bar & Chips */

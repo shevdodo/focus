@@ -94,48 +94,48 @@ if (!function_exists('formatRupiah')) {
             <?php else: ?>
                 <div class="tx-cards-list">
                     <?php foreach ($records as $rec): ?>
-                        <div class="tx-card-item" style="padding: 1.25rem;">
+                        <div class="tx-card-item">
                             <!-- Card Header: Patient Info & Price -->
                             <div class="tx-card-header-row">
                                 <div class="tx-card-title-group">
-                                    <div class="tx-icon-avatar" style="background-color: rgba(99, 102, 241, 0.12); color: #6366f1; width: 44px; height: 44px;">
-                                        <ion-icon name="glasses-outline" style="font-size: 1.4rem;"></ion-icon>
+                                    <div class="tx-icon-avatar" style="background-color: rgba(99, 102, 241, 0.12); color: #6366f1;">
+                                        <ion-icon name="glasses-outline"></ion-icon>
                                     </div>
-                                    <div>
-                                        <strong class="tx-description-text" style="font-size: 1.1rem; color: var(--color-dark);">
-                                            <?= htmlspecialchars($rec['patient_name']) ?>
-                                            <span style="font-size: 0.78rem; background-color: var(--color-primary-light); color: var(--color-primary); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; margin-left: 0.35rem;">
+                                    <div class="tx-patient-info-body">
+                                        <div class="tx-patient-name-container">
+                                            <strong class="patient-name-text"><?= htmlspecialchars($rec['patient_name']) ?></strong>
+                                            <span class="mr-badge">
                                                 <?= htmlspecialchars($rec['mr_number']) ?>
                                             </span>
                                             <?php if (!empty($rec['patient_bpjs_class']) && $rec['patient_bpjs_class'] !== 'Non-BPJS'): ?>
-                                                <span style="font-size: 0.75rem; background-color: rgba(16, 185, 129, 0.15); color: #047857; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; margin-left: 0.25rem;">
-                                                    <ion-icon name="card-outline" style="vertical-align: middle;"></ion-icon>
+                                                <span class="bpjs-badge">
+                                                    <ion-icon name="card-outline"></ion-icon>
                                                     BPJS <?= htmlspecialchars($rec['patient_bpjs_class']) ?> <?= !empty($rec['patient_bpjs_number']) ? '(' . htmlspecialchars($rec['patient_bpjs_number']) . ')' : '' ?>
                                                 </span>
                                             <?php endif; ?>
-                                        </strong>
-                                        <div class="text-muted text-xs mt-1">
-                                            <span>JK: <?= $rec['patient_gender'] === 'L' ? 'Laki-laki' : 'Perempuan' ?></span> | 
-                                            <span>No HP: <?= htmlspecialchars($rec['patient_phone'] ?: '-') ?></span> | 
-                                            <span>Pemeriksa: <?= htmlspecialchars($rec['examiner_name']) ?></span>
+                                        </div>
+                                        <div class="patient-sub-info">
+                                            <span>JK: <?= $rec['patient_gender'] === 'L' ? 'Laki-laki' : 'Perempuan' ?></span>
+                                            <span>&bull; No HP: <?= htmlspecialchars($rec['patient_phone'] ?: '-') ?></span>
+                                            <span>&bull; Pemeriksa: <?= htmlspecialchars($rec['examiner_name']) ?></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="text-right">
-                                    <span class="tx-amount-value text-primary font-weight-bold" style="font-size: 1.2rem; display: block;">
+                                <div class="tx-card-price-block">
+                                    <span class="tx-amount-value text-primary">
                                         <?= formatRupiah($rec['total_price']) ?>
                                     </span>
-                                    <span class="text-muted text-xs">No. Exam: <?= htmlspecialchars($rec['record_number']) ?></span>
+                                    <span class="tx-exam-no">No. Exam: <?= htmlspecialchars($rec['record_number']) ?></span>
                                 </div>
                             </div>
 
                             <!-- Prescription Matrix Table -->
-                            <div class="table-responsive my-3" style="border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden;">
-                                <table class="table" style="width: 100%; margin: 0; font-size: 0.88rem; text-align: center;">
-                                    <thead style="background-color: rgba(15, 23, 42, 0.04); font-weight: 700;">
+                            <div class="table-responsive my-2 prescription-table-wrapper">
+                                <table class="table prescription-table">
+                                    <thead>
                                         <tr>
-                                            <th style="text-align: left; padding: 0.5rem 1rem;">MATA</th>
+                                            <th style="text-align: left; padding-left: 0.75rem;">MATA</th>
                                             <th>SPH</th>
                                             <th>CYL</th>
                                             <th>AXIS</th>
@@ -146,18 +146,18 @@ if (!function_exists('formatRupiah')) {
                                     </thead>
                                     <tbody>
                                         <tr style="border-bottom: 1px solid var(--color-border);">
-                                            <td style="text-align: left; font-weight: 700; color: var(--color-primary); padding: 0.5rem 1rem;">OD (Kanan)</td>
+                                            <td style="text-align: left; font-weight: 700; color: var(--color-primary); padding-left: 0.75rem;">OD (Kanan)</td>
                                             <td><?= sprintf('%+.2f', $rec['od_sph']) ?></td>
                                             <td><?= sprintf('%+.2f', $rec['od_cyl']) ?></td>
                                             <td><?= $rec['od_axis'] ?>°</td>
                                             <td><?= sprintf('%+.2f', $rec['od_add']) ?></td>
                                             <td><?= htmlspecialchars($rec['od_va']) ?></td>
-                                            <td rowspan="2" style="vertical-align: middle; font-weight: 800; font-size: 1rem; background: rgba(99, 102, 241, 0.05); color: var(--color-dark);">
+                                            <td rowspan="2" class="pd-cell">
                                                 <?= $rec['pd'] ?> mm
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="text-align: left; font-weight: 700; color: #ec4899; padding: 0.5rem 1rem;">OS (Kiri)</td>
+                                            <td style="text-align: left; font-weight: 700; color: #ec4899; padding-left: 0.75rem;">OS (Kiri)</td>
                                             <td><?= sprintf('%+.2f', $rec['os_sph']) ?></td>
                                             <td><?= sprintf('%+.2f', $rec['os_cyl']) ?></td>
                                             <td><?= $rec['os_axis'] ?>°</td>
@@ -169,18 +169,18 @@ if (!function_exists('formatRupiah')) {
                             </div>
 
                             <?php if (!empty($rec['diagnosis']) || !empty($rec['notes'])): ?>
-                                <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem;">
+                                <div class="tx-card-medical-info">
                                     <?php if (!empty($rec['diagnosis'])): ?>
-                                        <div style="background-color: rgba(99, 102, 241, 0.05); padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.82rem; color: var(--color-dark); border-left: 3px solid var(--color-primary); display: flex; align-items: center; gap: 0.5rem;">
-                                            <strong style="color: var(--color-primary); flex-shrink: 0;"><ion-icon name="medical-outline" style="vertical-align: middle; font-size: 0.95rem;"></ion-icon> Diagnosa Refraksi:</strong>
-                                            <span style="font-weight: 600;"><?= htmlspecialchars($rec['diagnosis']) ?></span>
+                                        <div class="medical-info-box diagnosis-box">
+                                            <strong class="info-label"><ion-icon name="medical-outline"></ion-icon> Diagnosa Refraksi:</strong>
+                                            <span class="info-text"><?= htmlspecialchars($rec['diagnosis']) ?></span>
                                         </div>
                                     <?php endif; ?>
 
                                     <?php if (!empty($rec['notes'])): ?>
-                                        <div style="background-color: rgba(245, 158, 11, 0.05); padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.82rem; color: var(--text-muted); border-left: 3px solid #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem;">
-                                            <strong style="color: #d97706; flex-shrink: 0;"><ion-icon name="document-text-outline" style="vertical-align: middle; font-size: 0.95rem;"></ion-icon> Anamnesa / Catatan Medis:</strong>
-                                            <span><?= htmlspecialchars($rec['notes']) ?></span>
+                                        <div class="medical-info-box notes-box">
+                                            <strong class="info-label"><ion-icon name="document-text-outline"></ion-icon> Anamnesa / Catatan Medis:</strong>
+                                            <span class="info-text"><?= htmlspecialchars($rec['notes']) ?></span>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -193,21 +193,21 @@ if (!function_exists('formatRupiah')) {
                                         <ion-icon name="calendar-outline"></ion-icon>
                                         <?= date('d M Y', strtotime($rec['exam_date'])) ?>
                                     </span>
-                                    <span class="badge-category-pill" style="background-color: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                    <span class="badge-category-pill pill-emerald">
                                         <ion-icon name="disc-outline"></ion-icon>
                                         <span><?= htmlspecialchars($rec['lens_type']) ?></span>
                                     </span>
                                     <?php if (!empty($rec['frame_code'])): ?>
-                                        <span class="badge-category-pill" style="background-color: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                                        <span class="badge-category-pill pill-purple">
                                             <ion-icon name="pricetag-outline"></ion-icon>
                                             <span>Frame: <?= htmlspecialchars($rec['frame_code']) ?></span>
                                         </span>
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="tx-card-actions" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                <div class="tx-card-actions">
                                     <!-- Riwayat Pasien Button -->
-                                    <button class="btn btn-secondary px-3 py-1" style="font-size: 0.82rem; border-radius: 6px; background: rgba(99, 102, 241, 0.1); color: var(--color-primary); border: 1px solid rgba(99, 102, 241, 0.3);" 
+                                    <button class="btn btn-history-action" 
                                             onclick="openPatientHistoryModal('<?= $rec['mr_number'] ?>', '<?= htmlspecialchars(addslashes($rec['patient_name'])) ?>')" 
                                             title="Lihat Histori Periksa Pasien Ini">
                                         <ion-icon name="time-outline" class="mr-1"></ion-icon>
@@ -215,7 +215,7 @@ if (!function_exists('formatRupiah')) {
                                     </button>
 
                                     <!-- Cetak Resep Button -->
-                                    <button class="btn btn-secondary px-3 py-1" style="font-size: 0.82rem; border-radius: 6px;" 
+                                    <button class="btn btn-print-action" 
                                             onclick="printPrescription(<?= htmlspecialchars(json_encode($rec)) ?>)" 
                                             title="Cetak Resep Kacamata">
                                         <ion-icon name="print-outline" class="mr-1"></ion-icon>
@@ -223,16 +223,16 @@ if (!function_exists('formatRupiah')) {
                                     </button>
 
                                     <!-- Edit Button -->
-                                    <button class="btn-action-delete" style="color: var(--color-primary); background: none;" 
+                                    <button class="btn-action-icon btn-action-edit" 
                                             onclick="openEditRecordModal(<?= htmlspecialchars(json_encode($rec)) ?>)" 
                                             title="Ubah Rekam Medis">
-                                        <ion-icon name="create-outline" style="font-size: 1.25rem;"></ion-icon>
+                                        <ion-icon name="create-outline"></ion-icon>
                                     </button>
 
                                     <!-- Delete Button -->
-                                    <form method="POST" action="<?= baseUrl('transactions/delete') ?>" onsubmit="return confirm('Apakah Anda yakin ingin menghapus rekam medis pasien ini?');" style="margin: 0; padding: 0;">
+                                    <form method="POST" action="<?= baseUrl('transactions/delete') ?>" onsubmit="return confirm('Apakah Anda yakin ingin menghapus rekam medis pasien ini?');" style="margin: 0; padding: 0; display: inline-block;">
                                         <input type="hidden" name="id" value="<?= $rec['id'] ?>">
-                                        <button type="submit" class="btn-action-delete" title="Hapus Rekam Medis">
+                                        <button type="submit" class="btn-action-icon btn-action-delete" title="Hapus Rekam Medis">
                                             <ion-icon name="trash-outline"></ion-icon>
                                         </button>
                                     </form>
