@@ -1848,8 +1848,29 @@ ion-icon {
 .btn-action-edit { color: var(--color-primary); }
 .btn-action-edit:hover { background: rgba(99, 102, 241, 0.1); }
 
+/* Mobile Rx Badge Box (Dashboard style) */
+.rx-badge-mobile-box {
+    display: none;
+    background: rgba(15, 23, 42, 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    margin: 0.5rem 0;
+    font-size: 0.82rem;
+    flex-direction: column;
+    gap: 0.4rem;
+    line-height: 1.45;
+}
+
 /* MOBILE RESPONSIVE OPTIMIZATION (< 640px) */
 @media (max-width: 640px) {
+    .prescription-table-wrapper {
+        display: none !important;
+    }
+    .rx-badge-mobile-box {
+        display: flex !important;
+    }
+
     .tx-card-item {
         padding: 0.95rem;
     }

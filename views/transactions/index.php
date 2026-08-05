@@ -130,6 +130,18 @@ if (!function_exists('formatRupiah')) {
                                 </div>
                             </div>
 
+                            <!-- Mobile Prescription Brief Badge Box (Dashboard Style) -->
+                            <div class="rx-badge-mobile-box">
+                                <div>
+                                    <strong style="color: var(--color-primary);">OD (Kanan):</strong> 
+                                    SPH: <?= sprintf('%+.2f', $rec['od_sph']) ?> | CYL: <?= sprintf('%+.2f', $rec['od_cyl']) ?> | AXIS: <?= $rec['od_axis'] ?>° | ADD: <?= sprintf('%+.2f', $rec['od_add']) ?>
+                                </div>
+                                <div>
+                                    <strong style="color: #ec4899;">OS (Kiri):</strong> 
+                                    SPH: <?= sprintf('%+.2f', $rec['os_sph']) ?> | CYL: <?= sprintf('%+.2f', $rec['os_cyl']) ?> | AXIS: <?= $rec['os_axis'] ?>° | ADD: <?= sprintf('%+.2f', $rec['os_add']) ?>
+                                </div>
+                            </div>
+
                             <!-- Prescription Matrix Table -->
                             <div class="table-responsive my-2 prescription-table-wrapper">
                                 <table class="table prescription-table">
