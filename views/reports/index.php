@@ -8,12 +8,67 @@ if (!function_exists('formatRupiah')) {
         return 'Rp ' . number_format($amount, 0, ',', '.');
     }
 }
+
+if (!function_exists('formatExcelRx')) {
+    function formatExcelRx(array $rec): string {
+        $rxStr = '';
+        
+        // Right eye (OD / R)
+        $rParts = [];
+        if (isset($rec['od_sph']) && (float)$rec['od_sph'] != 0) {
+            $rParts[] = ((float)$rec['od_sph'] > 0 ? '+' : '') . sprintf('%.2f', $rec['od_sph']);
+        }
+        if (isset($rec['od_cyl']) && (float)$rec['od_cyl'] != 0) {
+            $rParts[] = 'C:' . ((float)$rec['od_cyl'] > 0 ? '+' : '') . sprintf('%.2f', $rec['od_cyl']);
+        }
+        if (!empty($rec['od_axis']) && (int)$rec['od_axis'] != 0) {
+            $rParts[] = 'X' . $rec['od_axis'];
+        }
+        if (!empty($rParts)) {
+            $rxStr .= 'R:' . implode(' ', $rParts);
+        }
+        
+        // Left eye (OS / L)
+        $lParts = [];
+        if (isset($rec['os_sph']) && (float)$rec['os_sph'] != 0) {
+            $lParts[] = ((float)$rec['os_sph'] > 0 ? '+' : '') . sprintf('%.2f', $rec['os_sph']);
+        }
+        if (isset($rec['os_cyl']) && (float)$rec['os_cyl'] != 0) {
+            $lParts[] = 'C:' . ((float)$rec['os_cyl'] > 0 ? '+' : '') . sprintf('%.2f', $rec['os_cyl']);
+        }
+        if (!empty($rec['os_axis']) && (int)$rec['os_axis'] != 0) {
+            $lParts[] = 'X' . $rec['os_axis'];
+        }
+        if (!empty($lParts)) {
+            $rxStr .= ($rxStr ? ' ' : '') . 'L:' . implode(' ', $lParts);
+        }
+
+        // Add
+        if (!empty($rec['od_add']) && (float)$rec['od_add'] != 0) {
+            $rxStr .= ' ADD:' . ((float)$rec['od_add'] > 0 ? '+' : '') . sprintf('%.2f', $rec['od_add']);
+        } elseif (!empty($rec['os_add']) && (float)$rec['os_add'] != 0) {
+            $rxStr .= ' ADD:' . ((float)$rec['os_add'] > 0 ? '+' : '') . sprintf('%.2f', $rec['os_add']);
+        }
+
+        return $rxStr ?: 'Plano';
+    }
+}
+
+if (!function_exists('extractBpjsClassNum')) {
+    function extractBpjsClassNum($classStr): string {
+        if (!$classStr) return '-';
+        if (strpos($classStr, '1') !== false) return '1';
+        if (strpos($classStr, '2') !== false) return '2';
+        if (strpos($classStr, '3') !== false) return '3';
+        return '-';
+    }
+}
 ?>
 
 <div class="report-wrapper animate-fade-in">
     <!-- Top Filter Bar & Toolbar -->
-    <div class="card-widget report-filter-card mb-4">
-        <div class="report-filter-header">
+    <div class="card-widget report-filter-card mb-4 no-print">
+        <div class="report-filter-header" style="flex-wrap: wrap; gap: 1rem;">
             <div class="report-title-section">
                 <div class="report-icon-badge" style="background-color: rgba(99, 102, 241, 0.1); color: #6366f1;">
                     <ion-icon name="document-text-outline"></ion-icon>
@@ -26,8 +81,8 @@ if (!function_exists('formatRupiah')) {
                 </div>
             </div>
 
-            <!-- Action controls & Month selection -->
-            <div class="report-controls">
+            <!-- Action controls, View Switcher & Month selection -->
+            <div class="report-controls" style="flex-wrap: wrap; gap: 0.5rem;">
                 <form action="<?= baseUrl('reports') ?>" method="GET" class="month-picker-form" id="monthForm">
                     <div class="month-selector-group">
                         <div class="select-wrapper">
@@ -37,7 +92,24 @@ if (!function_exists('formatRupiah')) {
                     </div>
                 </form>
 
-                <button onclick="window.print()" class="btn btn-secondary btn-print no-print">
+                <!-- Mode Switcher -->
+                <div style="display: flex; background: rgba(15, 23, 42, 0.06); border-radius: 8px; padding: 3px; gap: 3px;">
+                    <button type="button" id="btnModeStandard" onclick="switchReportMode('standard')" 
+                            style="padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer; background: var(--color-primary); color: #fff; transition: all 0.2s;">
+                        <ion-icon name="grid-outline"></ion-icon> Standard
+                    </button>
+                    <button type="button" id="btnModeExcel" onclick="switchReportMode('excel')" 
+                            style="padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.2s;">
+                        <ion-icon name="stats-chart-outline"></ion-icon> Grid Excel
+                    </button>
+                </div>
+
+                <button onclick="exportToExcelCSV()" class="btn btn-secondary no-print" style="background: rgba(16, 185, 129, 0.1); color: #047857; border: 1px solid #a7f3d0;">
+                    <ion-icon name="download-outline"></ion-icon>
+                    <span>Export .CSV</span>
+                </button>
+
+                <button onclick="window.print()" class="btn btn-primary btn-print no-print">
                     <ion-icon name="print-outline"></ion-icon>
                     <span>Cetak Laporan</span>
                 </button>
@@ -201,4 +273,198 @@ if (!function_exists('formatRupiah')) {
             </table>
         </div>
     </div>
+
+    <!-- EXCEL GRID SPREADSHEET TABLE (EXACT EXCEL MATRIX FORMAT) -->
+    <div id="excelViewSection" class="excel-sheet-container mb-4" style="background: #ffffff; border: 1px solid #b0b0b0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        
+        <!-- Excel Header Bar -->
+        <div style="background: #107c41; color: #ffffff; padding: 0.6rem 1rem; display: flex; justify-content: space-between; align-items: center;" class="no-print">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.9rem;">
+                <ion-icon name="document-text" style="font-size: 1.2rem;"></ion-icon>
+                <span>Format Lembar Kerja Excel Rekapitulasi Optik</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button onclick="exportToExcelCSV()" class="btn btn-sm" style="background: #ffffff; color: #107c41; font-weight: 700; font-size: 0.8rem; border-radius: 4px; border: none; padding: 0.3rem 0.75rem;">
+                    <ion-icon name="download-outline"></ion-icon> Export .CSV
+                </button>
+                <button onclick="window.print()" class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #ffffff; font-weight: 700; font-size: 0.8rem; border-radius: 4px; border: none; padding: 0.3rem 0.75rem;">
+                    <ion-icon name="print-outline"></ion-icon> Cetak Excel Grid
+                </button>
+            </div>
+        </div>
+
+        <!-- Excel Table Grid -->
+        <div style="overflow-x: auto;">
+            <table id="excelReportTable" style="width: 100%; border-collapse: collapse; font-size: 11px; color: #000000; background: #ffffff;">
+                <thead>
+                    <!-- Column Identifier Row (A, B, C, D, E, F, G, H, I, J, K, L) -->
+                    <tr style="background: #e6e6e6; text-align: center; font-weight: bold; color: #555; border-bottom: 1px solid #b0b0b0;">
+                        <th style="width: 35px; border: 1px solid #c0c0c0; background: #d9d9d9; padding: 3px;">#</th>
+                        <th style="border: 1px solid #c0c0c0; width: 85px; padding: 3px;">A</th>
+                        <th style="border: 1px solid #c0c0c0; width: 40px; padding: 3px;">B</th>
+                        <th style="border: 1px solid #c0c0c0; width: 130px; padding: 3px;">C</th>
+                        <th style="border: 1px solid #c0c0c0; width: 150px; padding: 3px;">D</th>
+                        <th style="border: 1px solid #c0c0c0; width: 220px; padding: 3px;">E</th>
+                        <th style="border: 1px solid #c0c0c0; width: 90px; padding: 3px;">F</th>
+                        <th style="border: 1px solid #c0c0c0; width: 100px; padding: 3px;">G</th>
+                        <th style="border: 1px solid #c0c0c0; width: 260px; padding: 3px;">H</th>
+                        <th style="border: 1px solid #c0c0c0; width: 50px; padding: 3px;">I/J/K</th>
+                        <th style="border: 1px solid #c0c0c0; width: 100px; padding: 3px;">L</th>
+                    </tr>
+                    <!-- Data Header Row -->
+                    <tr style="background: #f2f2f2; font-weight: bold; text-align: center; border-bottom: 2px solid #a0a0a0;">
+                        <th style="border: 1px solid #c0c0c0; background: #e6e6e6; padding: 6px;">Row</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Tanggal</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">No</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">No. RM / BPJS</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Nama Pasien</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Alamat & Telepon</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Kode Frame</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Jenis Lensa</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Ukuran Refraksi (Resep)</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Kelas</th>
+                        <th style="border: 1px solid #c0c0c0; padding: 6px;">Nominal (Rp)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($records)): ?>
+                        <tr><td colspan="11" style="text-align: center; padding: 15px; border: 1px solid #c0c0c0; color: #888;">Belum ada data rekam medis pada periode ini.</td></tr>
+                    <?php else: ?>
+                        <?php $rowNum = 310; $no = 1; foreach ($records as $rec): ?>
+                            <tr style="border-bottom: 1px solid #d9d9d9;">
+                                <td style="border: 1px solid #c0c0c0; background: #f2f2f2; text-align: center; font-weight: bold; color: #666; font-size: 10px;"><?= $rowNum++ ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= date('d/m/Y', strtotime($rec['exam_date'])) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= $no ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10.5px;"><?= htmlspecialchars($rec['bpjs_number'] ?: $rec['mr_number']) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-weight: 600;"><?= htmlspecialchars($rec['patient_name']) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-size: 10.5px; word-break: break-word;">
+                                    <?= htmlspecialchars($rec['patient_address'] ?: '-') ?> <?= !empty($rec['patient_phone']) ? '. ' . htmlspecialchars($rec['patient_phone']) : '' ?>
+                                </td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= htmlspecialchars($rec['frame_code'] ?: '-') ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px;"><?= htmlspecialchars($rec['lens_type']) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10px; font-weight: 600;"><?= formatExcelRx($rec) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= extractBpjsClassNum($rec['bpjs_class']) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: right; font-weight: bold;"><?= formatRupiah($rec['total_price']) ?></td>
+                            </tr>
+                        <?php $no++; endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Excel Bottom Sheet Tab -->
+        <div style="background: #f3f3f3; border-top: 1px solid #c0c0c0; padding: 0.35rem 1rem; display: flex; align-items: center; justify-content: space-between; font-size: 11px;" class="no-print">
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span style="background: #ffffff; border: 1px solid #c0c0c0; border-bottom: 2px solid #107c41; padding: 0.2rem 0.8rem; font-weight: 700; color: #107c41; border-radius: 4px 4px 0 0;">
+                    Sheet1
+                </span>
+                <span style="color: #666; font-size: 10.5px;">Tampilan Lembar Kerja Excel Optik</span>
+            </div>
+            <div style="color: #666; font-weight: 600; font-size: 10.5px;">
+                Total <?= count($records) ?> Baris Transaksi
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+@media print {
+    /* Hide navigation and buttons */
+    .header, .sidebar, .no-print, .report-filter-card, .dashboard-grid, nav, header {
+        display: none !important;
+    }
+    body, .app-layout, .main-content, .report-wrapper {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+    #excelViewSection {
+        display: block !important;
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+    }
+    #excelReportTable {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 8.5pt !important;
+    }
+    #excelReportTable th, #excelReportTable td {
+        border: 1px solid #000000 !important;
+        padding: 3px 4px !important;
+        color: #000000 !important;
+    }
+    @page {
+        size: A4 landscape;
+        margin: 0.6cm;
+    }
+}
+</style>
+
+<script>
+function switchReportMode(mode) {
+    const btnStd = document.getElementById('btnModeStandard');
+    const btnXls = document.getElementById('btnModeExcel');
+    const excelSec = document.getElementById('excelViewSection');
+
+    if (mode === 'excel') {
+        excelSec.style.display = 'block';
+        btnXls.style.background = 'var(--color-primary)';
+        btnXls.style.color = '#ffffff';
+        btnStd.style.background = 'transparent';
+        btnStd.style.color = 'var(--text-muted)';
+        excelSec.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        btnStd.style.background = 'var(--color-primary)';
+        btnStd.style.color = '#ffffff';
+        btnXls.style.background = 'transparent';
+        btnXls.style.color = 'var(--text-muted)';
+        excelSec.style.display = 'block';
+    }
+}
+
+function exportToExcelCSV() {
+    const records = <?= json_encode($records ?? []) ?>;
+    if (!records.length) {
+        alert('Tidak ada data rekam medis untuk diexport.');
+        return;
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Tanggal,No,No. RM / BPJS,Nama Pasien,Alamat & Telepon,Kode Frame,Jenis Lensa,Ukuran Refraksi (Resep),Kelas BPJS,Nominal (Rp)\n";
+
+    records.forEach((r, idx) => {
+        const tgl = r.exam_date;
+        const no = idx + 1;
+        const rm = r.bpjs_number || r.mr_number;
+        const nama = `"${(r.patient_name || '').replace(/"/g, '""')}"`;
+        const alamat = `"${((r.patient_address || '') + ' ' + (r.patient_phone || '')).replace(/"/g, '""')}"`;
+        const frame = `"${(r.frame_code || '-').replace(/"/g, '""')}"`;
+        const lensa = `"${(r.lens_type || '').replace(/"/g, '""')}"`;
+        
+        let rxStr = '';
+        if (r.od_sph) rxStr += `R:${r.od_sph} `;
+        if (r.od_cyl) rxStr += `C:${r.od_cyl} `;
+        if (r.od_axis) rxStr += `X:${r.od_axis} `;
+        if (r.os_sph) rxStr += `L:${r.os_sph} `;
+        if (r.os_cyl) rxStr += `C:${r.os_cyl} `;
+        if (r.os_axis) rxStr += `X:${r.os_axis} `;
+        if (r.od_add || r.os_add) rxStr += `ADD:${r.od_add || r.os_add}`;
+        
+        const rx = `"${rxStr.trim().replace(/"/g, '""')}"`;
+        const kelas = r.bpjs_class || '-';
+        const nominal = r.total_price || 0;
+
+        csvContent += `${tgl},${no},${rm},${nama},${alamat},${frame},${lensa},${rx},${kelas},${nominal}\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Laporan_Optik_Focus_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
