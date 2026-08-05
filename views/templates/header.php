@@ -105,7 +105,7 @@
             </a>
             <a href="<?= baseUrl('transactions') ?>" class="bottom-nav-item <?= $isRecordsActive ? 'active' : '' ?>">
                 <ion-icon name="<?= $isRecordsActive ? 'eye' : 'eye-outline' ?>"></ion-icon>
-                <span>Rekam Medis</span>
+                <span>Daftar RM</span>
             </a>
             <a href="<?= baseUrl('reports') ?>" class="bottom-nav-item <?= $isReportsActive ? 'active' : '' ?>">
                 <ion-icon name="<?= $isReportsActive ? 'document-text' : 'document-text-outline' ?>"></ion-icon>
