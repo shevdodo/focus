@@ -228,19 +228,30 @@
                 </table>
             </div>
 
-            <!-- Pupillary Distance (PD) -->
-            <div style="background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 0.6rem;">
-                    <ion-icon name="resize-outline" style="font-size: 1.4rem; color: var(--color-primary);"></ion-icon>
-                    <div>
-                        <strong style="color: var(--color-dark); font-size: 0.95rem;">Pupillary Distance (PD)</strong>
-                        <p class="text-muted text-xs" style="margin: 0;">Jarak antar titik pusat pupil mata (dalam milimeter)</p>
+            <!-- Pupillary Distance (PD) & Catatan Medis -->
+            <div class="row-layout mt-3">
+                <div class="col-6 mb-2">
+                    <div style="background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; height: 100%;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <ion-icon name="resize-outline" style="font-size: 1.4rem; color: var(--color-primary);"></ion-icon>
+                            <div>
+                                <strong style="color: var(--color-dark); font-size: 0.95rem;">Pupillary Distance (PD)</strong>
+                                <p class="text-muted text-xs" style="margin: 0;">Jarak antar titik pusat pupil (mm)</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 0.4rem;">
+                            <input type="number" step="0.5" min="40" max="80" name="pd" id="pd" class="form-control text-center" style="width: 100px; font-size: 1.05rem; font-weight: 700; color: var(--color-primary);" value="62">
+                            <span style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem;">mm</span>
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <input type="number" step="0.5" min="40" max="80" name="pd" id="pd" class="form-control text-center" style="width: 110px; font-size: 1.1rem; font-weight: 700; color: var(--color-primary);" value="62">
-                    <span style="font-weight: 700; color: var(--text-muted);">mm</span>
+                <div class="col-6 mb-2">
+                    <div class="form-group">
+                        <label for="notes" style="font-weight: 600;">Catatan Medis / Diagnosa</label>
+                        <textarea name="notes" id="notes" class="form-control" rows="2" placeholder="Keluhan pasien (misal: mata pegal, asthenopia) & saran penggunaan..."></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -253,14 +264,14 @@
                         <ion-icon name="pricetag-outline"></ion-icon>
                     </div>
                     <div>
-                        <h3 style="margin: 0; font-size: 1.1rem;">4. Spesifikasi Lensa, Bingkai & Catatan</h3>
-                        <p class="text-muted text-xs" style="margin: 0;">Pilihan jenis lensa, bingkai kacamata, dan diagnosa optometris</p>
+                        <h3 style="margin: 0; font-size: 1.1rem;">4. Spesifikasi Lensa, Bingkai & Biaya Transaksi</h3>
+                        <p class="text-muted text-xs" style="margin: 0;">Pilihan jenis lensa, bingkai kacamata, dan total nominal biaya</p>
                     </div>
                 </div>
             </div>
 
             <div class="row-layout">
-                <div class="col-6 mb-3">
+                <div class="col-4 mb-3">
                     <div class="form-group">
                         <label for="lens_type" style="font-weight: 600;">Jenis Lensa Kacamata <span class="text-danger">*</span></label>
                         <select name="lens_type" id="lens_type" class="form-control" style="font-size: 0.95rem;" required>
@@ -274,29 +285,20 @@
                     </div>
                 </div>
 
-                <div class="col-6 mb-3">
+                <div class="col-4 mb-3">
                     <div class="form-group">
                         <label for="frame_code" style="font-weight: 600;">Kode / Merk Frame</label>
                         <input type="text" name="frame_code" id="frame_code" class="form-control" placeholder="Contoh: Ray-Ban RB5228 Matte Black">
                     </div>
                 </div>
-            </div>
 
-            <div class="row-layout">
-                <div class="col-6 mb-3">
+                <div class="col-4 mb-3">
                     <div class="form-group">
                         <label for="total_price" style="font-weight: 600;">Total Biaya (Rupiah)</label>
                         <div class="input-currency-wrapper">
                             <span class="currency-prefix">Rp</span>
                             <input type="number" name="total_price" id="total_price" class="form-control" placeholder="0" min="0">
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label for="notes" style="font-weight: 600;">Catatan Medis / Diagnosa</label>
-                        <textarea name="notes" id="notes" class="form-control" rows="2" placeholder="Keluhan pasien (misal: mata pegal, asthenopia) & saran penggunaan..."></textarea>
                     </div>
                 </div>
             </div>
