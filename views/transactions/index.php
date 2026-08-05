@@ -305,8 +305,28 @@ if (!function_exists('formatRupiah')) {
             </div>
 
             <div class="form-group mb-3">
-                <label for="edit_diagnosis">Diagnosa Refraksi</label>
-                <input type="text" name="diagnosis" id="edit_diagnosis" class="form-control" placeholder="Contoh: Miopia (-), Astigmatisme (cyl)">
+                <label style="font-weight: 700; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem;">
+                    <ion-icon name="medical-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                    <span>Diagnosa Refraksi (Dapat Pilih Banyak)</span>
+                </label>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 0.85rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                        <input type="checkbox" name="diagnosis[]" id="edit_diag_miopia" value="Miopia (-)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                        <span>Miopia (-)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                        <input type="checkbox" name="diagnosis[]" id="edit_diag_hipermetropia" value="Hipermetropia (+)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                        <span>Hipermetropia (+)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                        <input type="checkbox" name="diagnosis[]" id="edit_diag_astigmatisme" value="Astigmatisme (cyl)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                        <span>Astigmatisme (cyl)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0.75rem; background: #ffffff; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; transition: all 0.2s ease;">
+                        <input type="checkbox" name="diagnosis[]" id="edit_diag_presbiopi" value="Presbiopi (add)" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                        <span>Presbiopi (add)</span>
+                    </label>
+                </div>
             </div>
 
             <div class="form-group mb-4">
@@ -426,8 +446,11 @@ function openEditRecordModal(rec) {
     document.getElementById('edit_pd').value = rec.pd;
     document.getElementById('edit_lens_type').value = rec.lens_type;
     document.getElementById('edit_frame_code').value = rec.frame_code || '';
-    document.getElementById('edit_total_price').value = rec.total_price;
-    document.getElementById('edit_diagnosis').value = rec.diagnosis || '';
+    const diagStr = rec.diagnosis || '';
+    document.getElementById('edit_diag_miopia').checked = diagStr.includes('Miopia');
+    document.getElementById('edit_diag_hipermetropia').checked = diagStr.includes('Hipermetropia');
+    document.getElementById('edit_diag_astigmatisme').checked = diagStr.includes('Astigmatisme');
+    document.getElementById('edit_diag_presbiopi').checked = diagStr.includes('Presbiopi');
     document.getElementById('edit_notes').value = rec.notes || '';
 
     document.getElementById('editRecordModal').style.display = 'flex';
