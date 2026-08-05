@@ -41,30 +41,13 @@
                     </div>
                     <div>
                         <h3 style="margin: 0; font-size: 1.1rem;">1. Data Identitas Pasien</h3>
-                        <p class="text-muted text-xs" style="margin: 0;">Pilih pasien dari database atau daftarkan pasien baru</p>
+                        <p class="text-muted text-xs" style="margin: 0;">Isi data identitas dan jaminan BPJS pasien</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Patient Mode Selection Dropdown -->
-            <div class="form-group mb-4">
-                <label for="patient_select" style="font-weight: 700; color: var(--color-dark);">Pilih Pasien Terdaftar</label>
-                <select name="patient_id" id="patient_select" class="form-control" style="font-size: 1rem; padding: 0.75rem 1rem;" onchange="togglePatientForm(this.value)">
-                    <option value="">-- Tambah Pasien Baru --</option>
-                    <?php foreach ($patients as $p): ?>
-                        <option value="<?= $p['id'] ?>">
-                            <?= htmlspecialchars($p['name']) ?> (No. RM: <?= htmlspecialchars($p['mr_number']) ?>) - <?= htmlspecialchars($p['phone'] ?: 'Tanpa HP') ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <!-- New Patient Dynamic Inputs -->
-            <div id="newPatientSection" style="background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.25rem;">
-                <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--color-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
-                    <ion-icon name="person-add-outline"></ion-icon> Form Data Pasien Baru
-                </h4>
-
+            <!-- Patient Form Inputs -->
+            <div id="newPatientSection">
                 <div class="row-layout">
                     <div class="col-6 mb-3">
                         <div class="form-group">
@@ -112,7 +95,7 @@
                                 <ion-icon name="card-outline" style="font-size: 1.1rem;"></ion-icon>
                                 <span>Pilihan Kelas BPJS Kesehatan</span>
                             </label>
-                            <select name="bpjs_class" id="bpjs_class" class="form-control" style="font-weight: 600; border-color: #a7f3d0;" onchange="toggleBpjsNumber(this.value)">
+                            <select name="bpjs_class" id="bpjs_class" class="form-control" style="font-weight: 600; border-color: #a7f3d0;">
                                 <option value="Non-BPJS">Non-BPJS / Pasien Umum</option>
                                 <option value="Kelas 1">BPJS Kesehatan Kelas 1 (Subsidi Rp 330.000)</option>
                                 <option value="Kelas 2">BPJS Kesehatan Kelas 2 (Subsidi Rp 220.000)</option>
