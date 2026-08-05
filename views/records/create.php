@@ -34,7 +34,7 @@
         
         <!-- SECTION 1: DATA PASIEN -->
         <div class="card-widget mb-4" style="border-top: 4px solid var(--color-primary);">
-            <div class="card-widget-header">
+            <div class="card-widget-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(99, 102, 241, 0.1); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
                         <ion-icon name="person-outline"></ion-icon>
@@ -44,7 +44,40 @@
                         <p class="text-muted text-xs" style="margin: 0;">Isi data identitas dan jaminan BPJS pasien</p>
                     </div>
                 </div>
+
+                <!-- Patient Type Radio Switcher -->
+                <div style="display: flex; background: rgba(15, 23, 42, 0.04); border-radius: 50px; padding: 3px; gap: 3px;">
+                    <label id="lblNewPatient" style="padding: 0.4rem 0.9rem; border-radius: 50px; font-size: 0.82rem; font-weight: 700; cursor: pointer; background: var(--color-primary); color: #ffffff; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.35rem;">
+                        <input type="radio" name="patient_type_mode" value="new" checked onchange="switchPatientMode('new')" style="display: none;">
+                        <ion-icon name="person-add-outline"></ion-icon> Pasien Baru
+                    </label>
+                    <label id="lblExistingPatient" style="padding: 0.4rem 0.9rem; border-radius: 50px; font-size: 0.82rem; font-weight: 700; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.2s ease; display: flex; align-items: center; gap: 0.35rem;">
+                        <input type="radio" name="patient_type_mode" value="existing" onchange="switchPatientMode('existing')" style="display: none;">
+                        <ion-icon name="search-outline"></ion-icon> Pilih Pasien Lama
+                    </label>
+                </div>
             </div>
+
+            <!-- Existing Patient Select Wrapper (Hidden by default) -->
+            <div id="existingPatientSection" style="display: none; background: rgba(99, 102, 241, 0.04); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
+                <label for="select_existing_patient" style="font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;">
+                    <ion-icon name="search-circle-outline" style="font-size: 1.3rem;"></ion-icon>
+                    <span>Cari / Pilih Pasien Terdaftar (Berdasarkan No. RM / Nama / No. HP)</span>
+                </label>
+                <select id="select_existing_patient" class="form-control" style="font-weight: 600; font-size: 0.95rem; border-radius: 10px;" onchange="onSelectExistingPatient(this)">
+                    <option value="">-- Pilih Pasien Lama dari Database --</option>
+                    <?php if (!empty($patients)): ?>
+                        <?php foreach ($patients as $p): ?>
+                            <option value="<?= htmlspecialchars(json_encode($p)) ?>">
+                                [<?= htmlspecialchars($p['mr_number']) ?>] <?= htmlspecialchars($p['name']) ?> - HP: <?= htmlspecialchars($p['phone'] ?: '-') ?> <?= !empty($p['bpjs_number']) ? ' (BPJS: ' . htmlspecialchars($p['bpjs_number']) . ')' : '' ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+            </div>
+
+            <!-- Hidden input for patient_id -->
+            <input type="hidden" name="patient_id" id="patient_id" value="">
 
             <!-- Patient Form Inputs -->
             <div id="newPatientSection">
@@ -350,15 +383,58 @@
 </div>
 
 <script>
-function togglePatientForm(val) {
-    const sec = document.getElementById('newPatientSection');
+function switchPatientMode(mode) {
+    const secExist = document.getElementById('existingPatientSection');
+    const lblNew = document.getElementById('lblNewPatient');
+    const lblExist = document.getElementById('lblExistingPatient');
+    const patientIdInput = document.getElementById('patient_id');
     const nameInput = document.getElementById('patient_name');
-    if (val) {
-        sec.style.display = 'none';
-        nameInput.required = false;
+    const selectElem = document.getElementById('select_existing_patient');
+
+    if (mode === 'existing') {
+        secExist.style.display = 'block';
+        lblExist.style.background = 'var(--color-primary)';
+        lblExist.style.color = '#ffffff';
+        lblNew.style.background = 'transparent';
+        lblNew.style.color = 'var(--text-muted)';
+        if (selectElem.value) {
+            onSelectExistingPatient(selectElem);
+        }
     } else {
-        sec.style.display = 'block';
-        nameInput.required = true;
+        secExist.style.display = 'none';
+        lblNew.style.background = 'var(--color-primary)';
+        lblNew.style.color = '#ffffff';
+        lblExist.style.background = 'transparent';
+        lblExist.style.color = 'var(--text-muted)';
+        
+        patientIdInput.value = '';
+        nameInput.value = '';
+        nameInput.readOnly = false;
+        document.getElementById('patient_phone').value = '';
+        document.getElementById('patient_gender').value = 'L';
+        document.getElementById('patient_dob').value = '';
+        document.getElementById('patient_address').value = '';
+        document.getElementById('bpjs_class').value = 'Non-BPJS';
+        document.getElementById('bpjs_number').value = '';
+        selectElem.value = '';
+    }
+}
+
+function onSelectExistingPatient(elem) {
+    if (!elem.value) return;
+    try {
+        const p = JSON.parse(elem.value);
+        document.getElementById('patient_id').value = p.id;
+        document.getElementById('patient_name').value = p.name;
+        document.getElementById('patient_name').readOnly = true;
+        document.getElementById('patient_phone').value = p.phone || '';
+        document.getElementById('patient_gender').value = p.gender || 'L';
+        document.getElementById('patient_dob').value = p.dob || '';
+        document.getElementById('patient_address').value = p.address || '';
+        document.getElementById('bpjs_class').value = p.bpjs_class || 'Non-BPJS';
+        document.getElementById('bpjs_number').value = p.bpjs_number || '';
+    } catch(e) {
+        console.error(e);
     }
 }
 </script>

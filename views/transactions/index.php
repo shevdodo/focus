@@ -205,7 +205,15 @@ if (!function_exists('formatRupiah')) {
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="tx-card-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                                <div class="tx-card-actions" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                    <!-- Riwayat Pasien Button -->
+                                    <button class="btn btn-secondary px-3 py-1" style="font-size: 0.82rem; border-radius: 6px; background: rgba(99, 102, 241, 0.1); color: var(--color-primary); border: 1px solid rgba(99, 102, 241, 0.3);" 
+                                            onclick="openPatientHistoryModal('<?= $rec['mr_number'] ?>', '<?= htmlspecialchars(addslashes($rec['patient_name'])) ?>')" 
+                                            title="Lihat Histori Periksa Pasien Ini">
+                                        <ion-icon name="time-outline" class="mr-1"></ion-icon>
+                                        Riwayat Pasien
+                                    </button>
+
                                     <!-- Cetak Resep Button -->
                                     <button class="btn btn-secondary px-3 py-1" style="font-size: 0.82rem; border-radius: 6px;" 
                                             onclick="printPrescription(<?= htmlspecialchars(json_encode($rec)) ?>)" 
@@ -440,7 +448,37 @@ if (!function_exists('formatRupiah')) {
     </div>
 </div>
 
+<!-- MODAL RIWAYAT REKAM MEDIS PASIEN -->
+<div id="patientHistoryModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 1100; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="background: #ffffff; color: var(--color-dark); width: 100%; max-width: 840px; max-height: 90vh; overflow-y: auto; border-radius: 16px; padding: 1.75rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--color-primary); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+            <div>
+                <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--color-dark); display: flex; align-items: center; gap: 0.5rem;">
+                    <ion-icon name="time-outline" style="color: var(--color-primary);"></ion-icon>
+                    <span>Histori Rekam Medis Pasien</span>
+                </h3>
+                <p class="text-muted text-sm" style="margin: 0.2rem 0 0 0;" id="historyModalPatientSub">
+                    Daftar seluruh pemeriksaan refraksi mata
+                </p>
+            </div>
+            <button type="button" onclick="closePatientHistoryModal()" style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+        </div>
+
+        <div id="patientHistoryContent" style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- History items generated via JS -->
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+            <button type="button" class="btn btn-secondary" onclick="closePatientHistoryModal()">Tutup</button>
+        </div>
+    </div>
+</div>
+
 <script>
+const allRecordsData = <?= json_encode($records ?? []) ?>;
+
 function openEditRecordModal(rec) {
     document.getElementById('editRecordId').value = rec.id;
     document.getElementById('edit_exam_date').value = rec.exam_date;
@@ -504,5 +542,81 @@ function printPrescription(rec) {
 
 function closePrintModal() {
     document.getElementById('printPrescriptionModal').style.display = 'none';
+}
+
+function openPatientHistoryModal(mrNumber, patientName) {
+    document.getElementById('historyModalPatientSub').innerHTML = `Riwayat pemeriksaan mata untuk <strong>${patientName}</strong> (${mrNumber})`;
+    const container = document.getElementById('patientHistoryContent');
+    container.innerHTML = '';
+
+    const patientRecords = allRecordsData.filter(r => r.mr_number === mrNumber);
+
+    if (patientRecords.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);">Belum ada riwayat pemeriksaan lain untuk pasien ini.</div>';
+    } else {
+        patientRecords.forEach((r, idx) => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem;';
+            
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
+                        <ion-icon name="calendar-outline"></ion-icon> Periksa #${patientRecords.length - idx} &bull; ${r.exam_date}
+                    </div>
+                    <span style="font-size: 0.8rem; background: rgba(99, 102, 241, 0.1); color: var(--color-primary); padding: 0.2rem 0.6rem; border-radius: 50px; font-weight: 600;">
+                        ${r.record_number}
+                    </span>
+                </div>
+                <div style="overflow-x: auto; margin-bottom: 0.75rem;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; border: 1px solid var(--color-border);">
+                        <thead style="background: rgba(15, 23, 42, 0.04); font-weight: 700;">
+                            <tr>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border); text-align: left;">MATA</th>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border);">SPH</th>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border);">CYL</th>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border);">AXIS</th>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border);">ADD</th>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border);">VA</th>
+                                <th style="padding: 0.4rem; border: 1px solid var(--color-border);">PD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border); font-weight: 700; color: var(--color-primary); text-align: left;">OD (Kanan)</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.od_sph >= 0 ? '+' : '') + parseFloat(r.od_sph).toFixed(2)}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.od_cyl >= 0 ? '+' : '') + parseFloat(r.od_cyl).toFixed(2)}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.od_axis}°</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.od_add >= 0 ? '+' : '') + parseFloat(r.od_add).toFixed(2)}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.od_va}</td>
+                                <td rowspan="2" style="padding: 0.4rem; border: 1px solid var(--color-border); vertical-align: middle; font-weight: 700; background: rgba(99, 102, 241, 0.05);">${r.pd} mm</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border); font-weight: 700; color: #ec4899; text-align: left;">OS (Kiri)</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.os_sph >= 0 ? '+' : '') + parseFloat(r.os_sph).toFixed(2)}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.os_cyl >= 0 ? '+' : '') + parseFloat(r.os_cyl).toFixed(2)}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.os_axis}°</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.os_add >= 0 ? '+' : '') + parseFloat(r.os_add).toFixed(2)}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.os_va}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="font-size: 0.82rem; color: var(--color-dark); display: flex; flex-wrap: wrap; gap: 1rem;">
+                    <div><strong>Lensa:</strong> ${r.lens_type}</div>
+                    <div><strong>Frame:</strong> ${r.frame_code || '-'}</div>
+                    <div><strong>Pemeriksa:</strong> ${r.examiner_name}</div>
+                    ${r.diagnosis ? `<div><strong>Diagnosa:</strong> ${r.diagnosis}</div>` : ''}
+                    ${r.notes ? `<div><strong>Catatan:</strong> ${r.notes}</div>` : ''}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    document.getElementById('patientHistoryModal').style.display = 'flex';
+}
+
+function closePatientHistoryModal() {
+    document.getElementById('patientHistoryModal').style.display = 'none';
 }
 </script>
