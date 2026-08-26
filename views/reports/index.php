@@ -69,16 +69,24 @@ if (!function_exists('extractBpjsClassNum')) {
     <!-- Top Filter Bar & Toolbar -->
     <div class="card-widget report-filter-card mb-4 no-print">
         <div class="report-filter-header" style="flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
-            <div class="month-selector-container" style="display: flex; align-items: center; gap: 0.6rem;">
+            <div class="month-selector-container" style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
                 <label style="font-weight: 700; font-size: 0.88rem; color: var(--color-dark); display: flex; align-items: center; gap: 0.4rem; margin: 0;">
-                    <ion-icon name="calendar-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
-                    <span>Filter Periode:</span>
+                    <ion-icon name="filter-outline" style="color: var(--color-primary); font-size: 1.1rem;"></ion-icon>
+                    <span>Filter Laporan:</span>
                 </label>
-                <form action="<?= baseUrl('reports') ?>" method="GET" class="month-picker-form" id="monthForm" style="margin: 0;">
+                <form action="<?= baseUrl('reports') ?>" method="GET" class="month-picker-form" id="monthForm" style="margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                     <div class="month-selector-group">
                         <div class="select-wrapper">
                             <input type="month" name="month" value="<?= htmlspecialchars($_GET['month'] ?? date('Y-m')) ?>" class="form-control select-month-input" onchange="document.getElementById('monthForm').submit();" style="padding-left: 0.75rem;">
                         </div>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <select name="bpjs_type" class="form-control" onchange="document.getElementById('monthForm').submit();" style="padding: 0.45rem 0.75rem; font-size: 0.85rem; font-weight: 600; border-radius: 8px; background: #ffffff; border: 1px solid var(--color-border);">
+                            <option value="">-- Semua Pasien (BPJS & Non BPJS) --</option>
+                            <option value="BPJS" <?= ($_GET['bpjs_type'] ?? '') === 'BPJS' ? 'selected' : '' ?>>🟢 Pasien BPJS</option>
+                            <option value="Non-BPJS" <?= ($_GET['bpjs_type'] ?? '') === 'Non-BPJS' ? 'selected' : '' ?>>⚪ Pasien Non BPJS (Mandiri)</option>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -226,12 +234,13 @@ if (!function_exists('extractBpjsClassNum')) {
                             <th>OS (Mata Kiri)</th>
                             <th>PD</th>
                             <th>Lensa & Frame</th>
+                            <th>Anamnesa / Catatan</th>
                             <th class="text-right">Biaya</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($records)): ?>
-                            <tr><td colspan="7" class="text-center text-muted py-4">Belum ada rekam medis pada periode ini.</td></tr>
+                            <tr><td colspan="8" class="text-center text-muted py-4">Belum ada rekam medis pada periode ini.</td></tr>
                         <?php else: ?>
                             <?php foreach ($records as $rec): ?>
                                 <tr>
@@ -257,6 +266,9 @@ if (!function_exists('extractBpjsClassNum')) {
                                             <?= htmlspecialchars($rec['lens_type']) ?>
                                         </span><br>
                                         <small class="text-muted">Frame: <?= htmlspecialchars($rec['frame_code'] ?: '-') ?></small>
+                                    </td>
+                                    <td style="font-size: 0.82rem; word-break: break-word;">
+                                        <?= htmlspecialchars($rec['notes'] ?: '-') ?>
                                     </td>
                                     <td class="text-right font-weight-bold text-primary">
                                         <?= formatRupiah($rec['total_price']) ?>
@@ -307,17 +319,18 @@ if (!function_exists('extractBpjsClassNum')) {
                         <th style="border: 1px solid #c0c0c0; width: 110px; padding: 6px;">No. RM</th>
                         <th style="border: 1px solid #c0c0c0; width: 120px; padding: 6px;">No. BPJS</th>
                         <th style="border: 1px solid #c0c0c0; width: 140px; padding: 6px;">Nama Pasien</th>
-                        <th style="border: 1px solid #c0c0c0; width: 200px; padding: 6px;">Alamat & Telepon</th>
+                        <th style="border: 1px solid #c0c0c0; width: 180px; padding: 6px;">Alamat & Telepon</th>
                         <th style="border: 1px solid #c0c0c0; width: 85px; padding: 6px;">Kode Frame</th>
                         <th style="border: 1px solid #c0c0c0; width: 95px; padding: 6px;">Jenis Lensa</th>
-                        <th style="border: 1px solid #c0c0c0; width: 240px; padding: 6px;">Ukuran Refraksi (Resep)</th>
+                        <th style="border: 1px solid #c0c0c0; width: 220px; padding: 6px;">Ukuran Refraksi (Resep)</th>
+                        <th style="border: 1px solid #c0c0c0; width: 160px; padding: 6px;">Anamnesa</th>
                         <th style="border: 1px solid #c0c0c0; width: 45px; padding: 6px;">Kelas</th>
                         <th style="border: 1px solid #c0c0c0; width: 95px; padding: 6px;">Nominal (Rp)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($records)): ?>
-                        <tr><td colspan="11" style="text-align: center; padding: 15px; border: 1px solid #c0c0c0; color: #888;">Belum ada data rekam medis pada periode ini.</td></tr>
+                        <tr><td colspan="12" style="text-align: center; padding: 15px; border: 1px solid #c0c0c0; color: #888;">Belum ada data rekam medis pada periode ini.</td></tr>
                     <?php else: ?>
                         <?php $no = 1; foreach ($records as $rec): ?>
                             <?php 
@@ -336,6 +349,7 @@ if (!function_exists('extractBpjsClassNum')) {
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center;"><?= htmlspecialchars($rec['frame_code'] ?: '-') ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px;"><?= htmlspecialchars($rec['lens_type']) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; font-family: monospace; font-size: 10px; font-weight: 600;"><?= formatExcelRx($rec) ?></td>
+                                <td style="border: 1px solid #c0c0c0; padding: 5px; font-size: 10.5px; word-break: break-word;"><?= htmlspecialchars($rec['notes'] ?: '-') ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: center; font-weight: bold;"><?= extractBpjsClassNum($bpjsClass) ?></td>
                                 <td style="border: 1px solid #c0c0c0; padding: 5px; text-align: right; font-weight: bold;"><?= formatRupiah($rec['total_price']) ?></td>
                             </tr>
@@ -440,7 +454,7 @@ function exportToExcelCSV() {
     }
 
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "No,Tanggal,No. RM,No. BPJS,Nama Pasien,Alamat & Telepon,Kode Frame,Jenis Lensa,Ukuran Refraksi (Resep),Kelas BPJS,Nominal (Rp)\n";
+    csvContent += "No,Tanggal,No. RM,No. BPJS,Nama Pasien,Alamat & Telepon,Kode Frame,Jenis Lensa,Ukuran Refraksi (Resep),Anamnesa,Kelas BPJS,Nominal (Rp)\n";
 
     records.forEach((r, idx) => {
         const tgl = r.exam_date;
@@ -462,10 +476,11 @@ function exportToExcelCSV() {
         if (r.od_add || r.os_add) rxStr += `ADD:${r.od_add || r.os_add}`;
         
         const rx = `"${(rxStr.trim() || 'Plano').replace(/"/g, '""')}"`;
+        const notes = `"${(r.notes || '-').replace(/"/g, '""')}"`;
         const kelas = r.patient_bpjs_class || r.bpjs_class || '-';
         const nominal = r.total_price || 0;
 
-        csvContent += `${no},${tgl},${rm},${bpjs},${nama},${alamat},${frame},${lensa},${rx},${kelas},${nominal}\n`;
+        csvContent += `${no},${tgl},${rm},${bpjs},${nama},${alamat},${frame},${lensa},${rx},${notes},${kelas},${nominal}\n`;
     });
 
     const encodedUri = encodeURI(csvContent);

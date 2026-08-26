@@ -55,6 +55,14 @@ class MedicalRecord {
             $params[':end_date'] = $filters['end_date'];
         }
 
+        if (!empty($filters['bpjs_type'])) {
+            if ($filters['bpjs_type'] === 'BPJS') {
+                $sql .= " AND (COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') != 'Non-BPJS')";
+            } elseif ($filters['bpjs_type'] === 'Non-BPJS') {
+                $sql .= " AND (COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') = 'Non-BPJS')";
+            }
+        }
+
         $sql .= " ORDER BY r.exam_date DESC, r.id DESC";
 
         $stmt = $this->db->prepare($sql);
@@ -313,29 +321,37 @@ class MedicalRecord {
      * Get Summary Statistics for Dashboard & Reports
      */
     public function getSummaryStats(array $filters = []): array {
-        $whereSql = " WHERE 1=1";
+        $whereSql = " FROM medical_records r JOIN patients p ON r.patient_id = p.id WHERE 1=1";
         $params = [];
 
         if (!empty($filters['start_date'])) {
-            $whereSql .= " AND exam_date >= :start_date";
+            $whereSql .= " AND r.exam_date >= :start_date";
             $params[':start_date'] = $filters['start_date'];
         }
 
         if (!empty($filters['end_date'])) {
-            $whereSql .= " AND exam_date <= :end_date";
+            $whereSql .= " AND r.exam_date <= :end_date";
             $params[':end_date'] = $filters['end_date'];
+        }
+
+        if (!empty($filters['bpjs_type'])) {
+            if ($filters['bpjs_type'] === 'BPJS') {
+                $whereSql .= " AND (COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') != 'Non-BPJS')";
+            } elseif ($filters['bpjs_type'] === 'Non-BPJS') {
+                $whereSql .= " AND (COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') = 'Non-BPJS')";
+            }
         }
 
         // Total patients
         $totalPatients = (int)$this->db->query("SELECT COUNT(*) FROM patients")->fetchColumn();
 
         // Total exams in period / overall
-        $stmtExams = $this->db->prepare("SELECT COUNT(*) FROM medical_records $whereSql");
+        $stmtExams = $this->db->prepare("SELECT COUNT(*) $whereSql");
         $stmtExams->execute($params);
         $totalExams = (int)$stmtExams->fetchColumn();
 
         // Total revenue from optical prescriptions in period
-        $stmtRev = $this->db->prepare("SELECT SUM(total_price) FROM medical_records $whereSql");
+        $stmtRev = $this->db->prepare("SELECT SUM(r.total_price) $whereSql");
         $stmtRev->execute($params);
         $totalRevenue = (float)($stmtRev->fetchColumn() ?: 0);
 
@@ -358,23 +374,32 @@ class MedicalRecord {
      */
     public function getLensDistribution(array $filters = []): array {
         $sql = "
-            SELECT lens_type, COUNT(*) as total_count, SUM(total_price) as total_amount
-            FROM medical_records
+            SELECT r.lens_type, COUNT(*) as total_count, SUM(r.total_price) as total_amount
+            FROM medical_records r
+            JOIN patients p ON r.patient_id = p.id
             WHERE 1=1
         ";
         $params = [];
 
         if (!empty($filters['start_date'])) {
-            $sql .= " AND exam_date >= :start_date";
+            $sql .= " AND r.exam_date >= :start_date";
             $params[':start_date'] = $filters['start_date'];
         }
 
         if (!empty($filters['end_date'])) {
-            $sql .= " AND exam_date <= :end_date";
+            $sql .= " AND r.exam_date <= :end_date";
             $params[':end_date'] = $filters['end_date'];
         }
 
-        $sql .= " GROUP BY lens_type ORDER BY total_count DESC";
+        if (!empty($filters['bpjs_type'])) {
+            if ($filters['bpjs_type'] === 'BPJS') {
+                $sql .= " AND (COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') != 'Non-BPJS')";
+            } elseif ($filters['bpjs_type'] === 'Non-BPJS') {
+                $sql .= " AND (COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') = 'Non-BPJS')";
+            }
+        }
+
+        $sql .= " GROUP BY r.lens_type ORDER BY total_count DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);

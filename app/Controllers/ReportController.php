@@ -15,26 +15,24 @@ class ReportController {
      */
     public function index(): void {
         $selectedMonth = $_GET['month'] ?? date('Y-m');
+        $bpjsType = $_GET['bpjs_type'] ?? '';
         $start_date = $selectedMonth . '-01';
         $end_date = date('Y-m-t', strtotime($start_date));
 
-        // Fetch records for period
-        $records = $this->recordModel->getAll([
+        $filterParams = [
             'start_date' => $start_date,
-            'end_date' => $end_date
-        ]);
+            'end_date' => $end_date,
+            'bpjs_type' => $bpjsType
+        ];
+
+        // Fetch records for period
+        $records = $this->recordModel->getAll($filterParams);
 
         // Fetch summary statistics
-        $summary = $this->recordModel->getSummaryStats([
-            'start_date' => $start_date,
-            'end_date' => $end_date
-        ]);
+        $summary = $this->recordModel->getSummaryStats($filterParams);
 
         // Fetch lens distribution
-        $lensDistribution = $this->recordModel->getLensDistribution([
-            'start_date' => $start_date,
-            'end_date' => $end_date
-        ]);
+        $lensDistribution = $this->recordModel->getLensDistribution($filterParams);
 
         $title = "Laporan Rekam Medis & Rekap Optik";
         $subtitle = "Laporan rekapitulasi pemeriksaan pasien & resep kacamata Klinik OPTIK FOCUS";
