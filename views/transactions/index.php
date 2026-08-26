@@ -249,7 +249,7 @@ if (!function_exists('formatRupiah')) {
 
                                 <div class="tx-card-actions">
                                     <!-- Riwayat Pasien Button -->
-                                    <button class="btn btn-history-action" 
+                                    <button type="button" class="btn btn-history-action" 
                                             onclick="openPatientHistoryModal('<?= htmlspecialchars($rec['mr_number'], ENT_QUOTES) ?>', '<?= htmlspecialchars(addslashes($rec['patient_name']), ENT_QUOTES) ?>')" 
                                             title="Lihat Histori Periksa Pasien Ini">
                                         <ion-icon name="time-outline" class="mr-1"></ion-icon>
@@ -257,7 +257,7 @@ if (!function_exists('formatRupiah')) {
                                     </button>
 
                                     <!-- Cetak Resep Button -->
-                                    <button class="btn btn-print-action" 
+                                    <button type="button" class="btn btn-print-action" 
                                             onclick="printPrescriptionById(<?= $rec['id'] ?>)" 
                                             title="Cetak Resep Kacamata">
                                         <ion-icon name="print-outline" class="mr-1"></ion-icon>
@@ -265,7 +265,7 @@ if (!function_exists('formatRupiah')) {
                                     </button>
 
                                     <!-- Edit Button -->
-                                    <button class="btn-action-icon btn-action-edit" 
+                                    <button type="button" class="btn-action-icon btn-action-edit" 
                                             onclick="editRecordById(<?= $rec['id'] ?>)" 
                                             title="Ubah Rekam Medis">
                                         <ion-icon name="create-outline"></ion-icon>
@@ -566,37 +566,51 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
+function setInputValue(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = (val !== null && val !== undefined) ? val : '';
+}
+
+function setCheckboxChecked(id, checked) {
+    const el = document.getElementById(id);
+    if (el) el.checked = Boolean(checked);
+}
+
 function editRecordById(id) {
-    const rec = allRecordsData.find(r => r.id == id);
+    const rec = allRecordsData.find(r => String(r.id) === String(id));
     if (rec) {
         openEditRecordModal(rec);
+    } else {
+        console.warn('Record not found for ID:', id);
     }
 }
 
 function printPrescriptionById(id) {
-    const rec = allRecordsData.find(r => r.id == id);
+    const rec = allRecordsData.find(r => String(r.id) === String(id));
     if (rec) {
         printPrescription(rec);
     }
 }
 
 function openEditRecordModal(rec) {
-    document.getElementById('editRecordId').value = rec.id;
-    document.getElementById('edit_exam_date').value = rec.exam_date;
-    document.getElementById('edit_examiner_name').value = rec.examiner_name;
-    document.getElementById('edit_od_sph').value = rec.od_sph;
-    document.getElementById('edit_od_cyl').value = rec.od_cyl;
-    document.getElementById('edit_od_axis').value = rec.od_axis;
-    document.getElementById('edit_od_add').value = rec.od_add;
-    document.getElementById('edit_od_va').value = rec.od_va;
-    document.getElementById('edit_os_sph').value = rec.os_sph;
-    document.getElementById('edit_os_cyl').value = rec.os_cyl;
-    document.getElementById('edit_os_axis').value = rec.os_axis;
-    document.getElementById('edit_os_add').value = rec.os_add;
-    document.getElementById('edit_os_va').value = rec.os_va;
-    document.getElementById('edit_pd').value = rec.pd;
-    document.getElementById('edit_bpjs_class').value = rec.bpjs_class || 'Non-BPJS';
-    document.getElementById('edit_bpjs_number').value = rec.bpjs_number || '';
+    if (!rec) return;
+
+    setInputValue('editRecordId', rec.id);
+    setInputValue('edit_exam_date', rec.exam_date);
+    setInputValue('edit_examiner_name', rec.examiner_name);
+    setInputValue('edit_od_sph', rec.od_sph);
+    setInputValue('edit_od_cyl', rec.od_cyl);
+    setInputValue('edit_od_axis', rec.od_axis);
+    setInputValue('edit_od_add', rec.od_add);
+    setInputValue('edit_od_va', rec.od_va);
+    setInputValue('edit_os_sph', rec.os_sph);
+    setInputValue('edit_os_cyl', rec.os_cyl);
+    setInputValue('edit_os_axis', rec.os_axis);
+    setInputValue('edit_os_add', rec.os_add);
+    setInputValue('edit_os_va', rec.os_va);
+    setInputValue('edit_pd', rec.pd);
+    setInputValue('edit_bpjs_class', rec.bpjs_class || 'Non-BPJS');
+    setInputValue('edit_bpjs_number', rec.bpjs_number || '');
     
     // Set Lens Type value and select state
     const currentLens = rec.lens_type || '';
@@ -605,42 +619,48 @@ function openEditRecordModal(rec) {
     const customInput = document.getElementById('edit_lens_type_custom');
     const finalInput = document.getElementById('edit_lens_type');
     
-    finalInput.value = currentLens;
+    if (finalInput) finalInput.value = currentLens;
 
-    let foundOption = false;
-    for (let i = 0; i < select.options.length; i++) {
-        if (select.options[i].value === currentLens) {
-            select.selectedIndex = i;
-            foundOption = true;
-            break;
+    if (select) {
+        let foundOption = false;
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].value === currentLens) {
+                select.selectedIndex = i;
+                foundOption = true;
+                break;
+            }
         }
-    }
 
-    if (!foundOption) {
-        if (currentLens === '' || currentLens === '-') {
-            select.value = '';
-            customWrapper.style.display = 'none';
-            customInput.value = '';
+        if (!foundOption) {
+            if (currentLens === '' || currentLens === '-') {
+                select.value = '';
+                if (customWrapper) customWrapper.style.display = 'none';
+                if (customInput) customInput.value = '';
+            } else {
+                select.value = 'CUSTOM';
+                if (customWrapper) customWrapper.style.display = 'block';
+                if (customInput) customInput.value = currentLens;
+            }
         } else {
-            select.value = 'CUSTOM';
-            customWrapper.style.display = 'block';
-            customInput.value = currentLens;
+            if (customWrapper) customWrapper.style.display = 'none';
+            if (customInput) customInput.value = '';
         }
-    } else {
-        customWrapper.style.display = 'none';
-        customInput.value = '';
     }
 
-    document.getElementById('edit_frame_code').value = rec.frame_code || '';
-    document.getElementById('edit_total_price').value = rec.total_price !== undefined && rec.total_price !== null ? rec.total_price : '';
+    setInputValue('edit_frame_code', rec.frame_code || '');
+    setInputValue('edit_total_price', rec.total_price !== undefined && rec.total_price !== null ? rec.total_price : '');
+    
     const diagStr = rec.diagnosis || '';
-    document.getElementById('edit_diag_miopia').checked = diagStr.includes('Miopia');
-    document.getElementById('edit_diag_hipermetropia').checked = diagStr.includes('Hipermetropia');
-    document.getElementById('edit_diag_astigmatisme').checked = diagStr.includes('Astigmatisme');
-    document.getElementById('edit_diag_presbiopi').checked = diagStr.includes('Presbiopi');
-    document.getElementById('edit_notes').value = rec.notes || '';
+    setCheckboxChecked('edit_diag_miopia', diagStr.includes('Miopia'));
+    setCheckboxChecked('edit_diag_hipermetropia', diagStr.includes('Hipermetropia'));
+    setCheckboxChecked('edit_diag_astigmatisme', diagStr.includes('Astigmatisme'));
+    setCheckboxChecked('edit_diag_presbiopi', diagStr.includes('Presbiopi'));
+    setInputValue('edit_notes', rec.notes || '');
 
-    document.getElementById('editRecordModal').style.display = 'flex';
+    const modal = document.getElementById('editRecordModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
 }
 
 function handleLensTypeChange(mode) {
