@@ -250,7 +250,7 @@ if (!function_exists('formatRupiah')) {
                                 <div class="tx-card-actions">
                                     <!-- Riwayat Pasien Button -->
                                     <button class="btn btn-history-action" 
-                                            onclick="openPatientHistoryModal('<?= $rec['mr_number'] ?>', '<?= htmlspecialchars(addslashes($rec['patient_name'])) ?>')" 
+                                            onclick="openPatientHistoryModal('<?= htmlspecialchars($rec['mr_number'], ENT_QUOTES) ?>', '<?= htmlspecialchars(addslashes($rec['patient_name']), ENT_QUOTES) ?>')" 
                                             title="Lihat Histori Periksa Pasien Ini">
                                         <ion-icon name="time-outline" class="mr-1"></ion-icon>
                                         Riwayat Pasien
@@ -258,7 +258,7 @@ if (!function_exists('formatRupiah')) {
 
                                     <!-- Cetak Resep Button -->
                                     <button class="btn btn-print-action" 
-                                            onclick="printPrescription(<?= htmlspecialchars(json_encode($rec)) ?>)" 
+                                            onclick="printPrescriptionById(<?= $rec['id'] ?>)" 
                                             title="Cetak Resep Kacamata">
                                         <ion-icon name="print-outline" class="mr-1"></ion-icon>
                                         Cetak Resep
@@ -266,7 +266,7 @@ if (!function_exists('formatRupiah')) {
 
                                     <!-- Edit Button -->
                                     <button class="btn-action-icon btn-action-edit" 
-                                            onclick="openEditRecordModal(<?= htmlspecialchars(json_encode($rec)) ?>)" 
+                                            onclick="editRecordById(<?= $rec['id'] ?>)" 
                                             title="Ubah Rekam Medis">
                                         <ion-icon name="create-outline"></ion-icon>
                                     </button>
@@ -555,6 +555,30 @@ if (!function_exists('formatRupiah')) {
 
 <script>
 const allRecordsData = <?= json_encode($records ?? []) ?>;
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function editRecordById(id) {
+    const rec = allRecordsData.find(r => r.id == id);
+    if (rec) {
+        openEditRecordModal(rec);
+    }
+}
+
+function printPrescriptionById(id) {
+    const rec = allRecordsData.find(r => r.id == id);
+    if (rec) {
+        printPrescription(rec);
+    }
+}
 
 function openEditRecordModal(rec) {
     document.getElementById('editRecordId').value = rec.id;

@@ -92,6 +92,18 @@ class Database {
             $db->exec("ALTER TABLE medical_records ADD COLUMN bpjs_number TEXT;");
         } catch (\PDOException $e) {}
 
+        // Populate existing medical_records with patient's BPJS info if medical_records default was 'Non-BPJS'
+        try {
+            $db->exec("
+                UPDATE medical_records 
+                SET 
+                    bpjs_class = (SELECT bpjs_class FROM patients WHERE patients.id = medical_records.patient_id),
+                    bpjs_number = (SELECT bpjs_number FROM patients WHERE patients.id = medical_records.patient_id)
+                WHERE (bpjs_class IS NULL OR bpjs_class = 'Non-BPJS' OR bpjs_class = '')
+                  AND patient_id IN (SELECT id FROM patients WHERE bpjs_class IS NOT NULL AND bpjs_class != 'Non-BPJS' AND bpjs_class != '');
+            ");
+        } catch (\PDOException $e) {}
+
         // 3. Create medical_records table (Pemeriksaan Refraksi & Resep Kacamata)
         $db->exec("
             CREATE TABLE IF NOT EXISTS medical_records (
