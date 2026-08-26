@@ -38,11 +38,33 @@ if (!function_exists('formatRupiah')) {
                     <label for="filter-lens">Jenis Lensa</label>
                     <select name="lens_type" id="filter-lens" class="form-control">
                         <option value="">Semua Jenis Lensa</option>
-                        <option value="Single Vision Antiradiasi" <?= ($filters['lens_type'] ?? '') === 'Single Vision Antiradiasi' ? 'selected' : '' ?>>Single Vision Antiradiasi</option>
-                        <option value="Photocromic Bluecut" <?= ($filters['lens_type'] ?? '') === 'Photocromic Bluecut' ? 'selected' : '' ?>>Photocromic Bluecut</option>
-                        <option value="Progressive Office" <?= ($filters['lens_type'] ?? '') === 'Progressive Office' ? 'selected' : '' ?>>Progressive Office</option>
-                        <option value="Bifokal Kryptok" <?= ($filters['lens_type'] ?? '') === 'Bifokal Kryptok' ? 'selected' : '' ?>>Bifokal Kryptok</option>
-                        <option value="Bluecut Hi-Index 1.67" <?= ($filters['lens_type'] ?? '') === 'Bluecut Hi-Index 1.67' ? 'selected' : '' ?>>Bluecut Hi-Index 1.67</option>
+                        <option value="-" <?= ($filters['lens_type'] ?? '') === '-' ? 'selected' : '' ?>>Tanpa Lensa / Ganti Frame</option>
+                        <optgroup label="Single Vision - Oriental">
+                            <option value="SV Ori 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.56' ? 'selected' : '' ?>>SV Ori 1.56</option>
+                            <option value="SV Ori 1.56 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.56 UV 420' ? 'selected' : '' ?>>SV Ori 1.56 UV 420</option>
+                            <option value="SV Ori Bluecut 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Ori Bluecut 1.56' ? 'selected' : '' ?>>SV Ori Bluecut 1.56</option>
+                            <option value="SV Ori 1.61" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.61' ? 'selected' : '' ?>>SV Ori 1.61</option>
+                            <option value="SV Ori 1.61 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.61 UV 420' ? 'selected' : '' ?>>SV Ori 1.61 UV 420</option>
+                        </optgroup>
+                        <optgroup label="Single Vision - Leinz">
+                            <option value="SV Plastik 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56' ? 'selected' : '' ?>>SV Plastik 1.56</option>
+                            <option value="SV Plastik 1.56 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 420' ? 'selected' : '' ?>>SV Plastik 1.56 UV 420</option>
+                            <option value="SV Plastik 1.56 UV 400 Trans" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 400 Trans' ? 'selected' : '' ?>>SV Plastik 1.56 UV 400 Trans</option>
+                            <option value="SV Plastik 1.56 UV 420 Trans" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 420 Trans' ? 'selected' : '' ?>>SV Plastik 1.56 UV 420 Trans</option>
+                            <option value="SV Plastik 1.61" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.61' ? 'selected' : '' ?>>SV Plastik 1.61</option>
+                            <option value="SV Plastik 1.61 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.61 UV 420' ? 'selected' : '' ?>>SV Plastik 1.61 UV 420</option>
+                            <option value="SV Plastik 1.67" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.67' ? 'selected' : '' ?>>SV Plastik 1.67</option>
+                            <option value="SV Plastik 1.67 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.67 UV 420' ? 'selected' : '' ?>>SV Plastik 1.67 UV 420</option>
+                        </optgroup>
+                        <optgroup label="Bifokal">
+                            <option value="Rx 1.50 Round segment" <?= ($filters['lens_type'] ?? '') === 'Rx 1.50 Round segment' ? 'selected' : '' ?>>Rx 1.50 Round segment</option>
+                            <option value="Rx 1.50 Flattop" <?= ($filters['lens_type'] ?? '') === 'Rx 1.50 Flattop' ? 'selected' : '' ?>>Rx 1.50 Flattop</option>
+                            <option value="Ecosoft Eco 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Eco 1.56' ? 'selected' : '' ?>>Ecosoft Eco 1.56</option>
+                            <option value="Ecosoft Lite U-Blue 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Lite U-Blue 1.56' ? 'selected' : '' ?>>Ecosoft Lite U-Blue 1.56</option>
+                            <option value="Ecosoft Lite Photosun Gr/Br 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Lite Photosun Gr/Br 1.56' ? 'selected' : '' ?>>Ecosoft Lite Photosun Gr/Br 1.56</option>
+                            <option value="Ecosoft Photo U-Blue 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Photo U-Blue 1.56' ? 'selected' : '' ?>>Ecosoft Photo U-Blue 1.56</option>
+                            <option value="Kr. Ori" <?= ($filters['lens_type'] ?? '') === 'Kr. Ori' ? 'selected' : '' ?>>Kr. Ori</option>
+                        </optgroup>
                     </select>
                 </div>
 
@@ -352,8 +374,43 @@ if (!function_exists('formatRupiah')) {
 
             <div style="display: flex; gap: 0.75rem;" class="mb-3">
                 <div class="form-group" style="flex: 1;">
-                    <label for="edit_lens_type">Jenis Lensa</label>
-                    <input type="text" name="lens_type" id="edit_lens_type" class="form-control" required>
+                    <label for="edit_lens_type_select">Jenis Lensa <span class="text-muted" style="font-weight: normal; font-size: 0.8rem;">(Opsional)</span></label>
+                    <select id="edit_lens_type_select" class="form-control" onchange="handleLensTypeChange('edit')">
+                        <option value="">-- Tanpa Lensa (Hanya Ganti Frame) --</option>
+                        <optgroup label="Single Vision - Oriental">
+                            <option value="SV Ori 1.56">SV Ori 1.56</option>
+                            <option value="SV Ori 1.56 UV 420">SV Ori 1.56 UV 420</option>
+                            <option value="SV Ori Bluecut 1.56">SV Ori Bluecut 1.56</option>
+                            <option value="SV Ori 1.61">SV Ori 1.61</option>
+                            <option value="SV Ori 1.61 UV 420">SV Ori 1.61 UV 420</option>
+                        </optgroup>
+                        <optgroup label="Single Vision - Leinz">
+                            <option value="SV Plastik 1.56">SV Plastik 1.56</option>
+                            <option value="SV Plastik 1.56 UV 420">SV Plastik 1.56 UV 420</option>
+                            <option value="SV Plastik 1.56 UV 400 Trans">SV Plastik 1.56 UV 400 Trans</option>
+                            <option value="SV Plastik 1.56 UV 420 Trans">SV Plastik 1.56 UV 420 Trans</option>
+                            <option value="SV Plastik 1.61">SV Plastik 1.61</option>
+                            <option value="SV Plastik 1.61 UV 420">SV Plastik 1.61 UV 420</option>
+                            <option value="SV Plastik 1.67">SV Plastik 1.67</option>
+                            <option value="SV Plastik 1.67 UV 420">SV Plastik 1.67 UV 420</option>
+                        </optgroup>
+                        <optgroup label="Bifokal">
+                            <option value="Rx 1.50 Round segment">Rx 1.50 Round segment</option>
+                            <option value="Rx 1.50 Flattop">Rx 1.50 Flattop</option>
+                            <option value="Ecosoft Eco 1.56">Ecosoft Eco 1.56</option>
+                            <option value="Ecosoft Lite U-Blue 1.56">Ecosoft Lite U-Blue 1.56</option>
+                            <option value="Ecosoft Lite Photosun Gr/Br 1.56">Ecosoft Lite Photosun Gr/Br 1.56</option>
+                            <option value="Ecosoft Photo U-Blue 1.56">Ecosoft Photo U-Blue 1.56</option>
+                            <option value="Kr. Ori">Kr. Ori</option>
+                        </optgroup>
+                        <option value="CUSTOM">✏️ Custom (Ketik Manual)</option>
+                    </select>
+
+                    <input type="hidden" name="lens_type" id="edit_lens_type" value="">
+                    
+                    <div id="edit_custom_lens_wrapper" style="display: none; margin-top: 0.5rem;">
+                        <input type="text" id="edit_lens_type_custom" class="form-control" placeholder="Ketik jenis lensa manual..." oninput="updateFinalLensType('edit')">
+                    </div>
                 </div>
                 <div class="form-group" style="flex: 1;">
                     <label for="edit_frame_code">Kode Frame</label>
@@ -506,7 +563,40 @@ function openEditRecordModal(rec) {
     document.getElementById('edit_os_add').value = rec.os_add;
     document.getElementById('edit_os_va').value = rec.os_va;
     document.getElementById('edit_pd').value = rec.pd;
-    document.getElementById('edit_lens_type').value = rec.lens_type;
+    
+    // Set Lens Type value and select state
+    const currentLens = rec.lens_type || '';
+    const select = document.getElementById('edit_lens_type_select');
+    const customWrapper = document.getElementById('edit_custom_lens_wrapper');
+    const customInput = document.getElementById('edit_lens_type_custom');
+    const finalInput = document.getElementById('edit_lens_type');
+    
+    finalInput.value = currentLens;
+
+    let foundOption = false;
+    for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value === currentLens) {
+            select.selectedIndex = i;
+            foundOption = true;
+            break;
+        }
+    }
+
+    if (!foundOption) {
+        if (currentLens === '' || currentLens === '-') {
+            select.value = '';
+            customWrapper.style.display = 'none';
+            customInput.value = '';
+        } else {
+            select.value = 'CUSTOM';
+            customWrapper.style.display = 'block';
+            customInput.value = currentLens;
+        }
+    } else {
+        customWrapper.style.display = 'none';
+        customInput.value = '';
+    }
+
     document.getElementById('edit_frame_code').value = rec.frame_code || '';
     document.getElementById('edit_total_price').value = rec.total_price !== undefined && rec.total_price !== null ? rec.total_price : '';
     const diagStr = rec.diagnosis || '';
@@ -517,6 +607,34 @@ function openEditRecordModal(rec) {
     document.getElementById('edit_notes').value = rec.notes || '';
 
     document.getElementById('editRecordModal').style.display = 'flex';
+}
+
+function handleLensTypeChange(mode) {
+    const isEdit = mode === 'edit';
+    const select = document.getElementById(isEdit ? 'edit_lens_type_select' : 'lens_type_select');
+    const customWrapper = document.getElementById(isEdit ? 'edit_custom_lens_wrapper' : 'custom_lens_wrapper');
+    const customInput = document.getElementById(isEdit ? 'edit_lens_type_custom' : 'lens_type_custom');
+    const finalInput = document.getElementById(isEdit ? 'edit_lens_type' : 'lens_type');
+
+    if (select.value === 'CUSTOM') {
+        customWrapper.style.display = 'block';
+        customInput.focus();
+        finalInput.value = customInput.value.trim();
+    } else {
+        customWrapper.style.display = 'none';
+        finalInput.value = select.value;
+    }
+}
+
+function updateFinalLensType(mode) {
+    const isEdit = mode === 'edit';
+    const select = document.getElementById(isEdit ? 'edit_lens_type_select' : 'lens_type_select');
+    const customInput = document.getElementById(isEdit ? 'edit_lens_type_custom' : 'lens_type_custom');
+    const finalInput = document.getElementById(isEdit ? 'edit_lens_type' : 'lens_type');
+
+    if (select.value === 'CUSTOM') {
+        finalInput.value = customInput.value.trim();
+    }
 }
 
 function closeEditRecordModal() {
