@@ -18,6 +18,8 @@ class MedicalRecord {
         $sql = "
             SELECT 
                 r.*,
+                COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') AS bpjs_class,
+                COALESCE(NULLIF(r.bpjs_number, ''), p.bpjs_number, '') AS bpjs_number,
                 p.mr_number,
                 p.name AS patient_name,
                 p.gender AS patient_gender,
@@ -67,6 +69,8 @@ class MedicalRecord {
         $sql = "
             SELECT 
                 r.*,
+                COALESCE(NULLIF(r.bpjs_class, ''), p.bpjs_class, 'Non-BPJS') AS bpjs_class,
+                COALESCE(NULLIF(r.bpjs_number, ''), p.bpjs_number, '') AS bpjs_number,
                 p.mr_number,
                 p.name AS patient_name,
                 p.gender AS patient_gender,
@@ -141,6 +145,21 @@ class MedicalRecord {
                     ':created_at' => date('Y-m-d H:i:s')
                 ]);
                 $patientId = $this->db->lastInsertId();
+            } else {
+                // Update existing patient's default BPJS info if provided
+                if (isset($data['bpjs_class'])) {
+                    $stmtUpP = $this->db->prepare("
+                        UPDATE patients SET 
+                            bpjs_class = :bpjs_class,
+                            bpjs_number = :bpjs_number
+                        WHERE id = :id
+                    ");
+                    $stmtUpP->execute([
+                        ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
+                        ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
+                        ':id' => $patientId
+                    ]);
+                }
             }
 
             // Prepare diagnosis string from array or text
@@ -160,12 +179,14 @@ class MedicalRecord {
                     patient_id, record_number, exam_date, examiner_name,
                     od_sph, od_cyl, od_axis, od_add, od_va,
                     os_sph, os_cyl, os_axis, os_add, os_va,
-                    pd, lens_type, frame_code, diagnosis, notes, total_price, created_at
+                    pd, lens_type, frame_code, diagnosis, notes, total_price,
+                    bpjs_class, bpjs_number, created_at
                 ) VALUES (
                     :patient_id, :record_number, :exam_date, :examiner_name,
                     :od_sph, :od_cyl, :od_axis, :od_add, :od_va,
                     :os_sph, :os_cyl, :os_axis, :os_add, :os_va,
-                    :pd, :lens_type, :frame_code, :diagnosis, :notes, :total_price, :created_at
+                    :pd, :lens_type, :frame_code, :diagnosis, :notes, :total_price,
+                    :bpjs_class, :bpjs_number, :created_at
                 )
             ");
 
@@ -190,6 +211,8 @@ class MedicalRecord {
                 ':diagnosis' => $diagnosisStr,
                 ':notes' => trim($data['notes'] ?? ''),
                 ':total_price' => (float)($data['total_price'] ?? 0),
+                ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
+                ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
                 ':created_at' => date('Y-m-d H:i:s')
             ]);
 
@@ -236,7 +259,9 @@ class MedicalRecord {
                     frame_code = :frame_code,
                     diagnosis = :diagnosis,
                     notes = :notes,
-                    total_price = :total_price
+                    total_price = :total_price,
+                    bpjs_class = :bpjs_class,
+                    bpjs_number = :bpjs_number
                 WHERE id = :id
             ");
 
@@ -259,6 +284,8 @@ class MedicalRecord {
                 ':diagnosis' => $diagnosisStr,
                 ':notes' => $data['notes'] ?? '',
                 ':total_price' => (float)$data['total_price'],
+                ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
+                ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
                 ':id' => $id
             ]);
         } catch (\Exception $e) {

@@ -84,6 +84,14 @@ class Database {
             $db->exec("ALTER TABLE medical_records ADD COLUMN diagnosis TEXT;");
         } catch (\PDOException $e) {}
 
+        try {
+            $db->exec("ALTER TABLE medical_records ADD COLUMN bpjs_class TEXT DEFAULT 'Non-BPJS';");
+        } catch (\PDOException $e) {}
+
+        try {
+            $db->exec("ALTER TABLE medical_records ADD COLUMN bpjs_number TEXT;");
+        } catch (\PDOException $e) {}
+
         // 3. Create medical_records table (Pemeriksaan Refraksi & Resep Kacamata)
         $db->exec("
             CREATE TABLE IF NOT EXISTS medical_records (

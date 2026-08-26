@@ -129,10 +129,18 @@ if (!function_exists('formatRupiah')) {
                                             <span class="mr-badge">
                                                 <?= htmlspecialchars($rec['mr_number']) ?>
                                             </span>
-                                            <?php if (!empty($rec['patient_bpjs_class']) && $rec['patient_bpjs_class'] !== 'Non-BPJS'): ?>
-                                                <span class="bpjs-badge">
+                                            <?php 
+                                            $recBpjs = !empty($rec['bpjs_class']) ? $rec['bpjs_class'] : 'Non-BPJS';
+                                            $recBpjsNo = $rec['bpjs_number'] ?? '';
+                                            if ($recBpjs !== 'Non-BPJS'): 
+                                            ?>
+                                                <span class="bpjs-badge" style="background: rgba(16, 185, 129, 0.12); color: #047857; border: 1px solid #a7f3d0; border-radius: 50px; padding: 0.15rem 0.65rem; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
                                                     <ion-icon name="card-outline"></ion-icon>
-                                                    BPJS <?= htmlspecialchars($rec['patient_bpjs_class']) ?> <?= !empty($rec['patient_bpjs_number']) ? '(' . htmlspecialchars($rec['patient_bpjs_number']) . ')' : '' ?>
+                                                    BPJS <?= htmlspecialchars($recBpjs) ?> <?= !empty($recBpjsNo) ? '(' . htmlspecialchars($recBpjsNo) . ')' : '' ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="bpjs-badge-mandiri" style="background: rgba(100, 116, 139, 0.1); color: #475569; border: 1px solid #cbd5e1; border-radius: 50px; padding: 0.15rem 0.65rem; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
+                                                    <ion-icon name="person-outline"></ion-icon> Pasien Umum (Mandiri)
                                                 </span>
                                             <?php endif; ?>
                                         </div>
@@ -563,6 +571,8 @@ function openEditRecordModal(rec) {
     document.getElementById('edit_os_add').value = rec.os_add;
     document.getElementById('edit_os_va').value = rec.os_va;
     document.getElementById('edit_pd').value = rec.pd;
+    document.getElementById('edit_bpjs_class').value = rec.bpjs_class || 'Non-BPJS';
+    document.getElementById('edit_bpjs_number').value = rec.bpjs_number || '';
     
     // Set Lens Type value and select state
     const currentLens = rec.lens_type || '';
@@ -686,12 +696,22 @@ function openPatientHistoryModal(mrNumber, patientName) {
     } else {
         patientRecords.forEach((r, idx) => {
             const card = document.createElement('div');
-            card.style.cssText = 'background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem;';
+            card.style.cssText = 'background: rgba(15, 23, 42, 0.02); border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;';
+
+            const isBpjs = r.bpjs_class && r.bpjs_class !== 'Non-BPJS';
+            const bpjsBadgeHtml = isBpjs
+                ? `<span style="font-size: 0.78rem; background: rgba(16, 185, 129, 0.12); color: #047857; border: 1px solid #a7f3d0; padding: 0.2rem 0.65rem; border-radius: 50px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
+                    <ion-icon name="card-outline"></ion-icon> BPJS ${escapeHtml(r.bpjs_class)} ${r.bpjs_number ? '(' + escapeHtml(r.bpjs_number) + ')' : ''}
+                   </span>`
+                : `<span style="font-size: 0.78rem; background: rgba(100, 116, 139, 0.1); color: #475569; border: 1px solid #cbd5e1; padding: 0.2rem 0.65rem; border-radius: 50px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
+                    <ion-icon name="person-outline"></ion-icon> Non-BPJS (Mandiri)
+                   </span>`;
             
             card.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
-                        <ion-icon name="calendar-outline"></ion-icon> Periksa #${patientRecords.length - idx} &bull; ${r.exam_date}
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        <span><ion-icon name="calendar-outline"></ion-icon> Periksa #${patientRecords.length - idx} &bull; ${r.exam_date}</span>
+                        ${bpjsBadgeHtml}
                     </div>
                     <span style="font-size: 0.8rem; background: rgba(99, 102, 241, 0.1); color: var(--color-primary); padding: 0.2rem 0.6rem; border-radius: 50px; font-weight: 600;">
                         ${r.record_number}
@@ -717,7 +737,7 @@ function openPatientHistoryModal(mrNumber, patientName) {
                                 <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.od_cyl >= 0 ? '+' : '') + parseFloat(r.od_cyl).toFixed(2)}</td>
                                 <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.od_axis}°</td>
                                 <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.od_add >= 0 ? '+' : '') + parseFloat(r.od_add).toFixed(2)}</td>
-                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.od_va}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${escapeHtml(r.od_va)}</td>
                                 <td rowspan="2" style="padding: 0.4rem; border: 1px solid var(--color-border); vertical-align: middle; font-weight: 700; background: rgba(99, 102, 241, 0.05);">${r.pd} mm</td>
                             </tr>
                             <tr>
@@ -726,17 +746,18 @@ function openPatientHistoryModal(mrNumber, patientName) {
                                 <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.os_cyl >= 0 ? '+' : '') + parseFloat(r.os_cyl).toFixed(2)}</td>
                                 <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.os_axis}°</td>
                                 <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${(r.os_add >= 0 ? '+' : '') + parseFloat(r.os_add).toFixed(2)}</td>
-                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${r.os_va}</td>
+                                <td style="padding: 0.4rem; border: 1px solid var(--color-border);">${escapeHtml(r.os_va)}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div style="font-size: 0.82rem; color: var(--color-dark); display: flex; flex-wrap: wrap; gap: 1rem;">
-                    <div><strong>Lensa:</strong> ${r.lens_type}</div>
-                    <div><strong>Frame:</strong> ${r.frame_code || '-'}</div>
-                    <div><strong>Pemeriksa:</strong> ${r.examiner_name}</div>
-                    ${r.diagnosis ? `<div><strong>Diagnosa:</strong> ${r.diagnosis}</div>` : ''}
-                    ${r.notes ? `<div><strong>Catatan:</strong> ${r.notes}</div>` : ''}
+                <div style="font-size: 0.82rem; color: var(--color-dark); display: flex; flex-wrap: wrap; gap: 1rem; background: #ffffff; padding: 0.6rem 0.86rem; border-radius: 8px; border: 1px dashed var(--color-border);">
+                    <div><strong>Jalur Pembayaran:</strong> <span style="font-weight: 700; color: ${isBpjs ? '#047857' : '#475569'};">${isBpjs ? 'BPJS ' + escapeHtml(r.bpjs_class) : 'Non-BPJS (Mandiri)'}</span></div>
+                    <div><strong>Lensa:</strong> ${escapeHtml(r.lens_type || '-')}</div>
+                    <div><strong>Frame:</strong> ${escapeHtml(r.frame_code || '-')}</div>
+                    <div><strong>Pemeriksa:</strong> ${escapeHtml(r.examiner_name || '-')}</div>
+                    ${r.diagnosis ? `<div><strong>Diagnosa:</strong> ${escapeHtml(r.diagnosis)}</div>` : ''}
+                    ${r.notes ? `<div><strong>Catatan:</strong> ${escapeHtml(r.notes)}</div>` : ''}
                 </div>
             `;
             container.appendChild(card);
