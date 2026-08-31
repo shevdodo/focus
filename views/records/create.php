@@ -353,32 +353,42 @@
                         <label for="lens_type_select" style="font-weight: 600;">Jenis Lensa Kacamata <span class="text-muted" style="font-weight: normal; font-size: 0.8rem;">(Opsional)</span></label>
                         <select id="lens_type_select" class="form-control" style="font-size: 0.95rem;" onchange="handleLensTypeChange('create')">
                             <option value="">-- Tanpa Lensa (Hanya Ganti Frame) --</option>
-                            <optgroup label="Single Vision - Oriental">
-                                <option value="SV Ori 1.56">SV Ori 1.56</option>
-                                <option value="SV Ori 1.56 UV 420">SV Ori 1.56 UV 420</option>
-                                <option value="SV Ori Bluecut 1.56">SV Ori Bluecut 1.56</option>
-                                <option value="SV Ori 1.61">SV Ori 1.61</option>
-                                <option value="SV Ori 1.61 UV 420">SV Ori 1.61 UV 420</option>
-                            </optgroup>
-                            <optgroup label="Single Vision - Leinz">
-                                <option value="SV Plastik 1.56">SV Plastik 1.56</option>
-                                <option value="SV Plastik 1.56 UV 420">SV Plastik 1.56 UV 420</option>
-                                <option value="SV Plastik 1.56 UV 400 Trans">SV Plastik 1.56 UV 400 Trans</option>
-                                <option value="SV Plastik 1.56 UV 420 Trans">SV Plastik 1.56 UV 420 Trans</option>
-                                <option value="SV Plastik 1.61">SV Plastik 1.61</option>
-                                <option value="SV Plastik 1.61 UV 420">SV Plastik 1.61 UV 420</option>
-                                <option value="SV Plastik 1.67">SV Plastik 1.67</option>
-                                <option value="SV Plastik 1.67 UV 420">SV Plastik 1.67 UV 420</option>
-                            </optgroup>
-                            <optgroup label="Bifokal">
-                                <option value="Rx 1.50 Round segment">Rx 1.50 Round segment</option>
-                                <option value="Rx 1.50 Flattop">Rx 1.50 Flattop</option>
-                                <option value="Ecosoft Eco 1.56">Ecosoft Eco 1.56</option>
-                                <option value="Ecosoft Lite U-Blue 1.56">Ecosoft Lite U-Blue 1.56</option>
-                                <option value="Ecosoft Lite Photosun Gr/Br 1.56">Ecosoft Lite Photosun Gr/Br 1.56</option>
-                                <option value="Ecosoft Photo U-Blue 1.56">Ecosoft Photo U-Blue 1.56</option>
-                                <option value="Kr. Ori">Kr. Ori</option>
-                            </optgroup>
+                            <?php if (!empty($groupedLenses)): ?>
+                                <?php foreach ($groupedLenses as $groupLabel => $lensGroup): ?>
+                                    <optgroup label="<?= htmlspecialchars($groupLabel) ?>">
+                                        <?php foreach ($lensGroup as $l): ?>
+                                            <option value="<?= htmlspecialchars($l['name']) ?>"><?= htmlspecialchars($l['name']) ?></option>
+                                        <?php endforeach; ?>
+                                    </optgroup>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <optgroup label="Single Vision - Oriental">
+                                    <option value="SV Ori 1.56">SV Ori 1.56</option>
+                                    <option value="SV Ori 1.56 UV 420">SV Ori 1.56 UV 420</option>
+                                    <option value="SV Ori Bluecut 1.56">SV Ori Bluecut 1.56</option>
+                                    <option value="SV Ori 1.61">SV Ori 1.61</option>
+                                    <option value="SV Ori 1.61 UV 420">SV Ori 1.61 UV 420</option>
+                                </optgroup>
+                                <optgroup label="Single Vision - Leinz">
+                                    <option value="SV Plastik 1.56">SV Plastik 1.56</option>
+                                    <option value="SV Plastik 1.56 UV 420">SV Plastik 1.56 UV 420</option>
+                                    <option value="SV Plastik 1.56 UV 400 Trans">SV Plastik 1.56 UV 400 Trans</option>
+                                    <option value="SV Plastik 1.56 UV 420 Trans">SV Plastik 1.56 UV 420 Trans</option>
+                                    <option value="SV Plastik 1.61">SV Plastik 1.61</option>
+                                    <option value="SV Plastik 1.61 UV 420">SV Plastik 1.61 UV 420</option>
+                                    <option value="SV Plastik 1.67">SV Plastik 1.67</option>
+                                    <option value="SV Plastik 1.67 UV 420">SV Plastik 1.67 UV 420</option>
+                                </optgroup>
+                                <optgroup label="Bifokal">
+                                    <option value="Rx 1.50 Round segment">Rx 1.50 Round segment</option>
+                                    <option value="Rx 1.50 Flattop">Rx 1.50 Flattop</option>
+                                    <option value="Ecosoft Eco 1.56">Ecosoft Eco 1.56</option>
+                                    <option value="Ecosoft Lite U-Blue 1.56">Ecosoft Lite U-Blue 1.56</option>
+                                    <option value="Ecosoft Lite Photosun Gr/Br 1.56">Ecosoft Lite Photosun Gr/Br 1.56</option>
+                                    <option value="Ecosoft Photo U-Blue 1.56">Ecosoft Photo U-Blue 1.56</option>
+                                    <option value="Kr. Ori">Kr. Ori</option>
+                                </optgroup>
+                            <?php endif; ?>
                             <option value="CUSTOM">✏️ Custom (Ketik Manual)</option>
                         </select>
 
@@ -395,7 +405,14 @@
                 <div class="col-4 mb-3">
                     <div class="form-group">
                         <label for="frame_code" style="font-weight: 600;">Kode / Merk Frame</label>
-                        <input type="text" name="frame_code" id="frame_code" class="form-control" placeholder="Contoh: Ray-Ban RB5228 Matte Black">
+                        <input type="text" name="frame_code" id="frame_code" class="form-control" placeholder="Contoh: Ray-Ban RB5228 Matte Black" list="master_frame_suggestions">
+                        <datalist id="master_frame_suggestions">
+                            <?php if (!empty($masterFrames)): ?>
+                                <?php foreach ($masterFrames as $f): ?>
+                                    <option value="<?= htmlspecialchars($f['name'] . ' (' . $f['code'] . ')') ?>"></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </datalist>
                     </div>
                 </div>
 

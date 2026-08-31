@@ -37,6 +37,7 @@
                     $isInputActive = (strpos($currentUri, '/records/create') !== false || strpos($currentUri, '/transactions/create') !== false);
                     $isRecordsActive = ((strpos($currentUri, '/transactions') !== false || strpos($currentUri, '/records') !== false) && !$isInputActive);
                     $isReportsActive = (strpos($currentUri, '/reports') !== false || strpos($currentUri, '/laporan') !== false);
+                    $isMasterActive = (strpos($currentUri, '/master') !== false);
                     ?>
                     <li class="<?= $isDashboardActive ? 'active' : '' ?>">
                         <a href="<?= baseUrl('/') ?>">
@@ -60,6 +61,12 @@
                         <a href="<?= baseUrl('reports') ?>">
                             <ion-icon name="document-text-outline"></ion-icon>
                             <span>Laporan Optik</span>
+                        </a>
+                    </li>
+                    <li class="<?= $isMasterActive ? 'active' : '' ?>">
+                        <a href="<?= baseUrl('master') ?>">
+                            <ion-icon name="cube-outline"></ion-icon>
+                            <span>Master Data</span>
                         </a>
                     </li>
                     <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
@@ -107,10 +114,15 @@
                 <ion-icon name="<?= $isRecordsActive ? 'eye' : 'eye-outline' ?>"></ion-icon>
                 <span>Daftar RM</span>
             </a>
+            <a href="<?= baseUrl('master') ?>" class="bottom-nav-item <?= $isMasterActive ? 'active' : '' ?>">
+                <ion-icon name="<?= $isMasterActive ? 'cube' : 'cube-outline' ?>"></ion-icon>
+                <span>Master</span>
+            </a>
             <a href="<?= baseUrl('reports') ?>" class="bottom-nav-item <?= $isReportsActive ? 'active' : '' ?>">
                 <ion-icon name="<?= $isReportsActive ? 'document-text' : 'document-text-outline' ?>"></ion-icon>
                 <span>Laporan</span>
             </a>
+
             <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
                 <?php $isUsersActive = (strpos($currentUri, '/users') !== false); ?>
                 <a href="<?= baseUrl('users') ?>" class="bottom-nav-item <?= $isUsersActive ? 'active' : '' ?>">

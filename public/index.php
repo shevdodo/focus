@@ -299,6 +299,8 @@ use App\Controllers\TransactionController;
 use App\Controllers\AuthController;
 use App\Controllers\UserController;
 use App\Controllers\ReportController;
+use App\Controllers\MasterDataController;
+
 
 // Secure Authentication Guard Check
 $currentUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -357,6 +359,17 @@ $router->get('/users', [UserController::class, 'index']);
 $router->post('/users/create', [UserController::class, 'store']);
 $router->post('/users/edit', [UserController::class, 'update']);
 $router->post('/users/delete', [UserController::class, 'destroy']);
+
+// Map Master Data (Lensa & Frame)
+$router->get('/master', [MasterDataController::class, 'index']);
+$router->get('/master-data', [MasterDataController::class, 'index']);
+$router->post('/master/lensa/create', [MasterDataController::class, 'storeLens']);
+$router->post('/master/lensa/edit', [MasterDataController::class, 'updateLens']);
+$router->post('/master/lensa/delete', [MasterDataController::class, 'deleteLens']);
+$router->post('/master/frame/create', [MasterDataController::class, 'storeFrame']);
+$router->post('/master/frame/edit', [MasterDataController::class, 'updateFrame']);
+$router->post('/master/frame/delete', [MasterDataController::class, 'deleteFrame']);
+
 
 // 6. Run the Dispatcher!
 $router->dispatch();

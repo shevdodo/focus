@@ -39,32 +39,42 @@ if (!function_exists('formatRupiah')) {
                     <select name="lens_type" id="filter-lens" class="form-control">
                         <option value="">Semua Jenis Lensa</option>
                         <option value="-" <?= ($filters['lens_type'] ?? '') === '-' ? 'selected' : '' ?>>Tanpa Lensa / Ganti Frame</option>
-                        <optgroup label="Single Vision - Oriental">
-                            <option value="SV Ori 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.56' ? 'selected' : '' ?>>SV Ori 1.56</option>
-                            <option value="SV Ori 1.56 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.56 UV 420' ? 'selected' : '' ?>>SV Ori 1.56 UV 420</option>
-                            <option value="SV Ori Bluecut 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Ori Bluecut 1.56' ? 'selected' : '' ?>>SV Ori Bluecut 1.56</option>
-                            <option value="SV Ori 1.61" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.61' ? 'selected' : '' ?>>SV Ori 1.61</option>
-                            <option value="SV Ori 1.61 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.61 UV 420' ? 'selected' : '' ?>>SV Ori 1.61 UV 420</option>
-                        </optgroup>
-                        <optgroup label="Single Vision - Leinz">
-                            <option value="SV Plastik 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56' ? 'selected' : '' ?>>SV Plastik 1.56</option>
-                            <option value="SV Plastik 1.56 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 420' ? 'selected' : '' ?>>SV Plastik 1.56 UV 420</option>
-                            <option value="SV Plastik 1.56 UV 400 Trans" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 400 Trans' ? 'selected' : '' ?>>SV Plastik 1.56 UV 400 Trans</option>
-                            <option value="SV Plastik 1.56 UV 420 Trans" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 420 Trans' ? 'selected' : '' ?>>SV Plastik 1.56 UV 420 Trans</option>
-                            <option value="SV Plastik 1.61" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.61' ? 'selected' : '' ?>>SV Plastik 1.61</option>
-                            <option value="SV Plastik 1.61 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.61 UV 420' ? 'selected' : '' ?>>SV Plastik 1.61 UV 420</option>
-                            <option value="SV Plastik 1.67" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.67' ? 'selected' : '' ?>>SV Plastik 1.67</option>
-                            <option value="SV Plastik 1.67 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.67 UV 420' ? 'selected' : '' ?>>SV Plastik 1.67 UV 420</option>
-                        </optgroup>
-                        <optgroup label="Bifokal">
-                            <option value="Rx 1.50 Round segment" <?= ($filters['lens_type'] ?? '') === 'Rx 1.50 Round segment' ? 'selected' : '' ?>>Rx 1.50 Round segment</option>
-                            <option value="Rx 1.50 Flattop" <?= ($filters['lens_type'] ?? '') === 'Rx 1.50 Flattop' ? 'selected' : '' ?>>Rx 1.50 Flattop</option>
-                            <option value="Ecosoft Eco 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Eco 1.56' ? 'selected' : '' ?>>Ecosoft Eco 1.56</option>
-                            <option value="Ecosoft Lite U-Blue 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Lite U-Blue 1.56' ? 'selected' : '' ?>>Ecosoft Lite U-Blue 1.56</option>
-                            <option value="Ecosoft Lite Photosun Gr/Br 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Lite Photosun Gr/Br 1.56' ? 'selected' : '' ?>>Ecosoft Lite Photosun Gr/Br 1.56</option>
-                            <option value="Ecosoft Photo U-Blue 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Photo U-Blue 1.56' ? 'selected' : '' ?>>Ecosoft Photo U-Blue 1.56</option>
-                            <option value="Kr. Ori" <?= ($filters['lens_type'] ?? '') === 'Kr. Ori' ? 'selected' : '' ?>>Kr. Ori</option>
-                        </optgroup>
+                        <?php if (!empty($groupedLenses)): ?>
+                            <?php foreach ($groupedLenses as $groupLabel => $lensGroup): ?>
+                                <optgroup label="<?= htmlspecialchars($groupLabel) ?>">
+                                    <?php foreach ($lensGroup as $l): ?>
+                                        <option value="<?= htmlspecialchars($l['name']) ?>" <?= ($filters['lens_type'] ?? '') === $l['name'] ? 'selected' : '' ?>><?= htmlspecialchars($l['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </optgroup>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <optgroup label="Single Vision - Oriental">
+                                <option value="SV Ori 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.56' ? 'selected' : '' ?>>SV Ori 1.56</option>
+                                <option value="SV Ori 1.56 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.56 UV 420' ? 'selected' : '' ?>>SV Ori 1.56 UV 420</option>
+                                <option value="SV Ori Bluecut 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Ori Bluecut 1.56' ? 'selected' : '' ?>>SV Ori Bluecut 1.56</option>
+                                <option value="SV Ori 1.61" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.61' ? 'selected' : '' ?>>SV Ori 1.61</option>
+                                <option value="SV Ori 1.61 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Ori 1.61 UV 420' ? 'selected' : '' ?>>SV Ori 1.61 UV 420</option>
+                            </optgroup>
+                            <optgroup label="Single Vision - Leinz">
+                                <option value="SV Plastik 1.56" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56' ? 'selected' : '' ?>>SV Plastik 1.56</option>
+                                <option value="SV Plastik 1.56 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 420' ? 'selected' : '' ?>>SV Plastik 1.56 UV 420</option>
+                                <option value="SV Plastik 1.56 UV 400 Trans" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 400 Trans' ? 'selected' : '' ?>>SV Plastik 1.56 UV 400 Trans</option>
+                                <option value="SV Plastik 1.56 UV 420 Trans" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.56 UV 420 Trans' ? 'selected' : '' ?>>SV Plastik 1.56 UV 420 Trans</option>
+                                <option value="SV Plastik 1.61" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.61' ? 'selected' : '' ?>>SV Plastik 1.61</option>
+                                <option value="SV Plastik 1.61 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.61 UV 420' ? 'selected' : '' ?>>SV Plastik 1.61 UV 420</option>
+                                <option value="SV Plastik 1.67" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.67' ? 'selected' : '' ?>>SV Plastik 1.67</option>
+                                <option value="SV Plastik 1.67 UV 420" <?= ($filters['lens_type'] ?? '') === 'SV Plastik 1.67 UV 420' ? 'selected' : '' ?>>SV Plastik 1.67 UV 420</option>
+                            </optgroup>
+                            <optgroup label="Bifokal">
+                                <option value="Rx 1.50 Round segment" <?= ($filters['lens_type'] ?? '') === 'Rx 1.50 Round segment' ? 'selected' : '' ?>>Rx 1.50 Round segment</option>
+                                <option value="Rx 1.50 Flattop" <?= ($filters['lens_type'] ?? '') === 'Rx 1.50 Flattop' ? 'selected' : '' ?>>Rx 1.50 Flattop</option>
+                                <option value="Ecosoft Eco 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Eco 1.56' ? 'selected' : '' ?>>Ecosoft Eco 1.56</option>
+                                <option value="Ecosoft Lite U-Blue 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Lite U-Blue 1.56' ? 'selected' : '' ?>>Ecosoft Lite U-Blue 1.56</option>
+                                <option value="Ecosoft Lite Photosun Gr/Br 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Lite Photosun Gr/Br 1.56' ? 'selected' : '' ?>>Ecosoft Lite Photosun Gr/Br 1.56</option>
+                                <option value="Ecosoft Photo U-Blue 1.56" <?= ($filters['lens_type'] ?? '') === 'Ecosoft Photo U-Blue 1.56' ? 'selected' : '' ?>>Ecosoft Photo U-Blue 1.56</option>
+                                <option value="Kr. Ori" <?= ($filters['lens_type'] ?? '') === 'Kr. Ori' ? 'selected' : '' ?>>Kr. Ori</option>
+                            </optgroup>
+                        <?php endif; ?>
                     </select>
                 </div>
 
@@ -385,32 +395,42 @@ if (!function_exists('formatRupiah')) {
                     <label for="edit_lens_type_select">Jenis Lensa <span class="text-muted" style="font-weight: normal; font-size: 0.8rem;">(Opsional)</span></label>
                     <select id="edit_lens_type_select" class="form-control" onchange="handleLensTypeChange('edit')">
                         <option value="">-- Tanpa Lensa (Hanya Ganti Frame) --</option>
-                        <optgroup label="Single Vision - Oriental">
-                            <option value="SV Ori 1.56">SV Ori 1.56</option>
-                            <option value="SV Ori 1.56 UV 420">SV Ori 1.56 UV 420</option>
-                            <option value="SV Ori Bluecut 1.56">SV Ori Bluecut 1.56</option>
-                            <option value="SV Ori 1.61">SV Ori 1.61</option>
-                            <option value="SV Ori 1.61 UV 420">SV Ori 1.61 UV 420</option>
-                        </optgroup>
-                        <optgroup label="Single Vision - Leinz">
-                            <option value="SV Plastik 1.56">SV Plastik 1.56</option>
-                            <option value="SV Plastik 1.56 UV 420">SV Plastik 1.56 UV 420</option>
-                            <option value="SV Plastik 1.56 UV 400 Trans">SV Plastik 1.56 UV 400 Trans</option>
-                            <option value="SV Plastik 1.56 UV 420 Trans">SV Plastik 1.56 UV 420 Trans</option>
-                            <option value="SV Plastik 1.61">SV Plastik 1.61</option>
-                            <option value="SV Plastik 1.61 UV 420">SV Plastik 1.61 UV 420</option>
-                            <option value="SV Plastik 1.67">SV Plastik 1.67</option>
-                            <option value="SV Plastik 1.67 UV 420">SV Plastik 1.67 UV 420</option>
-                        </optgroup>
-                        <optgroup label="Bifokal">
-                            <option value="Rx 1.50 Round segment">Rx 1.50 Round segment</option>
-                            <option value="Rx 1.50 Flattop">Rx 1.50 Flattop</option>
-                            <option value="Ecosoft Eco 1.56">Ecosoft Eco 1.56</option>
-                            <option value="Ecosoft Lite U-Blue 1.56">Ecosoft Lite U-Blue 1.56</option>
-                            <option value="Ecosoft Lite Photosun Gr/Br 1.56">Ecosoft Lite Photosun Gr/Br 1.56</option>
-                            <option value="Ecosoft Photo U-Blue 1.56">Ecosoft Photo U-Blue 1.56</option>
-                            <option value="Kr. Ori">Kr. Ori</option>
-                        </optgroup>
+                        <?php if (!empty($groupedLenses)): ?>
+                            <?php foreach ($groupedLenses as $groupLabel => $lensGroup): ?>
+                                <optgroup label="<?= htmlspecialchars($groupLabel) ?>">
+                                    <?php foreach ($lensGroup as $l): ?>
+                                        <option value="<?= htmlspecialchars($l['name']) ?>"><?= htmlspecialchars($l['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </optgroup>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <optgroup label="Single Vision - Oriental">
+                                <option value="SV Ori 1.56">SV Ori 1.56</option>
+                                <option value="SV Ori 1.56 UV 420">SV Ori 1.56 UV 420</option>
+                                <option value="SV Ori Bluecut 1.56">SV Ori Bluecut 1.56</option>
+                                <option value="SV Ori 1.61">SV Ori 1.61</option>
+                                <option value="SV Ori 1.61 UV 420">SV Ori 1.61 UV 420</option>
+                            </optgroup>
+                            <optgroup label="Single Vision - Leinz">
+                                <option value="SV Plastik 1.56">SV Plastik 1.56</option>
+                                <option value="SV Plastik 1.56 UV 420">SV Plastik 1.56 UV 420</option>
+                                <option value="SV Plastik 1.56 UV 400 Trans">SV Plastik 1.56 UV 400 Trans</option>
+                                <option value="SV Plastik 1.56 UV 420 Trans">SV Plastik 1.56 UV 420 Trans</option>
+                                <option value="SV Plastik 1.61">SV Plastik 1.61</option>
+                                <option value="SV Plastik 1.61 UV 420">SV Plastik 1.61 UV 420</option>
+                                <option value="SV Plastik 1.67">SV Plastik 1.67</option>
+                                <option value="SV Plastik 1.67 UV 420">SV Plastik 1.67 UV 420</option>
+                            </optgroup>
+                            <optgroup label="Bifokal">
+                                <option value="Rx 1.50 Round segment">Rx 1.50 Round segment</option>
+                                <option value="Rx 1.50 Flattop">Rx 1.50 Flattop</option>
+                                <option value="Ecosoft Eco 1.56">Ecosoft Eco 1.56</option>
+                                <option value="Ecosoft Lite U-Blue 1.56">Ecosoft Lite U-Blue 1.56</option>
+                                <option value="Ecosoft Lite Photosun Gr/Br 1.56">Ecosoft Lite Photosun Gr/Br 1.56</option>
+                                <option value="Ecosoft Photo U-Blue 1.56">Ecosoft Photo U-Blue 1.56</option>
+                                <option value="Kr. Ori">Kr. Ori</option>
+                            </optgroup>
+                        <?php endif; ?>
                         <option value="CUSTOM">✏️ Custom (Ketik Manual)</option>
                     </select>
 
@@ -422,7 +442,14 @@ if (!function_exists('formatRupiah')) {
                 </div>
                 <div class="form-group" style="flex: 1;">
                     <label for="edit_frame_code">Kode Frame</label>
-                    <input type="text" name="frame_code" id="edit_frame_code" class="form-control">
+                    <input type="text" name="frame_code" id="edit_frame_code" class="form-control" list="master_frame_suggestions_edit">
+                    <datalist id="master_frame_suggestions_edit">
+                        <?php if (!empty($masterFrames)): ?>
+                            <?php foreach ($masterFrames as $f): ?>
+                                <option value="<?= htmlspecialchars($f['name'] . ' (' . $f['code'] . ')') ?>"></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </datalist>
                 </div>
             </div>
 

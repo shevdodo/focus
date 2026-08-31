@@ -28,6 +28,12 @@ class TransactionController {
         // Fetch patients list
         $patients = $this->recordModel->getAllPatients();
 
+        // Fetch Master Lens & Frame data
+        $lensModel = new \App\Models\MasterLens();
+        $frameModel = new \App\Models\MasterFrame();
+        $groupedLenses = $lensModel->getGroupedCatalog();
+        $masterFrames = $frameModel->getAll();
+
         // Summary stats for filtered view
         $summary = $this->recordModel->getSummaryStats($filters);
 
@@ -45,6 +51,13 @@ class TransactionController {
      */
     public function create(): void {
         $patients = $this->recordModel->getAllPatients();
+        
+        // Fetch Master Lens & Frame data
+        $lensModel = new \App\Models\MasterLens();
+        $frameModel = new \App\Models\MasterFrame();
+        $groupedLenses = $lensModel->getGroupedCatalog();
+        $masterFrames = $frameModel->getAll();
+
         $title = "Input Rekam Medis Pasien";
         $subtitle = "Formulir registrasi rekam medis & resep kacamata Klinik OPTIK FOCUS";
 
