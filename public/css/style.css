@@ -2039,6 +2039,11 @@ ion-icon {
 
 /* Print CSS Styles */
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 8mm 12mm 0 12mm;
+    }
+
     .sidebar, .bottom-nav, .topbar, .no-print {
         display: none !important;
     }
@@ -2056,7 +2061,7 @@ ion-icon {
         break-inside: avoid;
     }
 
-    /* Dedicated Styles for Prescription Slip Printing (Optik Focus) */
+    /* Dedicated Styles for Prescription Slip Printing (Optik Focus - Half A4 Page) */
     body.is-printing-prescription {
         background: #ffffff !important;
         margin: 0 !important;
@@ -2076,9 +2081,8 @@ ion-icon {
         background: transparent !important;
         backdrop-filter: none !important;
         padding: 0 !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
         width: 100% !important;
-        max-width: 100% !important;
         box-shadow: none !important;
         z-index: 99999 !important;
     }
@@ -2086,17 +2090,117 @@ ion-icon {
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
-        padding: 0 0.5cm !important;
+        padding: 0 !important;
         width: 100% !important;
-        max-width: 600px !important;
+        max-width: 180mm !important;
+        max-height: 135mm !important;
         margin: 0 auto !important;
         background: #ffffff !important;
-        page-break-inside: avoid;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        font-size: 10px !important;
+        line-height: 1.25 !important;
     }
 
-    @page {
-        size: auto;
-        margin: 10mm 15mm;
+    /* Kop */
+    body.is-printing-prescription #printableCard .rx-kop-section {
+        padding-bottom: 2px !important;
+        margin-bottom: 4px !important;
+        border-bottom: 2px solid #4f46e5 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-kop-title {
+        font-size: 15px !important;
+        margin: 0 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-kop-title ion-icon {
+        font-size: 16px !important;
+    }
+    body.is-printing-prescription #printableCard .rx-kop-sub {
+        font-size: 9px !important;
+        margin: 1px 0 0 0 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-no-exam {
+        font-size: 11px !important;
+    }
+
+    /* Metadata Pasien */
+    body.is-printing-prescription #printableCard .rx-meta-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 2px 20px !important;
+        margin-bottom: 4px !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Refraksi Section */
+    body.is-printing-prescription #printableCard .rx-section-title {
+        font-size: 10px !important;
+        margin: 0 0 2px 0 !important;
+        letter-spacing: 0.02em !important;
+    }
+    body.is-printing-prescription #printableCard .rx-refraction-table {
+        font-size: 10px !important;
+        margin-bottom: 4px !important;
+        border-collapse: collapse !important;
+    }
+    body.is-printing-prescription #printableCard .rx-refraction-table th,
+    body.is-printing-prescription #printableCard .rx-refraction-table td {
+        padding: 2px 3px !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+    }
+    body.is-printing-prescription #printableCard #rxPd {
+        font-size: 10px !important;
+    }
+
+    /* Lens & Frame */
+    body.is-printing-prescription #printableCard .rx-lens-frame-row {
+        font-size: 10px !important;
+        margin-bottom: 4px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Diagnosis Box */
+    body.is-printing-prescription #printableCard .rx-diagnosis-box {
+        font-size: 9.5px !important;
+        margin-bottom: 4px !important;
+        padding-left: 5px !important;
+        border-left: 2.5px solid #4f46e5 !important;
+        line-height: 1.25 !important;
+    }
+
+    /* Billing Breakdown Table */
+    body.is-printing-prescription #printableCard .rx-billing-table {
+        font-size: 10px !important;
+        margin-bottom: 4px !important;
+        line-height: 1.2 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-billing-table td {
+        padding: 0.5px 0 !important;
+    }
+
+    /* Signatures */
+    body.is-printing-prescription #printableCard .rx-signatures-row {
+        font-size: 10px !important;
+        margin-top: 2px !important;
+        line-height: 1.2 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-signature-space {
+        margin-top: 18px !important;
+    }
+
+    /* Cutline - Placed neatly at the half-page boundary */
+    body.is-printing-prescription #printableCard .print-half-a4-cutline {
+        display: block !important;
+        margin-top: 10px !important;
+        padding-top: 4px !important;
+        border-top: 1px dashed #94a3b8 !important;
+        border-bottom: none !important;
+        font-size: 8.5px !important;
+        color: #64748b !important;
+        text-align: center !important;
+        letter-spacing: 0.05em !important;
     }
 }
 
