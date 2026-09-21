@@ -2110,6 +2110,13 @@ ion-icon {
         border-bottom: 2px solid #0f172a !important;
         position: relative !important;
     }
+    body.is-printing-prescription #printableCard .rx-kop-image {
+        width: 100% !important;
+        max-width: 130mm !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
     body.is-printing-prescription #printableCard .rx-no-exam {
         font-size: 10px !important;
         position: absolute !important;
