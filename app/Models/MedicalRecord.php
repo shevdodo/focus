@@ -187,16 +187,22 @@ class MedicalRecord {
                     patient_id, record_number, exam_date, examiner_name,
                     od_sph, od_cyl, od_axis, od_add, od_va,
                     os_sph, os_cyl, os_axis, os_add, os_va,
-                    pd, lens_type, frame_code, diagnosis, notes, total_price,
+                    pd, lens_type, frame_code, diagnosis, notes,
+                    lens_price, frame_price, total_price,
                     bpjs_class, bpjs_number, created_at
                 ) VALUES (
                     :patient_id, :record_number, :exam_date, :examiner_name,
                     :od_sph, :od_cyl, :od_axis, :od_add, :od_va,
                     :os_sph, :os_cyl, :os_axis, :os_add, :os_va,
-                    :pd, :lens_type, :frame_code, :diagnosis, :notes, :total_price,
+                    :pd, :lens_type, :frame_code, :diagnosis, :notes,
+                    :lens_price, :frame_price, :total_price,
                     :bpjs_class, :bpjs_number, :created_at
                 )
             ");
+
+            $lensPrice = (float)($data['lens_price'] ?? 0);
+            $framePrice = (float)($data['frame_price'] ?? 0);
+            $totalPrice = (float)($data['total_price'] ?? ($lensPrice + $framePrice));
 
             $stmtR->execute([
                 ':patient_id' => $patientId,
@@ -218,7 +224,9 @@ class MedicalRecord {
                 ':frame_code' => trim($data['frame_code'] ?? ''),
                 ':diagnosis' => $diagnosisStr,
                 ':notes' => trim($data['notes'] ?? ''),
-                ':total_price' => (float)($data['total_price'] ?? 0),
+                ':lens_price' => $lensPrice,
+                ':frame_price' => $framePrice,
+                ':total_price' => $totalPrice,
                 ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
                 ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
                 ':created_at' => date('Y-m-d H:i:s')
@@ -248,6 +256,10 @@ class MedicalRecord {
                 }
             }
 
+            $lensPrice = (float)($data['lens_price'] ?? 0);
+            $framePrice = (float)($data['frame_price'] ?? 0);
+            $totalPrice = isset($data['total_price']) && $data['total_price'] !== '' ? (float)$data['total_price'] : ($lensPrice + $framePrice);
+
             $stmt = $this->db->prepare("
                 UPDATE medical_records SET
                     exam_date = :exam_date,
@@ -267,6 +279,8 @@ class MedicalRecord {
                     frame_code = :frame_code,
                     diagnosis = :diagnosis,
                     notes = :notes,
+                    lens_price = :lens_price,
+                    frame_price = :frame_price,
                     total_price = :total_price,
                     bpjs_class = :bpjs_class,
                     bpjs_number = :bpjs_number
@@ -291,7 +305,9 @@ class MedicalRecord {
                 ':frame_code' => $data['frame_code'],
                 ':diagnosis' => $diagnosisStr,
                 ':notes' => $data['notes'] ?? '',
-                ':total_price' => (float)$data['total_price'],
+                ':lens_price' => $lensPrice,
+                ':frame_price' => $framePrice,
+                ':total_price' => $totalPrice,
                 ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
                 ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
                 ':id' => $id

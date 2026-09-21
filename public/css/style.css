@@ -2055,5 +2055,49 @@ ion-icon {
         border: 1px solid #ddd !important;
         break-inside: avoid;
     }
+
+    /* Dedicated Styles for Prescription Slip Printing (Optik Focus) */
+    body.is-printing-prescription {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #0f172a !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    body.is-printing-prescription .app-container > *:not(.main-content),
+    body.is-printing-prescription .main-content > *:not(.content-body),
+    body.is-printing-prescription .content-body > *:not(#printPrescriptionModal) {
+        display: none !important;
+    }
+    body.is-printing-prescription #printPrescriptionModal {
+        display: block !important;
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        z-index: 99999 !important;
+    }
+    body.is-printing-prescription #printableCard {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 0.5cm !important;
+        width: 100% !important;
+        max-width: 600px !important;
+        margin: 0 auto !important;
+        background: #ffffff !important;
+        page-break-inside: avoid;
+    }
+
+    @page {
+        size: auto;
+        margin: 10mm 15mm;
+    }
 }
+
 

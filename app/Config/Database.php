@@ -92,6 +92,14 @@ class Database {
             $db->exec("ALTER TABLE medical_records ADD COLUMN bpjs_number TEXT;");
         } catch (\PDOException $e) {}
 
+        try {
+            $db->exec("ALTER TABLE medical_records ADD COLUMN lens_price REAL DEFAULT 0.00;");
+        } catch (\PDOException $e) {}
+
+        try {
+            $db->exec("ALTER TABLE medical_records ADD COLUMN frame_price REAL DEFAULT 0.00;");
+        } catch (\PDOException $e) {}
+
         // Populate existing medical_records with patient's BPJS info if medical_records default was 'Non-BPJS'
         try {
             $db->exec("
@@ -133,6 +141,8 @@ class Database {
                 frame_code TEXT,
                 diagnosis TEXT,
                 notes TEXT,
+                lens_price REAL DEFAULT 0.00,
+                frame_price REAL DEFAULT 0.00,
                 total_price REAL DEFAULT 0.00,
                 created_at TEXT NOT NULL,
                 FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE

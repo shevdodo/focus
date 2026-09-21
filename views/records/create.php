@@ -348,7 +348,7 @@
             </div>
 
             <div class="row-layout">
-                <div class="col-4 mb-3">
+                <div class="col-6 mb-3">
                     <div class="form-group">
                         <label for="lens_type_select" style="font-weight: 600;">Jenis Lensa Kacamata <span class="text-muted" style="font-weight: normal; font-size: 0.8rem;">(Opsional)</span></label>
                         <select id="lens_type_select" class="form-control" style="font-size: 0.95rem;" onchange="handleLensTypeChange('create')">
@@ -402,7 +402,7 @@
                     </div>
                 </div>
 
-                <div class="col-4 mb-3">
+                <div class="col-6 mb-3">
                     <div class="form-group">
                         <label for="frame_code" style="font-weight: 600;">Kode / Merk Frame</label>
                         <input type="text" name="frame_code" id="frame_code" class="form-control" placeholder="Contoh: Ray-Ban RB5228 Matte Black" list="master_frame_suggestions">
@@ -413,6 +413,28 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </datalist>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-layout">
+                <div class="col-4 mb-3">
+                    <div class="form-group">
+                        <label for="lens_price" style="font-weight: 600;">1. Biaya Lensa (Rp)</label>
+                        <div class="input-currency-wrapper">
+                            <span class="currency-prefix">Rp</span>
+                            <input type="number" name="lens_price" id="lens_price" class="form-control" placeholder="0" min="0" oninput="recalcCreateTotal()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <div class="form-group">
+                        <label for="frame_price" style="font-weight: 600;">2. Biaya Kaca / Frame (Rp)</label>
+                        <div class="input-currency-wrapper">
+                            <span class="currency-prefix">Rp</span>
+                            <input type="number" name="frame_price" id="frame_price" class="form-control" placeholder="0" min="0" oninput="recalcCreateTotal()">
+                        </div>
                     </div>
                 </div>
 
@@ -586,6 +608,12 @@ function updateFinalLensType(mode) {
     if (select.value === 'CUSTOM') {
         finalInput.value = customInput.value.trim();
     }
+}
+
+function recalcCreateTotal() {
+    const lens = parseFloat(document.getElementById('lens_price').value) || 0;
+    const frame = parseFloat(document.getElementById('frame_price').value) || 0;
+    document.getElementById('total_price').value = lens + frame;
 }
 
 // Close search dropdown when clicking outside

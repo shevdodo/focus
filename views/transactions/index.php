@@ -453,9 +453,19 @@ if (!function_exists('formatRupiah')) {
                 </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label for="edit_total_price">Total Biaya (Rupiah)</label>
-                <input type="number" name="total_price" id="edit_total_price" class="form-control">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;" class="mb-3">
+                <div class="form-group">
+                    <label for="edit_lens_price">Biaya Lensa (Rp)</label>
+                    <input type="number" name="lens_price" id="edit_lens_price" class="form-control" placeholder="0" oninput="recalcEditModalTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="edit_frame_price">Biaya Kaca (Rp)</label>
+                    <input type="number" name="frame_price" id="edit_frame_price" class="form-control" placeholder="0" oninput="recalcEditModalTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="edit_total_price">Total Biaya (Rp)</label>
+                    <input type="number" name="total_price" id="edit_total_price" class="form-control" placeholder="0">
+                </div>
             </div>
 
             <div style="display: flex; gap: 0.75rem; justify-content: flex-end; border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
@@ -467,84 +477,211 @@ if (!function_exists('formatRupiah')) {
 </div>
 
 <!-- MODAL PRINT RESEP KACAMATA (OPTIK FOCUS PRESCRIPTION CARD) -->
-<div id="printPrescriptionModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 1100; align-items: center; justify-content: center; padding: 1.5rem;">
-    <div style="background: #ffffff; color: #0f172a; width: 100%; max-width: 540px; border-radius: 16px; padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);" id="printableCard">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #6366f1; padding-bottom: 1rem; margin-bottom: 1.25rem;">
+<div id="printPrescriptionModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); z-index: 1100; align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: #ffffff; color: #0f172a; width: 100%; max-width: 540px; border-radius: 12px; padding: 2.2rem 2.2rem 1.8rem 2.2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif; position: relative;" id="printableCard">
+        
+        <!-- HEADER KOP RESEP -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2.5px solid #4f46e5; padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
             <div>
-                <h2 style="color: #6366f1; font-size: 1.5rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-                    <ion-icon name="glasses-outline"></ion-icon> OPTIK FOCUS
+                <h2 style="color: #1e3a8a; font-size: 1.5rem; font-weight: 900; margin: 0; display: flex; align-items: center; gap: 0.5rem; letter-spacing: -0.01em;">
+                    <ion-icon name="glasses-outline" style="font-size: 1.7rem; color: #4338ca; stroke-width: 38;"></ion-icon>
+                    <span>OPTIK FOCUS</span>
                 </h2>
-                <p style="font-size: 0.8rem; color: #64748b; margin: 0.2rem 0 0 0;">Klinik & Layanan Rekam Medis Kacamata Profesional</p>
+                <p style="font-size: 0.78rem; color: #475569; margin: 0.35rem 0 0 0; font-weight: 500;">Klinik &amp; Layanan Rekam Medis Kacamata Profesional</p>
             </div>
-            <div style="text-align: right;">
-                <span style="font-size: 0.75rem; font-weight: 700; background: #e0e7ff; color: #4f46e5; padding: 0.25rem 0.5rem; border-radius: 4px;" id="rxNoExam">EXAM-000</span>
+            <div style="text-align: right; padding-top: 0.2rem;">
+                <span style="font-size: 0.88rem; font-weight: 800; color: #2563eb; letter-spacing: 0.02em;" id="rxNoExam">REC-20260807-512</span>
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: #f8fafc; padding: 0.85rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1.25rem;">
-            <div><strong>Nama Pasien:</strong> <span id="rxPatientName">-</span></div>
-            <div><strong>No. RM:</strong> <span id="rxMrNumber">-</span></div>
-            <div><strong>Tanggal:</strong> <span id="rxExamDate">-</span></div>
-            <div><strong>Pemeriksa:</strong> <span id="rxExaminer">-</span></div>
+        <!-- METADATA PASIEN & PEMERIKSAAN (2 KOLOM BERSIH TANPA BOX ABU) -->
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.65rem 1.25rem; font-size: 0.86rem; margin-bottom: 1.25rem; color: #1e293b;">
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">Nama Pasien:</strong> 
+                <span id="rxPatientName" style="font-weight: 500; color: #334155;">-</span>
+            </div>
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">No. RM:</strong> 
+                <span id="rxMrNumber" style="font-weight: 500; color: #334155;">-</span>
+            </div>
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">Tanggal:</strong> 
+                <span id="rxExamDate" style="font-weight: 500; color: #334155;">-</span>
+            </div>
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">Pemeriksa:</strong> 
+                <span id="rxExaminer" style="font-weight: 500; color: #334155;">-</span>
+            </div>
         </div>
 
-        <h4 style="font-size: 0.9rem; font-weight: 700; color: #334155; margin-bottom: 0.5rem;">UKURAN REFRAKSI MATA</h4>
-        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; margin-bottom: 1.25rem; border: 1px solid #cbd5e1;">
+        <!-- TABEL UKURAN REFRAKSI MATA -->
+        <h4 style="font-size: 0.86rem; font-weight: 800; color: #1e293b; margin: 0 0 0.5rem 0; letter-spacing: 0.02em; text-transform: uppercase;">UKURAN REFRAKSI MATA</h4>
+        
+        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.84rem; margin-bottom: 0.85rem; border: 1px solid #cbd5e1;">
             <thead>
-                <tr style="background: #f1f5f9; font-weight: 700;">
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1; text-align: left;">MATA</th>
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1;">SPH</th>
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1;">CYL</th>
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1;">AXIS</th>
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1;">ADD</th>
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1;">VA</th>
-                    <th style="padding: 0.5rem; border: 1px solid #cbd5e1;">PD</th>
+                <tr style="background: #ffffff; font-weight: 800; color: #0f172a;">
+                    <th style="padding: 0.45rem 0.5rem; border: 1px solid #cbd5e1; text-align: left; width: 22%;">MATA</th>
+                    <th style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; width: 13%;">SPH</th>
+                    <th style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; width: 13%;">CYL</th>
+                    <th style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; width: 13%;">AXIS</th>
+                    <th style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; width: 13%;">ADD</th>
+                    <th style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; width: 12%;">VA</th>
+                    <th style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; width: 14%;">PD</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700; color: #4f46e5; text-align: left;">OD (Kanan)</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOdSph">0.00</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOdCyl">0.00</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOdAxis">0°</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOdAdd">0.00</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOdVa">6/6</td>
-                    <td rowspan="2" style="padding: 0.5rem; border: 1px solid #cbd5e1; vertical-align: middle; font-weight: 700; background: #faf5ff; color: #7e22ce;" id="rxPd">62 mm</td>
+                    <td style="padding: 0.45rem 0.5rem; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb; text-align: left;">OD (Kanan)</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdSph">+1.00</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdCyl">+0.00</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdAxis">0°</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdAdd">+2.00</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdVa">6/6</td>
+                    <td rowspan="2" style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; vertical-align: middle; font-weight: 800; color: #7c3aed; font-size: 0.9rem;" id="rxPd">0 mm</td>
                 </tr>
                 <tr>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700; color: #db2777; text-align: left;">OS (Kiri)</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOsSph">0.00</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOsCyl">0.00</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOsAxis">0°</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOsAdd">0.00</td>
-                    <td style="padding: 0.5rem; border: 1px solid #cbd5e1;" id="rxOsVa">6/6</td>
+                    <td style="padding: 0.45rem 0.5rem; border: 1px solid #cbd5e1; font-weight: 700; color: #db2777; text-align: left;">OS (Kiri)</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsSph">-1.50</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsCyl">+0.00</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsAxis">0°</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsAdd">+2.00</td>
+                    <td style="padding: 0.45rem 0.3rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsVa">6/6</td>
                 </tr>
             </tbody>
         </table>
 
-        <div style="font-size: 0.85rem; color: #334155; margin-bottom: 0.85rem; display: flex; justify-content: space-between;">
-            <div><strong>Jenis Lensa:</strong> <span id="rxLensType">-</span></div>
-            <div><strong>Kode Frame:</strong> <span id="rxFrameCode">-</span></div>
-        </div>
-
-        <div style="font-size: 0.82rem; color: #334155; margin-bottom: 1.25rem; background: #f8fafc; padding: 0.75rem; border-radius: 8px; border-left: 3px solid #6366f1;">
-            <div style="margin-bottom: 0.35rem;"><strong>Diagnosa Refraksi:</strong> <span id="rxDiagnosis" style="font-weight: 600;">-</span></div>
-            <div><strong>Anamnesa / Catatan:</strong> <span id="rxNotes">-</span></div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 1.5rem;">
-            <div style="font-size: 0.75rem; color: #94a3b8;">
-                *Kartu resep kacamata sah dari Optik Focus
+        <!-- JENIS LENSA & KODE FRAME -->
+        <div style="font-size: 0.85rem; color: #1e293b; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">Jenis Lensa:</strong> 
+                <span id="rxLensType" style="color: #334155;">-</span>
             </div>
-            <div style="text-align: center;">
-                <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 2.5rem;">Pemeriksa / Optometris</div>
-                <div style="font-weight: 700; border-top: 1px solid #0f172a; padding-top: 0.2rem; min-width: 140px;" id="rxSignExaminer">dr. Optometris</div>
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">Kode Frame:</strong> 
+                <span id="rxFrameCode" style="color: #334155;">-</span>
             </div>
         </div>
 
-        <div class="no-print" style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+        <!-- DIAGNOSA & ANAMNESA DENGAN AKSEN GARIS BIRU DI KIRI -->
+        <div style="font-size: 0.83rem; color: #1e293b; margin-bottom: 1.1rem; border-left: 3.5px solid #4f46e5; padding-left: 0.75rem; line-height: 1.5;">
+            <div style="margin-bottom: 0.3rem;">
+                <strong style="color: #0f172a; font-weight: 800;">Diagnosa Refraksi:</strong> 
+                <span id="rxDiagnosis" style="font-weight: 600; color: #334155;">-</span>
+            </div>
+            <div>
+                <strong style="color: #0f172a; font-weight: 800;">Anamnesa / Catatan:</strong> 
+                <span id="rxNotes" style="color: #334155;">-</span>
+            </div>
+        </div>
+
+        <!-- RINCIAN BIAYA & SUBSIDI BPJS (ITEMIZED BILLING) -->
+        <div style="font-size: 0.85rem; color: #0f172a; margin-bottom: 1.75rem; font-family: inherit;">
+            <table style="width: 100%; border-collapse: collapse; border: none;">
+                <tbody>
+                    <tr>
+                        <td style="padding: 0.15rem 0; width: 42%; text-align: left; vertical-align: top;">1. lensa</td>
+                        <td style="padding: 0.15rem 0; width: 22%; text-align: left;"></td>
+                        <td style="padding: 0.15rem 0; width: 36%; text-align: left; white-space: nowrap;">
+                            <span style="display: inline-block; width: 12px;">:</span>
+                            <span id="rxLensPrice">200.000,-</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.15rem 0; text-align: left; vertical-align: top;">2. Kaca</td>
+                        <td style="padding: 0.15rem 0; text-align: left;"></td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">
+                            <span style="display: inline-block; width: 12px;">:</span>
+                            <span id="rxFramePrice">100.000,-</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.15rem 0;"></td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">Total</td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">
+                            <span style="display: inline-block; width: 12px;">:</span>
+                            <span id="rxTotalPrice">300.000,-</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.15rem 0;"></td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">Di bayar BPJS</td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">
+                            <span style="display: inline-block; width: 12px;">:</span>
+                            <span id="rxBpjsCover">165.000,-</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.15rem 0;"></td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">Total bayar</td>
+                        <td style="padding: 0.15rem 0; text-align: left; white-space: nowrap;">
+                            <span style="display: inline-block; width: 12px;">:</span>
+                            <span id="rxNetPayable">135.000,-</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TANDA TANGAN (PESERTA & OPTIC FOCUS SRAGEN) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.85rem; color: #0f172a; margin-top: 1rem;">
+            <!-- Kolom Kiri: Peserta -->
+            <div style="text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div>Peserta</div>
+                </div>
+                <div style="margin-top: 3.5rem;">
+                    ( <span id="rxSignPatient">Sri Partini</span> )
+                </div>
+            </div>
+
+            <!-- Kolom Kanan: Sragen & OPTIC FOCUS -->
+            <div style="text-align: left; display: flex; flex-direction: column; justify-content: space-between; padding-left: 1.5rem;">
+                <div>
+                    <div id="rxSignDatePlace">Sragen, 07 Agustus 2026</div>
+                    <div style="font-weight: 500; margin-top: 0.2rem;">OPTIC FOCUS</div>
+                </div>
+                <div style="margin-top: 3.5rem;">
+                    ( <span id="rxSignStaff">Atik DH</span> )
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL PENGATURAN CETAK CEPAT (HANYA DITAMPILKAN DI LAYAR / NO-PRINT) -->
+        <div class="no-print" style="margin-top: 1.75rem; border-top: 1px dashed #cbd5e1; padding-top: 1rem; background: #f8fafc; border-radius: 8px; padding: 0.85rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 0.6rem; display: flex; align-items: center; justify-content: space-between;">
+                <span>⚙️ Penyesuaian Nilai Biaya &amp; Tanda Tangan Cetak:</span>
+                <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">*Dapat disesuaikan sebelum dicetak</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; font-size: 0.78rem; margin-bottom: 0.5rem;">
+                <div>
+                    <label style="font-weight: 600; color: #334155;">1. Biaya Lensa (Rp)</label>
+                    <input type="number" id="cfgLensPrice" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
+                </div>
+                <div>
+                    <label style="font-weight: 600; color: #334155;">2. Biaya Kaca (Rp)</label>
+                    <input type="number" id="cfgFramePrice" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
+                </div>
+                <div>
+                    <label style="font-weight: 600; color: #334155;">Di bayar BPJS (Rp)</label>
+                    <input type="number" id="cfgBpjsCover" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.78rem;">
+                <div>
+                    <label style="font-weight: 600; color: #334155;">Kota &amp; Tanggal Tanda Tangan</label>
+                    <input type="text" id="cfgSignDatePlace" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="document.getElementById('rxSignDatePlace').textContent = this.value">
+                </div>
+                <div>
+                    <label style="font-weight: 600; color: #334155;">Nama Petugas Optik Focus</label>
+                    <input type="text" id="cfgSignStaff" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" value="Atik DH" oninput="document.getElementById('rxSignStaff').textContent = this.value">
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTION BUTTONS (NO-PRINT) -->
+        <div class="no-print" style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
             <button type="button" class="btn btn-secondary" onclick="closePrintModal()">Tutup</button>
-            <button type="button" class="btn btn-primary" onclick="window.print()">
+            <button type="button" class="btn btn-primary" onclick="triggerPrintPrescription()">
                 <ion-icon name="print-outline" class="mr-1"></ion-icon>
                 Cetak Dokumen
             </button>
@@ -675,6 +812,8 @@ function openEditRecordModal(rec) {
     }
 
     setInputValue('edit_frame_code', rec.frame_code || '');
+    setInputValue('edit_lens_price', rec.lens_price !== undefined && rec.lens_price !== null ? rec.lens_price : '');
+    setInputValue('edit_frame_price', rec.frame_price !== undefined && rec.frame_price !== null ? rec.frame_price : '');
     setInputValue('edit_total_price', rec.total_price !== undefined && rec.total_price !== null ? rec.total_price : '');
     
     const diagStr = rec.diagnosis || '';
@@ -688,6 +827,12 @@ function openEditRecordModal(rec) {
     if (modal) {
         modal.style.display = 'flex';
     }
+}
+
+function recalcEditModalTotal() {
+    const lens = parseFloat(document.getElementById('edit_lens_price').value) || 0;
+    const frame = parseFloat(document.getElementById('edit_frame_price').value) || 0;
+    document.getElementById('edit_total_price').value = lens + frame;
 }
 
 function handleLensTypeChange(mode) {
@@ -722,36 +867,131 @@ function closeEditRecordModal() {
     document.getElementById('editRecordModal').style.display = 'none';
 }
 
+function formatRupiahDash(amount) {
+    const num = Math.round(Number(amount) || 0);
+    return num.toLocaleString('id-ID') + ',-';
+}
+
+function getIndonesianDateStr(dateStr) {
+    if (!dateStr) return '';
+    try {
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            const y = parts[0];
+            const m = parseInt(parts[1], 10);
+            const d = parseInt(parts[2], 10);
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return (d < 10 ? '0' + d : d) + ' ' + (months[m - 1] || '') + ' ' + y;
+        }
+    } catch(e) {}
+    return dateStr;
+}
+
+function getBpjsSubsidy(bpjsClass) {
+    if (!bpjsClass) return 0;
+    const str = String(bpjsClass).toLowerCase();
+    if (str.includes('kelas 1') || str === '1') return 330000;
+    if (str.includes('kelas 2') || str === '2') return 220000;
+    if (str.includes('kelas 3') || str === '3') return 165000;
+    return 0;
+}
+
+let currentPrintRecord = null;
+
 function printPrescription(rec) {
-    document.getElementById('rxNoExam').textContent = rec.record_number;
-    document.getElementById('rxPatientName').textContent = rec.patient_name;
-    document.getElementById('rxMrNumber').textContent = rec.mr_number;
-    document.getElementById('rxExamDate').textContent = rec.exam_date;
-    document.getElementById('rxExaminer').textContent = rec.examiner_name;
+    currentPrintRecord = rec;
 
-    document.getElementById('rxOdSph').textContent = (rec.od_sph >= 0 ? '+' : '') + parseFloat(rec.od_sph).toFixed(2);
-    document.getElementById('rxOdCyl').textContent = (rec.od_cyl >= 0 ? '+' : '') + parseFloat(rec.od_cyl).toFixed(2);
-    document.getElementById('rxOdAxis').textContent = rec.od_axis + '°';
-    document.getElementById('rxOdAdd').textContent = (rec.od_add >= 0 ? '+' : '') + parseFloat(rec.od_add).toFixed(2);
-    document.getElementById('rxOdVa').textContent = rec.od_va;
+    document.getElementById('rxNoExam').textContent = rec.record_number || 'REC-000';
+    document.getElementById('rxPatientName').textContent = rec.patient_name || '-';
+    document.getElementById('rxMrNumber').textContent = rec.mr_number || '-';
+    document.getElementById('rxExamDate').textContent = rec.exam_date || '-';
+    document.getElementById('rxExaminer').textContent = rec.examiner_name || '-';
 
-    document.getElementById('rxOsSph').textContent = (rec.os_sph >= 0 ? '+' : '') + parseFloat(rec.os_sph).toFixed(2);
-    document.getElementById('rxOsCyl').textContent = (rec.os_cyl >= 0 ? '+' : '') + parseFloat(rec.os_cyl).toFixed(2);
-    document.getElementById('rxOsAxis').textContent = rec.os_axis + '°';
-    document.getElementById('rxOsAdd').textContent = (rec.os_add >= 0 ? '+' : '') + parseFloat(rec.os_add).toFixed(2);
-    document.getElementById('rxOsVa').textContent = rec.os_va;
+    document.getElementById('rxOdSph').textContent = (parseFloat(rec.od_sph) >= 0 ? '+' : '') + parseFloat(rec.od_sph || 0).toFixed(2);
+    document.getElementById('rxOdCyl').textContent = (parseFloat(rec.od_cyl) >= 0 ? '+' : '') + parseFloat(rec.od_cyl || 0).toFixed(2);
+    document.getElementById('rxOdAxis').textContent = (rec.od_axis || 0) + '°';
+    document.getElementById('rxOdAdd').textContent = (parseFloat(rec.od_add) >= 0 ? '+' : '') + parseFloat(rec.od_add || 0).toFixed(2);
+    document.getElementById('rxOdVa').textContent = rec.od_va || '6/6';
 
-    document.getElementById('rxPd').textContent = rec.pd + ' mm';
-    document.getElementById('rxLensType').textContent = rec.lens_type;
+    document.getElementById('rxOsSph').textContent = (parseFloat(rec.os_sph) >= 0 ? '+' : '') + parseFloat(rec.os_sph || 0).toFixed(2);
+    document.getElementById('rxOsCyl').textContent = (parseFloat(rec.os_cyl) >= 0 ? '+' : '') + parseFloat(rec.os_cyl || 0).toFixed(2);
+    document.getElementById('rxOsAxis').textContent = (rec.os_axis || 0) + '°';
+    document.getElementById('rxOsAdd').textContent = (parseFloat(rec.os_add) >= 0 ? '+' : '') + parseFloat(rec.os_add || 0).toFixed(2);
+    document.getElementById('rxOsVa').textContent = rec.os_va || '6/6';
+
+    document.getElementById('rxPd').textContent = (rec.pd !== null && rec.pd !== undefined && rec.pd !== '' ? rec.pd : '62') + ' mm';
+    document.getElementById('rxLensType').textContent = rec.lens_type || '-';
     document.getElementById('rxFrameCode').textContent = rec.frame_code || '-';
     document.getElementById('rxDiagnosis').textContent = rec.diagnosis || '-';
     document.getElementById('rxNotes').textContent = rec.notes || '-';
-    document.getElementById('rxSignExaminer').textContent = rec.examiner_name;
+
+    // Signatures
+    document.getElementById('rxSignPatient').textContent = rec.patient_name || '-';
+    const dateFormatted = getIndonesianDateStr(rec.exam_date) || getIndonesianDateStr(new Date().toISOString().slice(0, 10));
+    const defaultSignDatePlace = 'Sragen, ' + dateFormatted;
+    document.getElementById('rxSignDatePlace').textContent = defaultSignDatePlace;
+    document.getElementById('cfgSignDatePlace').value = defaultSignDatePlace;
+
+    const defaultStaff = 'Atik DH';
+    document.getElementById('rxSignStaff').textContent = defaultStaff;
+    document.getElementById('cfgSignStaff').value = defaultStaff;
+
+    // Pricing calculation
+    let lensPrice = parseFloat(rec.lens_price || 0);
+    let framePrice = parseFloat(rec.frame_price || 0);
+    let totalPrice = parseFloat(rec.total_price || 0);
+
+    // If lens_price and frame_price aren't set separately yet, distribute or default sensibly
+    if (lensPrice <= 0 && framePrice <= 0 && totalPrice > 0) {
+        lensPrice = Math.round((totalPrice * 2 / 3) / 1000) * 1000;
+        framePrice = totalPrice - lensPrice;
+    } else if (totalPrice <= 0) {
+        totalPrice = lensPrice + framePrice;
+    }
+
+    let bpjsSubsidy = getBpjsSubsidy(rec.bpjs_class || rec.patient_bpjs_class);
+
+    document.getElementById('cfgLensPrice').value = lensPrice;
+    document.getElementById('cfgFramePrice').value = framePrice;
+    document.getElementById('cfgBpjsCover').value = bpjsSubsidy;
+
+    recalcPrintBilling();
 
     document.getElementById('printPrescriptionModal').style.display = 'flex';
 }
 
+function recalcPrintBilling() {
+    const lens = parseFloat(document.getElementById('cfgLensPrice').value) || 0;
+    const frame = parseFloat(document.getElementById('cfgFramePrice').value) || 0;
+    const total = lens + frame;
+    const bpjs = parseFloat(document.getElementById('cfgBpjsCover').value) || 0;
+    const net = Math.max(0, total - bpjs);
+
+    document.getElementById('rxLensPrice').textContent = formatRupiahDash(lens);
+    document.getElementById('rxFramePrice').textContent = formatRupiahDash(frame);
+    document.getElementById('rxTotalPrice').textContent = formatRupiahDash(total);
+    document.getElementById('rxBpjsCover').textContent = formatRupiahDash(bpjs);
+    document.getElementById('rxNetPayable').textContent = formatRupiahDash(net);
+}
+
+function triggerPrintPrescription() {
+    document.body.classList.add('is-printing-prescription');
+    window.print();
+}
+
+window.addEventListener('beforeprint', () => {
+    const modal = document.getElementById('printPrescriptionModal');
+    if (modal && modal.style.display === 'flex') {
+        document.body.classList.add('is-printing-prescription');
+    }
+});
+
+window.addEventListener('afterprint', () => {
+    document.body.classList.remove('is-printing-prescription');
+});
+
 function closePrintModal() {
+    document.body.classList.remove('is-printing-prescription');
     document.getElementById('printPrescriptionModal').style.display = 'none';
 }
 
