@@ -92,6 +92,7 @@ if (!function_exists('formatRupiah')) {
     }
     body.is-printing-prescription #printableCard .rx-section-title {
         font-size: 10px !important;
+        font-weight: 800 !important;
         margin: 0 0 2px 0 !important;
         letter-spacing: 0.02em !important;
     }
@@ -100,7 +101,12 @@ if (!function_exists('formatRupiah')) {
         margin-bottom: 4px !important;
         border-collapse: collapse !important;
     }
-    body.is-printing-prescription #printableCard .rx-refraction-table th,
+    body.is-printing-prescription #printableCard .rx-refraction-table th {
+        font-weight: 700 !important;
+        padding: 2px 3px !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+    }
     body.is-printing-prescription #printableCard .rx-refraction-table td {
         padding: 2px 3px !important;
         font-size: 10px !important;
@@ -108,6 +114,8 @@ if (!function_exists('formatRupiah')) {
     }
     body.is-printing-prescription #printableCard #rxPd {
         font-size: 10px !important;
+        font-weight: 800 !important;
+        color: #7c3aed !important;
     }
     body.is-printing-prescription #printableCard .rx-lens-frame-row {
         font-size: 10px !important;
@@ -129,6 +137,9 @@ if (!function_exists('formatRupiah')) {
     body.is-printing-prescription #printableCard .rx-billing-table td {
         padding: 0.5px 0 !important;
     }
+    body.is-printing-prescription #printableCard #rxNetPayable {
+        font-weight: 800 !important;
+    }
     body.is-printing-prescription #printableCard .rx-signatures-row {
         font-size: 10px !important;
         margin-top: 2px !important;
@@ -136,6 +147,7 @@ if (!function_exists('formatRupiah')) {
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
         margin-top: 18px !important;
+        font-weight: 700 !important;
     }
     body.is-printing-prescription #printableCard .print-half-a4-cutline {
         display: block !important;
@@ -600,7 +612,7 @@ if (!function_exists('formatRupiah')) {
                     <input type="number" name="lens_price" id="edit_lens_price" class="form-control" placeholder="0" oninput="recalcEditModalTotal()">
                 </div>
                 <div class="form-group">
-                    <label for="edit_frame_price">Biaya Kaca (Rp)</label>
+                    <label for="edit_frame_price">Biaya Frame (Rp)</label>
                     <input type="number" name="frame_price" id="edit_frame_price" class="form-control" placeholder="0" oninput="recalcEditModalTotal()">
                 </div>
                 <div class="form-group">
@@ -619,7 +631,7 @@ if (!function_exists('formatRupiah')) {
 
 <!-- MODAL PRINT RESEP KACAMATA (OPTIK FOCUS PRESCRIPTION CARD) -->
 <div id="printPrescriptionModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); z-index: 1100; align-items: center; justify-content: center; padding: 1.25rem; overflow-y: auto;">
-    <div style="background: #ffffff; color: #0f172a; width: 100%; max-width: 520px; border-radius: 10px; padding: 1.2rem 1.4rem 1rem 1.4rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif; position: relative;" id="printableCard" class="printable-prescription-card">
+    <div style="background: #ffffff; color: #0f172a; width: 100%; max-width: 520px; border-radius: 10px; padding: 1.2rem 1.4rem 1rem 1.4rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif; position: relative; -webkit-font-smoothing: antialiased;" id="printableCard" class="printable-prescription-card">
         
         <!-- HEADER KOP RESEP -->
         <div class="rx-kop-section" style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #4f46e5; padding-bottom: 0.35rem; margin-bottom: 0.6rem;">
@@ -638,29 +650,29 @@ if (!function_exists('formatRupiah')) {
         <!-- METADATA PASIEN & PEMERIKSAAN (2 KOLOM BERSIH) -->
         <div class="rx-meta-grid" style="display: grid; grid-template-columns: 1fr 1.15fr; gap: 0.3rem 1rem; font-size: 0.8rem; margin-bottom: 0.6rem; color: #1e293b;">
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">Nama Pasien:</strong> 
+                <strong style="color: #0f172a; font-weight: 700;">Nama Pasien:</strong> 
                 <span id="rxPatientName" style="font-weight: 500; color: #334155;">-</span>
             </div>
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">No. RM:</strong> 
-                <span id="rxMrNumber" style="font-weight: 500; color: #334155;">-</span>
+                <strong style="color: #0f172a; font-weight: 700;">No. RM:</strong> 
+                <span id="rxMrNumber" style="font-weight: 600; color: #334155;">-</span>
             </div>
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">Tanggal:</strong> 
+                <strong style="color: #0f172a; font-weight: 700;">Tanggal:</strong> 
                 <span id="rxExamDate" style="font-weight: 500; color: #334155;">-</span>
             </div>
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">Pemeriksa:</strong> 
+                <strong style="color: #0f172a; font-weight: 700;">Pemeriksa:</strong> 
                 <span id="rxExaminer" style="font-weight: 500; color: #334155;">-</span>
             </div>
         </div>
 
         <!-- TABEL UKURAN REFRAKSI MATA -->
-        <h4 class="rx-section-title" style="font-size: 0.78rem; font-weight: 800; color: #1e293b; margin: 0 0 0.3rem 0; letter-spacing: 0.02em; text-transform: uppercase;">UKURAN REFRAKSI MATA</h4>
+        <h4 class="rx-section-title" style="font-size: 0.78rem; font-weight: 800; color: #0f172a; margin: 0 0 0.3rem 0; letter-spacing: 0.02em; text-transform: uppercase;">UKURAN REFRAKSI MATA</h4>
         
         <table class="rx-refraction-table" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.76rem; margin-bottom: 0.5rem; border: 1px solid #cbd5e1;">
             <thead>
-                <tr style="background: #ffffff; font-weight: 800; color: #0f172a;">
+                <tr style="background: #ffffff; font-weight: 700; color: #0f172a;">
                     <th style="padding: 0.3rem 0.4rem; border: 1px solid #cbd5e1; text-align: left; width: 22%;">MATA</th>
                     <th style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; width: 13%;">SPH</th>
                     <th style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; width: 13%;">CYL</th>
@@ -673,20 +685,20 @@ if (!function_exists('formatRupiah')) {
             <tbody>
                 <tr>
                     <td style="padding: 0.3rem 0.4rem; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb; text-align: left;">OD (Kanan)</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdSph">+1.00</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdCyl">+0.00</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdAxis">0°</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdAdd">+2.00</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOdVa">6/6</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOdSph">+1.00</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOdCyl">+0.00</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOdAxis">0°</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOdAdd">+2.00</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOdVa">6/6</td>
                     <td rowspan="2" style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; vertical-align: middle; font-weight: 800; color: #7c3aed; font-size: 0.82rem;" id="rxPd">0 mm</td>
                 </tr>
                 <tr>
                     <td style="padding: 0.3rem 0.4rem; border: 1px solid #cbd5e1; font-weight: 700; color: #db2777; text-align: left;">OS (Kiri)</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsSph">-1.50</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsCyl">+0.00</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsAxis">0°</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsAdd">+2.00</td>
-                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 600;" id="rxOsVa">6/6</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOsSph">-1.50</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOsCyl">+0.00</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOsAxis">0°</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOsAdd">+2.00</td>
+                    <td style="padding: 0.3rem 0.2rem; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 500;" id="rxOsVa">6/6</td>
                 </tr>
             </tbody>
         </table>
@@ -694,24 +706,24 @@ if (!function_exists('formatRupiah')) {
         <!-- JENIS LENSA & KODE FRAME -->
         <div class="rx-lens-frame-row" style="font-size: 0.78rem; color: #1e293b; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">Jenis Lensa:</strong> 
-                <span id="rxLensType" style="color: #334155;">-</span>
+                <strong style="color: #0f172a; font-weight: 700;">Jenis Lensa:</strong> 
+                <span id="rxLensType" style="color: #334155; font-weight: 500;">-</span>
             </div>
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">Kode Frame:</strong> 
-                <span id="rxFrameCode" style="color: #334155;">-</span>
+                <strong style="color: #0f172a; font-weight: 700;">Kode Frame:</strong> 
+                <span id="rxFrameCode" style="color: #334155; font-weight: 500;">-</span>
             </div>
         </div>
 
         <!-- DIAGNOSA & ANAMNESA DENGAN AKSEN GARIS BIRU DI KIRI -->
         <div class="rx-diagnosis-box" style="font-size: 0.76rem; color: #1e293b; margin-bottom: 0.6rem; border-left: 3px solid #4f46e5; padding-left: 0.55rem; line-height: 1.4;">
             <div style="margin-bottom: 0.15rem;">
-                <strong style="color: #0f172a; font-weight: 800;">Diagnosa Refraksi:</strong> 
-                <span id="rxDiagnosis" style="font-weight: 600; color: #334155;">-</span>
+                <strong style="color: #0f172a; font-weight: 700;">Diagnosa Refraksi:</strong> 
+                <span id="rxDiagnosis" style="font-weight: 600; color: #1e40af;">-</span>
             </div>
             <div>
-                <strong style="color: #0f172a; font-weight: 800;">Anamnesa / Catatan:</strong> 
-                <span id="rxNotes" style="color: #334155;">-</span>
+                <strong style="color: #0f172a; font-weight: 700;">Anamnesa / Catatan:</strong> 
+                <span id="rxNotes" style="color: #334155; font-weight: 500;">-</span>
             </div>
         </div>
 
@@ -720,42 +732,42 @@ if (!function_exists('formatRupiah')) {
             <table class="rx-billing-table" style="width: 100%; border-collapse: collapse; border: none;">
                 <tbody>
                     <tr>
-                        <td style="padding: 0.1rem 0; width: 42%; text-align: left; vertical-align: top;">1. lensa</td>
+                        <td style="padding: 0.1rem 0; width: 42%; text-align: left; vertical-align: top; font-weight: 600; color: #334155;">1. Lensa</td>
                         <td style="padding: 0.1rem 0; width: 22%; text-align: left;"></td>
-                        <td style="padding: 0.1rem 0; width: 36%; text-align: left; white-space: nowrap;">
-                            <span style="display: inline-block; width: 10px;">:</span>
+                        <td style="padding: 0.1rem 0; width: 36%; text-align: left; white-space: nowrap; font-weight: 600; color: #0f172a;">
+                            <span style="display: inline-block; width: 10px; font-weight: 500;">:</span>
                             <span id="rxLensPrice">200.000,-</span>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding: 0.1rem 0; text-align: left; vertical-align: top;">2. Kaca</td>
+                        <td style="padding: 0.1rem 0; text-align: left; vertical-align: top; font-weight: 600; color: #334155;">2. Frame</td>
                         <td style="padding: 0.1rem 0; text-align: left;"></td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">
-                            <span style="display: inline-block; width: 10px;">:</span>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 600; color: #0f172a;">
+                            <span style="display: inline-block; width: 10px; font-weight: 500;">:</span>
                             <span id="rxFramePrice">100.000,-</span>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding: 0.1rem 0;"></td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">Total</td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">
-                            <span style="display: inline-block; width: 10px;">:</span>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 600; color: #334155;">Total</td>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 600; color: #0f172a;">
+                            <span style="display: inline-block; width: 10px; font-weight: 500;">:</span>
                             <span id="rxTotalPrice">300.000,-</span>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding: 0.1rem 0;"></td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">Di bayar BPJS</td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">
-                            <span style="display: inline-block; width: 10px;">:</span>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 600; color: #334155;">Di bayar BPJS</td>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 600; color: #0f172a;">
+                            <span style="display: inline-block; width: 10px; font-weight: 500;">:</span>
                             <span id="rxBpjsCover">165.000,-</span>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding: 0.1rem 0;"></td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">Total bayar</td>
-                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap;">
-                            <span style="display: inline-block; width: 10px;">:</span>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 700; color: #0f172a;">Total bayar</td>
+                        <td style="padding: 0.1rem 0; text-align: left; white-space: nowrap; font-weight: 800; color: #0f172a;">
+                            <span style="display: inline-block; width: 10px; font-weight: 700;">:</span>
                             <span id="rxNetPayable">135.000,-</span>
                         </td>
                     </tr>
@@ -768,9 +780,9 @@ if (!function_exists('formatRupiah')) {
             <!-- Kolom Kiri: Peserta -->
             <div style="text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
                 <div>
-                    <div>Peserta</div>
+                    <div style="font-weight: 600; color: #0f172a;">Peserta</div>
                 </div>
-                <div class="rx-signature-space" style="margin-top: 1.5rem;">
+                <div class="rx-signature-space" style="margin-top: 1.5rem; font-weight: 700; color: #0f172a;">
                     ( <span id="rxSignPatient">Sri Partini</span> )
                 </div>
             </div>
@@ -778,10 +790,10 @@ if (!function_exists('formatRupiah')) {
             <!-- Kolom Kanan: Sragen & OPTIC FOCUS -->
             <div style="text-align: left; display: flex; flex-direction: column; justify-content: space-between; padding-left: 1.25rem;">
                 <div>
-                    <div id="rxSignDatePlace">Sragen, 07 Agustus 2026</div>
-                    <div style="font-weight: 500; margin-top: 0.12rem;">OPTIC FOCUS</div>
+                    <div id="rxSignDatePlace" style="font-weight: 500; color: #475569;">Sragen, 07 Agustus 2026</div>
+                    <div style="font-weight: 800; color: #0f172a; margin-top: 0.12rem; letter-spacing: 0.03em;">OPTIC FOCUS</div>
                 </div>
-                <div class="rx-signature-space" style="margin-top: 1.5rem;">
+                <div class="rx-signature-space" style="margin-top: 1.5rem; font-weight: 700; color: #0f172a;">
                     ( <span id="rxSignStaff">Atik DH</span> )
                 </div>
             </div>
@@ -804,7 +816,7 @@ if (!function_exists('formatRupiah')) {
                     <input type="number" id="cfgLensPrice" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
                 </div>
                 <div>
-                    <label style="font-weight: 600; color: #334155;">2. Biaya Kaca (Rp)</label>
+                    <label style="font-weight: 600; color: #334155;">2. Biaya Frame (Rp)</label>
                     <input type="number" id="cfgFramePrice" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
                 </div>
                 <div>

@@ -430,7 +430,7 @@
 
                 <div class="col-4 mb-3">
                     <div class="form-group">
-                        <label for="frame_price" style="font-weight: 600;">2. Biaya Kaca / Frame (Rp)</label>
+                        <label for="frame_price" style="font-weight: 600;">2. Biaya Frame (Rp)</label>
                         <div class="input-currency-wrapper">
                             <span class="currency-prefix">Rp</span>
                             <input type="number" name="frame_price" id="frame_price" class="form-control" placeholder="0" min="0" oninput="recalcCreateTotal()">

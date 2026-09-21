@@ -2136,6 +2136,7 @@ ion-icon {
     /* Refraksi Section */
     body.is-printing-prescription #printableCard .rx-section-title {
         font-size: 10px !important;
+        font-weight: 800 !important;
         margin: 0 0 2px 0 !important;
         letter-spacing: 0.02em !important;
     }
@@ -2144,7 +2145,12 @@ ion-icon {
         margin-bottom: 4px !important;
         border-collapse: collapse !important;
     }
-    body.is-printing-prescription #printableCard .rx-refraction-table th,
+    body.is-printing-prescription #printableCard .rx-refraction-table th {
+        font-weight: 700 !important;
+        padding: 2px 3px !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+    }
     body.is-printing-prescription #printableCard .rx-refraction-table td {
         padding: 2px 3px !important;
         font-size: 10px !important;
@@ -2152,6 +2158,8 @@ ion-icon {
     }
     body.is-printing-prescription #printableCard #rxPd {
         font-size: 10px !important;
+        font-weight: 800 !important;
+        color: #7c3aed !important;
     }
 
     /* Lens & Frame */
@@ -2179,6 +2187,9 @@ ion-icon {
     body.is-printing-prescription #printableCard .rx-billing-table td {
         padding: 0.5px 0 !important;
     }
+    body.is-printing-prescription #printableCard #rxNetPayable {
+        font-weight: 800 !important;
+    }
 
     /* Signatures */
     body.is-printing-prescription #printableCard .rx-signatures-row {
@@ -2188,6 +2199,7 @@ ion-icon {
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
         margin-top: 18px !important;
+        font-weight: 700 !important;
     }
 
     /* Cutline - Placed neatly at the half-page boundary */
