@@ -2144,7 +2144,7 @@ ion-icon {
     }
     body.is-printing-prescription #printableCard .rx-refraction-table {
         font-size: 9.5px !important;
-        margin-bottom: 3px !important;
+        margin-bottom: 6px !important;
         border-collapse: collapse !important;
     }
     body.is-printing-prescription #printableCard .rx-refraction-table th {
@@ -2162,15 +2162,6 @@ ion-icon {
         font-size: 9.5px !important;
         font-weight: 800 !important;
         color: #7c3aed !important;
-    }
-
-    /* Kode Frame */
-    body.is-printing-prescription #printableCard .rx-frame-code-row {
-        text-align: right !important;
-        font-size: 9.5px !important;
-        font-weight: 700 !important;
-        margin-bottom: 4px !important;
-        line-height: 1.2 !important;
     }
 
     /* Billing Breakdown Table */

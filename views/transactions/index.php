@@ -100,7 +100,7 @@ if (!function_exists('formatRupiah')) {
     }
     body.is-printing-prescription #printableCard .rx-refraction-table {
         font-size: 9.5px !important;
-        margin-bottom: 3px !important;
+        margin-bottom: 6px !important;
         border-collapse: collapse !important;
     }
     body.is-printing-prescription #printableCard .rx-refraction-table th {
@@ -118,13 +118,6 @@ if (!function_exists('formatRupiah')) {
         font-size: 9.5px !important;
         font-weight: 800 !important;
         color: #7c3aed !important;
-    }
-    body.is-printing-prescription #printableCard .rx-frame-code-row {
-        text-align: right !important;
-        font-size: 9.5px !important;
-        font-weight: 700 !important;
-        margin-bottom: 4px !important;
-        line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-billing-table {
         font-size: 9.5px !important;
@@ -694,7 +687,7 @@ if (!function_exists('formatRupiah')) {
         <!-- TABEL UKURAN REFRAKSI MATA -->
         <h4 class="rx-section-title" style="font-size: 0.78rem; font-weight: 800; color: #0f172a; margin: 0 0 0.35rem 0; letter-spacing: 0.02em; text-transform: uppercase;">UKURAN REFRAKSI MATA</h4>
         
-        <table class="rx-refraction-table" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.76rem; margin-bottom: 0.35rem; border: 1px solid #cbd5e1;">
+        <table class="rx-refraction-table" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.76rem; margin-bottom: 0.75rem; border: 1px solid #cbd5e1;">
             <thead>
                 <tr style="background: #ffffff; font-weight: 700; color: #0f172a;">
                     <th style="padding: 0.3rem 0.4rem; border: 1px solid #cbd5e1; text-align: left; width: 22%;">MATA</th>
@@ -727,12 +720,8 @@ if (!function_exists('formatRupiah')) {
             </tbody>
         </table>
 
-        <!-- KODE FRAME (SEBELAH KANAN DI BAWAH TABEL) -->
-        <div class="rx-frame-code-row" style="text-align: right; font-size: 0.78rem; font-weight: 700; color: #0f172a; margin-bottom: 0.65rem; padding-right: 2px;">
-            <span>Kode Frame: </span><span id="rxFrameCode" style="font-weight: 700;">-</span>
-        </div>
-
         <!-- Hidden elements for script compatibility -->
+        <span id="rxFrameCode" style="display: none;">-</span>
         <span id="rxLensType" style="display: none;">-</span>
         <span id="rxDiagnosis" style="display: none;">-</span>
         <span id="rxNotes" style="display: none;">-</span>
