@@ -189,14 +189,14 @@ class MedicalRecord {
                     os_sph, os_cyl, os_axis, os_add, os_va,
                     pd, lens_type, frame_code, diagnosis, notes,
                     lens_price, frame_price, total_price,
-                    bpjs_class, bpjs_number, created_at
+                    bpjs_class, bpjs_number, no_sep, created_at
                 ) VALUES (
                     :patient_id, :record_number, :exam_date, :examiner_name,
                     :od_sph, :od_cyl, :od_axis, :od_add, :od_va,
                     :os_sph, :os_cyl, :os_axis, :os_add, :os_va,
                     :pd, :lens_type, :frame_code, :diagnosis, :notes,
                     :lens_price, :frame_price, :total_price,
-                    :bpjs_class, :bpjs_number, :created_at
+                    :bpjs_class, :bpjs_number, :no_sep, :created_at
                 )
             ");
 
@@ -229,6 +229,7 @@ class MedicalRecord {
                 ':total_price' => $totalPrice,
                 ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
                 ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
+                ':no_sep' => trim($data['no_sep'] ?? ''),
                 ':created_at' => date('Y-m-d H:i:s')
             ]);
 
@@ -283,7 +284,8 @@ class MedicalRecord {
                     frame_price = :frame_price,
                     total_price = :total_price,
                     bpjs_class = :bpjs_class,
-                    bpjs_number = :bpjs_number
+                    bpjs_number = :bpjs_number,
+                    no_sep = :no_sep
                 WHERE id = :id
             ");
 
@@ -310,6 +312,7 @@ class MedicalRecord {
                 ':total_price' => $totalPrice,
                 ':bpjs_class' => $data['bpjs_class'] ?? 'Non-BPJS',
                 ':bpjs_number' => trim($data['bpjs_number'] ?? ''),
+                ':no_sep' => trim($data['no_sep'] ?? ''),
                 ':id' => $id
             ]);
         } catch (\Exception $e) {

@@ -100,6 +100,10 @@ class Database {
             $db->exec("ALTER TABLE medical_records ADD COLUMN frame_price REAL DEFAULT 0.00;");
         } catch (\PDOException $e) {}
 
+        try {
+            $db->exec("ALTER TABLE medical_records ADD COLUMN no_sep TEXT;");
+        } catch (\PDOException $e) {}
+
         // Populate existing medical_records with patient's BPJS info if medical_records default was 'Non-BPJS'
         try {
             $db->exec("

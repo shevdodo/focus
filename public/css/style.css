@@ -2118,27 +2118,21 @@ ion-icon {
         margin: 0 auto !important;
     }
     body.is-printing-prescription #printableCard .rx-no-exam {
-        font-size: 10px !important;
-        position: absolute !important;
-        top: 0 !important;
-        right: 0 !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-sub {
-        font-size: 8.5px !important;
-        font-weight: 700 !important;
-        margin-top: 2px !important;
-        line-height: 1.3 !important;
-        text-align: center !important;
+        display: none !important;
     }
 
-    /* Metadata Pasien */
+    /* Metadata Pasien & Jaminan */
     body.is-printing-prescription #printableCard .rx-meta-grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 2px 20px !important;
-        margin-bottom: 4px !important;
-        font-size: 10px !important;
-        line-height: 1.2 !important;
+        gap: 0 15px !important;
+        margin-bottom: 3px !important;
+        font-size: 9.5px !important;
+        line-height: 1.25 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-meta-grid table td {
+        padding: 0.5px 0 !important;
+        font-size: 9.5px !important;
     }
 
     /* Refraksi Section */
@@ -2149,48 +2143,41 @@ ion-icon {
         letter-spacing: 0.02em !important;
     }
     body.is-printing-prescription #printableCard .rx-refraction-table {
-        font-size: 10px !important;
-        margin-bottom: 4px !important;
+        font-size: 9.5px !important;
+        margin-bottom: 3px !important;
         border-collapse: collapse !important;
     }
     body.is-printing-prescription #printableCard .rx-refraction-table th {
         font-weight: 700 !important;
         padding: 2px 3px !important;
-        font-size: 10px !important;
+        font-size: 9.5px !important;
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-refraction-table td {
         padding: 2px 3px !important;
-        font-size: 10px !important;
+        font-size: 9.5px !important;
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard #rxPd {
-        font-size: 10px !important;
+        font-size: 9.5px !important;
         font-weight: 800 !important;
         color: #7c3aed !important;
     }
 
-    /* Lens & Frame */
-    body.is-printing-prescription #printableCard .rx-lens-frame-row {
-        font-size: 10px !important;
+    /* Kode Frame */
+    body.is-printing-prescription #printableCard .rx-frame-code-row {
+        text-align: right !important;
+        font-size: 9.5px !important;
+        font-weight: 700 !important;
         margin-bottom: 4px !important;
         line-height: 1.2 !important;
-    }
-
-    /* Diagnosis Box */
-    body.is-printing-prescription #printableCard .rx-diagnosis-box {
-        font-size: 9.5px !important;
-        margin-bottom: 4px !important;
-        padding-left: 5px !important;
-        border-left: 2.5px solid #4f46e5 !important;
-        line-height: 1.25 !important;
     }
 
     /* Billing Breakdown Table */
     body.is-printing-prescription #printableCard .rx-billing-table {
-        font-size: 10px !important;
+        font-size: 9.5px !important;
         margin-bottom: 4px !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
     }
     body.is-printing-prescription #printableCard .rx-billing-table td {
         padding: 0.5px 0 !important;
@@ -2201,8 +2188,8 @@ ion-icon {
 
     /* Signatures */
     body.is-printing-prescription #printableCard .rx-signatures-row {
-        font-size: 10px !important;
-        margin-top: 2px !important;
+        font-size: 9.5px !important;
+        margin-top: 3px !important;
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
