@@ -1,0 +1,46 @@
+<svg viewBox="0 0 520 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="eyeShadeKop" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#e2e8f0" stop-opacity="0.8"/>
+      <stop offset="85%" stop-color="#cbd5e1" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#94a3b8" stop-opacity="0.7"/>
+    </radialGradient>
+  </defs>
+
+  <g transform="translate(10, 8)">
+    <!-- Eye outline -->
+    <path d="M 4 38 C 28 8 116 8 140 38 C 116 68 28 68 4 38 Z" 
+          fill="url(#eyeShadeKop)" stroke="#0f172a" stroke-width="4.5" stroke-linejoin="round"/>
+    <path d="M 12 38 C 34 16 110 16 132 38" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
+    <path d="M 12 38 C 34 60 110 60 132 38" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
+    <circle cx="72" cy="38" r="23" fill="#0f172a"/>
+    <text x="72" y="49" text-anchor="middle" fill="#ffffff" 
+          font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="28">F</text>
+  </g>
+
+  <g transform="translate(170, 0)">
+    <text x="0" y="38" fill="#0f172a" 
+          font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-style="italic" font-size="25" letter-spacing="5">OPTIK</text>
+    
+    <g transform="translate(125, 14) scale(0.95)">
+      <path d="M 8 10 C 18 10 46 11 51 14 C 53 23 52 35 46 40 C 37 45 19 44 11 39 C 6 33 6 22 8 10 Z" 
+            stroke="#0f172a" stroke-width="4.5" stroke-linejoin="round" fill="none"/>
+      <path d="M 71 14 C 76 11 104 10 114 10 C 116 22 116 33 111 39 C 103 44 85 45 76 40 C 70 35 69 23 71 14 Z" 
+            stroke="#0f172a" stroke-width="4.5" stroke-linejoin="round" fill="none"/>
+      <path d="M 51 16 C 56 12 66 12 71 16" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+      <path d="M 8 12 L 1 9" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M 114 12 L 121 9" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
+    </g>
+
+    <text x="0" y="98" fill="#0f172a" 
+          font-family="'Arial Black', 'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="64" letter-spacing="-1">FOCUS</text>
+  </g>
+
+  <g transform="translate(260, 126)">
+    <text x="0" y="0" text-anchor="middle" fill="#1e293b" 
+          font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="700" font-size="14">Alamat : Jl. Veteran No.38, Taman Asri, Kroyo, Karangmalang, Sragen.</text>
+    <text x="0" y="18" text-anchor="middle" fill="#1e293b" 
+          font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="700" font-size="14">Telp.0856 4272 2269</text>
+  </g>
+</svg>

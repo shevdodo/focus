@@ -62,25 +62,25 @@ if (!function_exists('formatRupiah')) {
         break-inside: avoid !important;
         font-size: 10px !important;
         line-height: 1.25 !important;
-    }
     body.is-printing-prescription #printableCard .rx-kop-section {
+        text-align: center !important;
         padding-bottom: 2px !important;
         margin-bottom: 4px !important;
-        border-bottom: 2px solid #4f46e5 !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-title {
-        font-size: 15px !important;
-        margin: 0 !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-title ion-icon {
-        font-size: 16px !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-sub {
-        font-size: 9px !important;
-        margin: 1px 0 0 0 !important;
+        border-bottom: 2px solid #0f172a !important;
+        position: relative !important;
     }
     body.is-printing-prescription #printableCard .rx-no-exam {
-        font-size: 11px !important;
+        font-size: 10px !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-kop-sub {
+        font-size: 8.5px !important;
+        font-weight: 700 !important;
+        margin-top: 2px !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
     }
     body.is-printing-prescription #printableCard .rx-meta-grid {
         display: grid !important;
@@ -630,20 +630,56 @@ if (!function_exists('formatRupiah')) {
 </div>
 
 <!-- MODAL PRINT RESEP KACAMATA (OPTIK FOCUS PRESCRIPTION CARD) -->
-<div id="printPrescriptionModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); z-index: 1100; align-items: center; justify-content: center; padding: 1.25rem; overflow-y: auto;">
-    <div style="background: #ffffff; color: #0f172a; width: 100%; max-width: 520px; border-radius: 10px; padding: 1.2rem 1.4rem 1rem 1.4rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif; position: relative; -webkit-font-smoothing: antialiased;" id="printableCard" class="printable-prescription-card">
+<div id="printPrescriptionModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); z-index: 1100; align-items: flex-start; justify-content: center; padding: 1.5rem 1.25rem; overflow-y: auto;">
+    <div style="background: #ffffff; color: #0f172a; width: 100%; max-width: 520px; border-radius: 10px; padding: 1.2rem 1.4rem 1rem 1.4rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif; position: relative; -webkit-font-smoothing: antialiased; margin: auto;" id="printableCard" class="printable-prescription-card">
         
-        <!-- HEADER KOP RESEP -->
-        <div class="rx-kop-section" style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #4f46e5; padding-bottom: 0.35rem; margin-bottom: 0.6rem;">
-            <div>
-                <h2 class="rx-kop-title" style="color: #1e3a8a; font-size: 1.25rem; font-weight: 900; margin: 0; display: flex; align-items: center; gap: 0.4rem; letter-spacing: -0.01em;">
-                    <ion-icon name="glasses-outline" style="font-size: 1.4rem; color: #4338ca; stroke-width: 38;"></ion-icon>
-                    <span>OPTIK FOCUS</span>
-                </h2>
-                <p class="rx-kop-sub" style="font-size: 0.7rem; color: #475569; margin: 0.15rem 0 0 0; font-weight: 500;">Klinik &amp; Layanan Rekam Medis Kacamata Profesional</p>
+        <!-- HEADER KOP RESEP (OFFICIAL LOGO & ALAMAT OPTIK FOCUS) -->
+        <div class="rx-kop-section" style="text-align: center; padding-bottom: 0.35rem; margin-bottom: 0.55rem; border-bottom: 2px solid #0f172a; position: relative;">
+            <span class="rx-no-exam" style="position: absolute; top: -2px; right: 0; font-size: 0.76rem; font-weight: 800; color: #2563eb; letter-spacing: 0.02em;" id="rxNoExam">REC-20260807-512</span>
+
+            <!-- LOGO UTAMA: EYE DENGAN 'F' + OPTIK (GLASSES) FOCUS -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.85rem;">
+                <!-- EYE EMBLEM DENGAN HURUF F -->
+                <svg style="width: 105px; height: 52px; flex-shrink: 0;" viewBox="0 0 130 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="eyeShadeKop" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                            <stop offset="40%" stop-color="#e2e8f0" stop-opacity="0.8"/>
+                            <stop offset="85%" stop-color="#cbd5e1" stop-opacity="0.9"/>
+                            <stop offset="100%" stop-color="#94a3b8" stop-opacity="0.7"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M 4 32 C 26 5 104 5 126 32 C 104 59 26 59 4 32 Z" 
+                          fill="url(#eyeShadeKop)" stroke="#0f172a" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 12 32 C 32 13 98 13 118 32" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
+                    <path d="M 12 32 C 32 51 98 51 118 32" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
+                    <circle cx="65" cy="32" r="21" fill="#0f172a"/>
+                    <text x="65" y="42" text-anchor="middle" fill="#ffffff" 
+                          font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif" font-weight="900" font-size="26">F</text>
+                </svg>
+
+                <!-- BRAND TEXT DAN KACAMATA -->
+                <div style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 0.45rem; line-height: 1;">
+                        <span style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 1.15rem; font-weight: 800; font-style: italic; letter-spacing: 4px; color: #0f172a;">OPTIK</span>
+                        <svg style="width: 70px; height: 23px; flex-shrink: 0;" viewBox="0 0 122 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 8 10 C 18 10 46 11 51 14 C 53 23 52 35 46 40 C 37 45 19 44 11 39 C 6 33 6 22 8 10 Z" 
+                                  stroke="#0f172a" stroke-width="4.5" stroke-linejoin="round" fill="none"/>
+                            <path d="M 71 14 C 76 11 104 10 114 10 C 116 22 116 33 111 39 C 103 44 85 45 76 40 C 70 35 69 23 71 14 Z" 
+                                  stroke="#0f172a" stroke-width="4.5" stroke-linejoin="round" fill="none"/>
+                            <path d="M 51 16 C 56 12 66 12 71 16" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                            <path d="M 8 12 L 1 9" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
+                            <path d="M 114 12 L 121 9" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div style="font-family: 'Arial Black', 'Plus Jakarta Sans', sans-serif; font-size: 2.6rem; font-weight: 900; letter-spacing: -0.5px; line-height: 0.92; color: #0f172a; margin-top: 2px;">FOCUS</div>
+                </div>
             </div>
-            <div style="text-align: right; padding-top: 0.15rem;">
-                <span class="rx-no-exam" style="font-size: 0.8rem; font-weight: 800; color: #2563eb; letter-spacing: 0.02em;" id="rxNoExam">REC-20260807-512</span>
+
+            <!-- ALAMAT DAN KONTAK -->
+            <div class="rx-kop-sub" style="margin-top: 0.35rem; font-size: 0.68rem; font-weight: 700; color: #1e293b; line-height: 1.35; text-align: center; letter-spacing: 0.01em;">
+                <div>Alamat : Jl. Veteran No.38, Taman Asri, Kroyo, Karangmalang, Sragen.</div>
+                <div>Telp.0856 4272 2269</div>
             </div>
         </div>
 
@@ -1115,7 +1151,9 @@ function printPrescription(rec) {
 
     recalcPrintBilling();
 
-    document.getElementById('printPrescriptionModal').style.display = 'flex';
+    const printModal = document.getElementById('printPrescriptionModal');
+    printModal.style.display = 'flex';
+    printModal.scrollTop = 0;
 }
 
 function recalcPrintBilling() {

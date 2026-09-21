@@ -2104,23 +2104,24 @@ ion-icon {
 
     /* Kop */
     body.is-printing-prescription #printableCard .rx-kop-section {
+        text-align: center !important;
         padding-bottom: 2px !important;
         margin-bottom: 4px !important;
-        border-bottom: 2px solid #4f46e5 !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-title {
-        font-size: 15px !important;
-        margin: 0 !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-title ion-icon {
-        font-size: 16px !important;
-    }
-    body.is-printing-prescription #printableCard .rx-kop-sub {
-        font-size: 9px !important;
-        margin: 1px 0 0 0 !important;
+        border-bottom: 2px solid #0f172a !important;
+        position: relative !important;
     }
     body.is-printing-prescription #printableCard .rx-no-exam {
-        font-size: 11px !important;
+        font-size: 10px !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-kop-sub {
+        font-size: 8.5px !important;
+        font-weight: 700 !important;
+        margin-top: 2px !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
     }
 
     /* Metadata Pasien */
