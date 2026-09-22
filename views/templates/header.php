@@ -77,6 +77,13 @@
                                 <span>Kelola Pengguna</span>
                             </a>
                         </li>
+                        <?php $isBackupActive = (strpos($currentUri, '/backup') !== false); ?>
+                        <li class="<?= $isBackupActive ? 'active' : '' ?>">
+                            <a href="<?= baseUrl('backup') ?>">
+                                <ion-icon name="server-outline"></ion-icon>
+                                <span>Backup & Restore</span>
+                            </a>
+                        </li>
                     <?php endif; ?>
                     <li>
                         <a href="<?= baseUrl('logout') ?>" onclick="return confirm('Apakah Anda yakin ingin keluar dari sistem?');" style="color: #f87171;">
@@ -128,6 +135,11 @@
                 <a href="<?= baseUrl('users') ?>" class="bottom-nav-item <?= $isUsersActive ? 'active' : '' ?>">
                     <ion-icon name="<?= $isUsersActive ? 'people' : 'people-outline' ?>"></ion-icon>
                     <span>Pengguna</span>
+                </a>
+                <?php $isBackupActive = (strpos($currentUri, '/backup') !== false); ?>
+                <a href="<?= baseUrl('backup') ?>" class="bottom-nav-item <?= $isBackupActive ? 'active' : '' ?>">
+                    <ion-icon name="<?= $isBackupActive ? 'server' : 'server-outline' ?>"></ion-icon>
+                    <span>Backup</span>
                 </a>
             <?php endif; ?>
             <a href="<?= baseUrl('logout') ?>" class="bottom-nav-item" onclick="return confirm('Apakah Anda yakin ingin keluar dari sistem?');" style="color: #f87171;">

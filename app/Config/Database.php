@@ -7,10 +7,18 @@ use PDOException;
 class Database {
     private static ?PDO $instance = null;
 
+    public static function getDatabasePath(): string {
+        return dirname(__DIR__, 2) . '/database/optik_focus.db';
+    }
+
+    public static function closeConnection(): void {
+        self::$instance = null;
+    }
+
     public static function getConnection(): PDO {
         if (self::$instance === null) {
             try {
-                $dbPath = dirname(__DIR__, 2) . '/database/optik_focus.db';
+                $dbPath = self::getDatabasePath();
                 $dbDir = dirname($dbPath);
                 
                 // Create database directory if it doesn't exist

@@ -300,6 +300,7 @@ use App\Controllers\AuthController;
 use App\Controllers\UserController;
 use App\Controllers\ReportController;
 use App\Controllers\MasterDataController;
+use App\Controllers\BackupController;
 
 
 // Secure Authentication Guard Check
@@ -317,10 +318,10 @@ if ($cleanedPath !== '/login' && !isset($_SESSION['user'])) {
     exit;
 }
 
-// Secure Authorization Guard: Only 'admin' role can access '/users' management
-if (strpos($cleanedPath, '/users') === 0) {
+// Secure Authorization Guard: Only 'admin' role can access '/users' and '/backup'
+if (strpos($cleanedPath, '/users') === 0 || strpos($cleanedPath, '/backup') === 0) {
     if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-        setFlash('error', 'Akses Ditolak! Menu kelola pengguna hanya diperuntukkan bagi Administrator.');
+        setFlash('error', 'Akses Ditolak! Menu ini hanya diperuntukkan bagi Administrator.');
         header('Location: ' . baseUrl('/'));
         exit;
     }
@@ -369,6 +370,16 @@ $router->post('/master/lensa/delete', [MasterDataController::class, 'deleteLens'
 $router->post('/master/frame/create', [MasterDataController::class, 'storeFrame']);
 $router->post('/master/frame/edit', [MasterDataController::class, 'updateFrame']);
 $router->post('/master/frame/delete', [MasterDataController::class, 'deleteFrame']);
+
+// Map Backup & Restore Database (Administrator Only)
+$router->get('/backup', [BackupController::class, 'index']);
+$router->get('/backup/download', [BackupController::class, 'download']);
+$router->post('/backup/create', [BackupController::class, 'createSnapshot']);
+$router->get('/backup/download-snapshot', [BackupController::class, 'downloadSnapshot']);
+$router->post('/backup/delete-snapshot', [BackupController::class, 'deleteSnapshot']);
+$router->post('/backup/restore', [BackupController::class, 'restore']);
+$router->post('/backup/restore-snapshot', [BackupController::class, 'restoreFromSnapshot']);
+$router->post('/backup/reset', [BackupController::class, 'resetDatabase']);
 
 
 // 6. Run the Dispatcher!

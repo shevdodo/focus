@@ -2,6 +2,9 @@
 database/*.db
 database/*.sqlite
 database/*.sqlite3
+database/backups/*.db
+database/backups/*.sqlite
+database/backups/*.sqlite3
 
 # OS & Environment files
 .DS_Store
