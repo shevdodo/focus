@@ -153,6 +153,7 @@ if (!function_exists('formatRupiah')) {
         object-fit: contain !important;
         display: block !important;
         margin-bottom: 1px !important;
+        margin-left: var(--rx-sign-offset-x, -18px) !important;
     }
     body.is-printing-prescription #printableCard .print-half-a4-cutline {
         display: block !important;
@@ -811,7 +812,7 @@ if (!function_exists('formatRupiah')) {
                 </div>
                 <div class="rx-signature-space" style="margin-top: 0.35rem; font-weight: 700; color: #0f172a;">
                     <div class="rx-sign-box" style="height: 52px; display: flex; align-items: flex-end; justify-content: flex-start;">
-                        <img src="<?= baseUrl('images/ttd_atik.png') ?>?v=<?= file_exists(__DIR__ . '/../../public/images/ttd_atik.png') ? filemtime(__DIR__ . '/../../public/images/ttd_atik.png') : time() ?>" alt="TTD Atik DH" id="rxStaffSignatureImg" class="rx-staff-signature-img" style="max-height: 48px; max-width: 130px; width: auto; object-fit: contain; display: block; margin-bottom: 2px;">
+                        <img src="<?= baseUrl('images/ttd_atik.png') ?>?v=<?= file_exists(__DIR__ . '/../../public/images/ttd_atik.png') ? filemtime(__DIR__ . '/../../public/images/ttd_atik.png') : time() ?>" alt="TTD Atik DH" id="rxStaffSignatureImg" class="rx-staff-signature-img" style="max-height: 48px; max-width: 130px; width: auto; object-fit: contain; display: block; margin-bottom: 2px; margin-left: var(--rx-sign-offset-x, -18px);">
                     </div>
                     ( <span id="rxSignStaff">Atik DH</span> )
                 </div>
@@ -861,12 +862,15 @@ if (!function_exists('formatRupiah')) {
                     <input type="text" id="cfgSignStaff" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" value="Atik DH" oninput="document.getElementById('rxSignStaff').textContent = this.value">
                 </div>
             </div>
-            <div style="margin-top: 0.6rem; display: flex; align-items: center; justify-content: space-between; padding-top: 0.5rem; border-top: 1px dashed #e2e8f0;">
+            <div style="margin-top: 0.6rem; display: flex; align-items: center; justify-content: space-between; padding-top: 0.5rem; border-top: 1px dashed #e2e8f0; flex-wrap: wrap; gap: 0.5rem;">
                 <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.76rem; font-weight: 600; color: #334155; cursor: pointer; margin: 0;">
                     <input type="checkbox" id="cfgShowStaffSignature" checked onchange="toggleStaffSignature(this.checked)" style="accent-color: #2563eb; width: 15px; height: 15px; cursor: pointer;">
                     <span>Bubuhkan Tanda Tangan Digital Otomatis (Atik DH)</span>
                 </label>
-                <span style="font-size: 0.7rem; color: #64748b;">*Centang untuk menyertakan tanda tangan digital</span>
+                <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; color: #334155;">
+                    <label for="cfgSignOffsetX" style="margin: 0; font-weight: 600;">Posisi Geser TTD (px):</label>
+                    <input type="number" id="cfgSignOffsetX" value="-18" style="width: 58px; font-size: 0.75rem; padding: 0.15rem 0.35rem; height: auto;" class="form-control" oninput="adjustSignatureOffset(this.value)" title="Nilai minus untuk geser ke kiri, positif untuk ke kanan">
+                </div>
             </div>
         </div>
 
@@ -1160,6 +1164,9 @@ function printPrescription(rec) {
     if (sigImg) sigImg.style.display = 'block';
     const sigCheck = document.getElementById('cfgShowStaffSignature');
     if (sigCheck) sigCheck.checked = true;
+    adjustSignatureOffset(-18);
+    const offsetInput = document.getElementById('cfgSignOffsetX');
+    if (offsetInput) offsetInput.value = -18;
 
     // Pricing calculation
     let lensPrice = parseFloat(rec.lens_price || 0);
@@ -1205,6 +1212,16 @@ function toggleStaffSignature(show) {
     const img = document.getElementById('rxStaffSignatureImg');
     if (img) {
         img.style.display = show ? 'block' : 'none';
+    }
+}
+
+function adjustSignatureOffset(val) {
+    const num = parseInt(val, 10);
+    const offset = !isNaN(num) ? num + 'px' : '-18px';
+    document.documentElement.style.setProperty('--rx-sign-offset-x', offset);
+    const img = document.getElementById('rxStaffSignatureImg');
+    if (img) {
+        img.style.marginLeft = offset;
     }
 }
 

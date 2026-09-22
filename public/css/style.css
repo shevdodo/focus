@@ -2201,6 +2201,7 @@ ion-icon {
         object-fit: contain !important;
         display: block !important;
         margin-bottom: 1px !important;
+        margin-left: var(--rx-sign-offset-x, -18px) !important;
     }
 
     /* Cutline - Placed neatly at the half-page boundary */
