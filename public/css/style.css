@@ -2112,7 +2112,7 @@ ion-icon {
     }
     body.is-printing-prescription #printableCard .rx-kop-image {
         width: 100% !important;
-        max-width: 130mm !important;
+        max-width: 65mm !important;
         height: auto !important;
         display: block !important;
         margin: 0 auto !important;
@@ -2184,7 +2184,7 @@ ion-icon {
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
-        margin-top: 18px !important;
+        margin-top: 55px !important;
         font-weight: 700 !important;
     }
 

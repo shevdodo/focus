@@ -72,7 +72,7 @@ if (!function_exists('formatRupiah')) {
     }
     body.is-printing-prescription #printableCard .rx-kop-image {
         width: 100% !important;
-        max-width: 130mm !important;
+        max-width: 65mm !important;
         height: auto !important;
         display: block !important;
         margin: 0 auto !important;
@@ -136,7 +136,7 @@ if (!function_exists('formatRupiah')) {
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
-        margin-top: 18px !important;
+        margin-top: 55px !important;
         font-weight: 700 !important;
     }
     body.is-printing-prescription #printableCard .print-half-a4-cutline {
@@ -626,7 +626,7 @@ if (!function_exists('formatRupiah')) {
         <!-- HEADER KOP RESEP (OFFICIAL KOP.PNG DARI CLIENT) -->
         <div class="rx-kop-section" style="text-align: center; padding-bottom: 0.35rem; margin-bottom: 0.55rem; border-bottom: 2px solid #0f172a; position: relative;">
             <span class="rx-no-exam" style="display: none;" id="rxNoExam"></span>
-            <img src="<?= baseUrl('images/kop.png') ?>?v=<?= file_exists(__DIR__ . '/../../public/images/kop.png') ? filemtime(__DIR__ . '/../../public/images/kop.png') : time() ?>" alt="Optik Focus" class="rx-kop-image" style="width: 100%; max-width: 440px; height: auto; display: block; margin: 0 auto;">
+            <img src="<?= baseUrl('images/kop.png') ?>?v=<?= file_exists(__DIR__ . '/../../public/images/kop.png') ? filemtime(__DIR__ . '/../../public/images/kop.png') : time() ?>" alt="Optik Focus" class="rx-kop-image" style="width: 100%; max-width: 220px; height: auto; display: block; margin: 0 auto;">
         </div>
 
         <!-- METADATA PASIEN & JAMINAN (2 KOLOM RAPI DENGAN TITIK DUA SEJAJAR) -->
@@ -782,7 +782,7 @@ if (!function_exists('formatRupiah')) {
                 <div>
                     <div style="font-weight: 700; color: #0f172a;">Peserta</div>
                 </div>
-                <div class="rx-signature-space" style="margin-top: 2rem; font-weight: 700; color: #0f172a;">
+                <div class="rx-signature-space" style="margin-top: 3.5rem; font-weight: 700; color: #0f172a;">
                     ( <span id="rxSignPatient">Adila Angelina</span> )
                 </div>
             </div>
@@ -793,7 +793,7 @@ if (!function_exists('formatRupiah')) {
                     <div id="rxSignDatePlace" style="font-weight: 500; color: #0f172a;">Sragen, 21 September 2026</div>
                     <div style="font-weight: 800; color: #0f172a; margin-top: 0.15rem; letter-spacing: 0.02em;">OPTIC FOCUS</div>
                 </div>
-                <div class="rx-signature-space" style="margin-top: 2rem; font-weight: 700; color: #0f172a;">
+                <div class="rx-signature-space" style="margin-top: 3.5rem; font-weight: 700; color: #0f172a;">
                     ( <span id="rxSignStaff">Atik DH</span> )
                 </div>
             </div>
