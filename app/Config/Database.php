@@ -55,13 +55,17 @@ class Database {
             );
         ");
 
-        // Seed default users
-        $adminPass = password_hash('admin', PASSWORD_DEFAULT);
-        $optometrisPass = password_hash('optometris', PASSWORD_DEFAULT);
-        
-        $stmtUser = $db->prepare("INSERT OR IGNORE INTO users (username, password, name, role) VALUES (?, ?, ?, ?)");
-        $stmtUser->execute(['admin', $adminPass, 'dr. Hendra Optometris', 'admin']);
-        $stmtUser->execute(['optometris', $optometrisPass, 'Aulia Putri, A.Md.RO', 'optometris']);
+        // Seed default users (only on fresh database install or if users table is empty)
+        $userCount = (int)$db->query("SELECT COUNT(*) FROM users")->fetchColumn();
+        if ($isNew || $userCount === 0) {
+            $adminPass = password_hash('admin', PASSWORD_DEFAULT);
+            $stmtUser = $db->prepare("INSERT OR IGNORE INTO users (username, password, name, role) VALUES (?, ?, ?, ?)");
+            $stmtUser->execute(['admin', $adminPass, 'dr. Hendra Optometris', 'admin']);
+            if ($isNew) {
+                $optometrisPass = password_hash('optometris', PASSWORD_DEFAULT);
+                $stmtUser->execute(['optometris', $optometrisPass, 'Aulia Putri, A.Md.RO', 'optometris']);
+            }
+        }
 
         // 2. Create patients table (Data Pasien Optik + BPJS)
         $db->exec("
@@ -177,38 +181,40 @@ class Database {
             );
         ");
 
-        // Seed default master lenses if table is empty
-        $lensCount = (int)$db->query("SELECT COUNT(*) FROM lenses")->fetchColumn();
-        if ($lensCount === 0) {
-            $defaultLenses = [
-                ['LNS-ORI-156', 'SV Ori 1.56', 'Oriental', 'Single Vision', '1.56', 'Standard AR', 150000, 25],
-                ['LNS-ORI-156-UV', 'SV Ori 1.56 UV 420', 'Oriental', 'Single Vision', '1.56', 'UV 420 Protection', 200000, 20],
-                ['LNS-ORI-156-BC', 'SV Ori Bluecut 1.56', 'Oriental', 'Single Vision', '1.56', 'Bluecut Antiradiasi', 250000, 30],
-                ['LNS-ORI-161', 'SV Ori 1.61', 'Oriental', 'Single Vision', '1.61', 'Hi-Index AR', 300000, 15],
-                ['LNS-ORI-161-UV', 'SV Ori 1.61 UV 420', 'Oriental', 'Single Vision', '1.61', 'UV 420 Hi-Index', 350000, 18],
+        // Seed default master lenses only on fresh database install
+        if ($isNew) {
+            $lensCount = (int)$db->query("SELECT COUNT(*) FROM lenses")->fetchColumn();
+            if ($lensCount === 0) {
+                $defaultLenses = [
+                    ['LNS-ORI-156', 'SV Ori 1.56', 'Oriental', 'Single Vision', '1.56', 'Standard AR', 150000, 25],
+                    ['LNS-ORI-156-UV', 'SV Ori 1.56 UV 420', 'Oriental', 'Single Vision', '1.56', 'UV 420 Protection', 200000, 20],
+                    ['LNS-ORI-156-BC', 'SV Ori Bluecut 1.56', 'Oriental', 'Single Vision', '1.56', 'Bluecut Antiradiasi', 250000, 30],
+                    ['LNS-ORI-161', 'SV Ori 1.61', 'Oriental', 'Single Vision', '1.61', 'Hi-Index AR', 300000, 15],
+                    ['LNS-ORI-161-UV', 'SV Ori 1.61 UV 420', 'Oriental', 'Single Vision', '1.61', 'UV 420 Hi-Index', 350000, 18],
 
-                ['LNS-LNZ-156', 'SV Plastik 1.56', 'Leinz', 'Single Vision', '1.56', 'Superhydrophobic', 300000, 40],
-                ['LNS-LNZ-156-UV', 'SV Plastik 1.56 UV 420', 'Leinz', 'Single Vision', '1.56', 'UV 420 Blue Shield', 380000, 22],
-                ['LNS-LNZ-156-TR400', 'SV Plastik 1.56 UV 400 Trans', 'Leinz', 'Single Vision', '1.56', 'Photochromic Trans Gray', 450000, 15],
-                ['LNS-LNZ-156-TR420', 'SV Plastik 1.56 UV 420 Trans', 'Leinz', 'Single Vision', '1.56', 'Photochromic + Bluecut', 520000, 12],
-                ['LNS-LNZ-161', 'SV Plastik 1.61', 'Leinz', 'Single Vision', '1.61', 'Thin & Light AR', 480000, 18],
-                ['LNS-LNZ-161-UV', 'SV Plastik 1.61 UV 420', 'Leinz', 'Single Vision', '1.61', 'Thin & Light Bluecut', 550000, 10],
-                ['LNS-LNZ-167', 'SV Plastik 1.67', 'Leinz', 'Single Vision', '1.67', 'Ultra Thin AR', 750000, 8],
-                ['LNS-LNZ-167-UV', 'SV Plastik 1.67 UV 420', 'Leinz', 'Single Vision', '1.67', 'Ultra Thin Bluecut', 850000, 6],
+                    ['LNS-LNZ-156', 'SV Plastik 1.56', 'Leinz', 'Single Vision', '1.56', 'Superhydrophobic', 300000, 40],
+                    ['LNS-LNZ-156-UV', 'SV Plastik 1.56 UV 420', 'Leinz', 'Single Vision', '1.56', 'UV 420 Blue Shield', 380000, 22],
+                    ['LNS-LNZ-156-TR400', 'SV Plastik 1.56 UV 400 Trans', 'Leinz', 'Single Vision', '1.56', 'Photochromic Trans Gray', 450000, 15],
+                    ['LNS-LNZ-156-TR420', 'SV Plastik 1.56 UV 420 Trans', 'Leinz', 'Single Vision', '1.56', 'Photochromic + Bluecut', 520000, 12],
+                    ['LNS-LNZ-161', 'SV Plastik 1.61', 'Leinz', 'Single Vision', '1.61', 'Thin & Light AR', 480000, 18],
+                    ['LNS-LNZ-161-UV', 'SV Plastik 1.61 UV 420', 'Leinz', 'Single Vision', '1.61', 'Thin & Light Bluecut', 550000, 10],
+                    ['LNS-LNZ-167', 'SV Plastik 1.67', 'Leinz', 'Single Vision', '1.67', 'Ultra Thin AR', 750000, 8],
+                    ['LNS-LNZ-167-UV', 'SV Plastik 1.67 UV 420', 'Leinz', 'Single Vision', '1.67', 'Ultra Thin Bluecut', 850000, 6],
 
-                ['LNS-RX-150-RD', 'Rx 1.50 Round segment', 'Rx Lens', 'Bifokal', '1.50', 'Kriptok Round', 250000, 15],
-                ['LNS-RX-150-FT', 'Rx 1.50 Flattop', 'Rx Lens', 'Bifokal', '1.50', 'Flattop Bifocal', 280000, 14],
-                ['LNS-ECO-156', 'Ecosoft Eco 1.56', 'Ecosoft', 'Bifokal', '1.56', 'Standard AR', 320000, 20],
-                ['LNS-ECO-UBLU', 'Ecosoft Lite U-Blue 1.56', 'Ecosoft', 'Bifokal', '1.56', 'U-Blue Antiradiasi', 420000, 16],
-                ['LNS-ECO-SUN', 'Ecosoft Lite Photosun Gr/Br 1.56', 'Ecosoft', 'Bifokal', '1.56', 'Photosun Grey/Brown', 480000, 10],
-                ['LNS-ECO-PBLU', 'Ecosoft Photo U-Blue 1.56', 'Ecosoft', 'Bifokal', '1.56', 'Photochromic + Bluecut', 580000, 12],
-                ['LNS-KR-ORI', 'Kr. Ori', 'Oriental', 'Bifokal', '1.50', 'Kriptok Standard', 180000, 25]
-            ];
+                    ['LNS-RX-150-RD', 'Rx 1.50 Round segment', 'Rx Lens', 'Bifokal', '1.50', 'Kriptok Round', 250000, 15],
+                    ['LNS-RX-150-FT', 'Rx 1.50 Flattop', 'Rx Lens', 'Bifokal', '1.50', 'Flattop Bifocal', 280000, 14],
+                    ['LNS-ECO-156', 'Ecosoft Eco 1.56', 'Ecosoft', 'Bifokal', '1.56', 'Standard AR', 320000, 20],
+                    ['LNS-ECO-UBLU', 'Ecosoft Lite U-Blue 1.56', 'Ecosoft', 'Bifokal', '1.56', 'U-Blue Antiradiasi', 420000, 16],
+                    ['LNS-ECO-SUN', 'Ecosoft Lite Photosun Gr/Br 1.56', 'Ecosoft', 'Bifokal', '1.56', 'Photosun Grey/Brown', 480000, 10],
+                    ['LNS-ECO-PBLU', 'Ecosoft Photo U-Blue 1.56', 'Ecosoft', 'Bifokal', '1.56', 'Photochromic + Bluecut', 580000, 12],
+                    ['LNS-KR-ORI', 'Kr. Ori', 'Oriental', 'Bifokal', '1.50', 'Kriptok Standard', 180000, 25]
+                ];
 
-            $stmtLns = $db->prepare("INSERT INTO lenses (code, name, brand, category, index_refraction, coating, price, stock, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $now = date('Y-m-d H:i:s');
-            foreach ($defaultLenses as $l) {
-                $stmtLns->execute([$l[0], $l[1], $l[2], $l[3], $l[4], $l[5], $l[6], $l[7], $now]);
+                $stmtLns = $db->prepare("INSERT INTO lenses (code, name, brand, category, index_refraction, coating, price, stock, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $now = date('Y-m-d H:i:s');
+                foreach ($defaultLenses as $l) {
+                    $stmtLns->execute([$l[0], $l[1], $l[2], $l[3], $l[4], $l[5], $l[6], $l[7], $now]);
+                }
             }
         }
 
@@ -228,22 +234,24 @@ class Database {
             );
         ");
 
-        // Seed default master frames if table is empty
-        $frameCount = (int)$db->query("SELECT COUNT(*) FROM frames")->fetchColumn();
-        if ($frameCount === 0) {
-            $defaultFrames = [
-                ['FRM-RB-5228', 'Ray-Ban RB5228 Wayfarer', 'Ray-Ban', 'Full Rim', 'Acetate', 'Matte Black', 1450000, 8],
-                ['FRM-OK-8046', 'Oakley OX8046 Crosslink Zero', 'Oakley', 'Full Rim', 'O-Matter', 'Satin Black', 1850000, 5],
-                ['FRM-SH-5515', 'Silhouette 5515 Titan Minimal Art', 'Silhouette', 'Rimless', 'Titanium', 'Silver Gray', 3200000, 3],
-                ['FRM-MS-7012', 'Molsion MS7012 Modern Round', 'Molsion', 'Full Rim', 'Metal Alloy', 'Rose Gold', 890000, 12],
-                ['FRM-GM-SOLO', 'Gentle Monster Solo 01', 'Gentle Monster', 'Full Rim', 'Acetate', 'Black', 2450000, 4],
-                ['FRM-TF-3021', 'Trendy Frame TR3021 Ultralight', 'Trendy Frame', 'Half Rim', 'TR90', 'Navy Blue', 350000, 20]
-            ];
+        // Seed default master frames only on fresh database install
+        if ($isNew) {
+            $frameCount = (int)$db->query("SELECT COUNT(*) FROM frames")->fetchColumn();
+            if ($frameCount === 0) {
+                $defaultFrames = [
+                    ['FRM-RB-5228', 'Ray-Ban RB5228 Wayfarer', 'Ray-Ban', 'Full Rim', 'Acetate', 'Matte Black', 1450000, 8],
+                    ['FRM-OK-8046', 'Oakley OX8046 Crosslink Zero', 'Oakley', 'Full Rim', 'O-Matter', 'Satin Black', 1850000, 5],
+                    ['FRM-SH-5515', 'Silhouette 5515 Titan Minimal Art', 'Silhouette', 'Rimless', 'Titanium', 'Silver Gray', 3200000, 3],
+                    ['FRM-MS-7012', 'Molsion MS7012 Modern Round', 'Molsion', 'Full Rim', 'Metal Alloy', 'Rose Gold', 890000, 12],
+                    ['FRM-GM-SOLO', 'Gentle Monster Solo 01', 'Gentle Monster', 'Full Rim', 'Acetate', 'Black', 2450000, 4],
+                    ['FRM-TF-3021', 'Trendy Frame TR3021 Ultralight', 'Trendy Frame', 'Half Rim', 'TR90', 'Navy Blue', 350000, 20]
+                ];
 
-            $stmtFrm = $db->prepare("INSERT INTO frames (code, name, brand, type, material, color, price, stock, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $now = date('Y-m-d H:i:s');
-            foreach ($defaultFrames as $f) {
-                $stmtFrm->execute([$f[0], $f[1], $f[2], $f[3], $f[4], $f[5], $f[6], $f[7], $now]);
+                $stmtFrm = $db->prepare("INSERT INTO frames (code, name, brand, type, material, color, price, stock, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $now = date('Y-m-d H:i:s');
+                foreach ($defaultFrames as $f) {
+                    $stmtFrm->execute([$f[0], $f[1], $f[2], $f[3], $f[4], $f[5], $f[6], $f[7], $now]);
+                }
             }
         }
 
