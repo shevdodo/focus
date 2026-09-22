@@ -136,8 +136,23 @@ if (!function_exists('formatRupiah')) {
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
-        margin-top: 55px !important;
+        margin-top: 2px !important;
         font-weight: 700 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-sign-box {
+        height: 13mm !important;
+        min-height: 13mm !important;
+        display: flex !important;
+        align-items: flex-end !important;
+    }
+    body.is-printing-prescription #printableCard .rx-staff-signature-img {
+        max-height: 13mm !important;
+        max-width: 36mm !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin-bottom: 1px !important;
     }
     body.is-printing-prescription #printableCard .print-half-a4-cutline {
         display: block !important;
@@ -782,7 +797,8 @@ if (!function_exists('formatRupiah')) {
                 <div>
                     <div style="font-weight: 700; color: #0f172a;">Peserta</div>
                 </div>
-                <div class="rx-signature-space" style="margin-top: 3.5rem; font-weight: 700; color: #0f172a;">
+                <div class="rx-signature-space" style="margin-top: 0.35rem; font-weight: 700; color: #0f172a;">
+                    <div class="rx-sign-box" style="height: 52px;"></div>
                     ( <span id="rxSignPatient">Adila Angelina</span> )
                 </div>
             </div>
@@ -793,7 +809,10 @@ if (!function_exists('formatRupiah')) {
                     <div id="rxSignDatePlace" style="font-weight: 500; color: #0f172a;">Sragen, 21 September 2026</div>
                     <div style="font-weight: 800; color: #0f172a; margin-top: 0.15rem; letter-spacing: 0.02em;">OPTIC FOCUS</div>
                 </div>
-                <div class="rx-signature-space" style="margin-top: 3.5rem; font-weight: 700; color: #0f172a;">
+                <div class="rx-signature-space" style="margin-top: 0.35rem; font-weight: 700; color: #0f172a;">
+                    <div class="rx-sign-box" style="height: 52px; display: flex; align-items: flex-end; justify-content: flex-start;">
+                        <img src="<?= baseUrl('images/ttd_atik.png') ?>?v=<?= file_exists(__DIR__ . '/../../public/images/ttd_atik.png') ? filemtime(__DIR__ . '/../../public/images/ttd_atik.png') : time() ?>" alt="TTD Atik DH" id="rxStaffSignatureImg" class="rx-staff-signature-img" style="max-height: 48px; max-width: 130px; width: auto; object-fit: contain; display: block; margin-bottom: 2px;">
+                    </div>
                     ( <span id="rxSignStaff">Atik DH</span> )
                 </div>
             </div>
@@ -841,6 +860,13 @@ if (!function_exists('formatRupiah')) {
                     <label style="font-weight: 600; color: #334155;">Petugas Focus</label>
                     <input type="text" id="cfgSignStaff" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" value="Atik DH" oninput="document.getElementById('rxSignStaff').textContent = this.value">
                 </div>
+            </div>
+            <div style="margin-top: 0.6rem; display: flex; align-items: center; justify-content: space-between; padding-top: 0.5rem; border-top: 1px dashed #e2e8f0;">
+                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.76rem; font-weight: 600; color: #334155; cursor: pointer; margin: 0;">
+                    <input type="checkbox" id="cfgShowStaffSignature" checked onchange="toggleStaffSignature(this.checked)" style="accent-color: #2563eb; width: 15px; height: 15px; cursor: pointer;">
+                    <span>Bubuhkan Tanda Tangan Digital Otomatis (Atik DH)</span>
+                </label>
+                <span style="font-size: 0.7rem; color: #64748b;">*Centang untuk menyertakan tanda tangan digital</span>
             </div>
         </div>
 
@@ -1130,6 +1156,11 @@ function printPrescription(rec) {
     document.getElementById('rxSignStaff').textContent = defaultStaff;
     document.getElementById('cfgSignStaff').value = defaultStaff;
 
+    const sigImg = document.getElementById('rxStaffSignatureImg');
+    if (sigImg) sigImg.style.display = 'block';
+    const sigCheck = document.getElementById('cfgShowStaffSignature');
+    if (sigCheck) sigCheck.checked = true;
+
     // Pricing calculation
     let lensPrice = parseFloat(rec.lens_price || 0);
     let framePrice = parseFloat(rec.frame_price || 0);
@@ -1168,6 +1199,13 @@ function recalcPrintBilling() {
     document.getElementById('rxTotalPrice').textContent = formatRupiahDash(total);
     document.getElementById('rxBpjsCover').textContent = formatRupiahDash(bpjs);
     document.getElementById('rxNetPayable').textContent = formatRupiahDash(net);
+}
+
+function toggleStaffSignature(show) {
+    const img = document.getElementById('rxStaffSignatureImg');
+    if (img) {
+        img.style.display = show ? 'block' : 'none';
+    }
 }
 
 function triggerPrintPrescription() {

@@ -2184,8 +2184,23 @@ ion-icon {
         line-height: 1.2 !important;
     }
     body.is-printing-prescription #printableCard .rx-signature-space {
-        margin-top: 55px !important;
+        margin-top: 2px !important;
         font-weight: 700 !important;
+    }
+    body.is-printing-prescription #printableCard .rx-sign-box {
+        height: 13mm !important;
+        min-height: 13mm !important;
+        display: flex !important;
+        align-items: flex-end !important;
+    }
+    body.is-printing-prescription #printableCard .rx-staff-signature-img {
+        max-height: 13mm !important;
+        max-width: 36mm !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin-bottom: 1px !important;
     }
 
     /* Cutline - Placed neatly at the half-page boundary */
