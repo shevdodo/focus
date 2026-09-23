@@ -795,13 +795,15 @@ if (!function_exists('formatRupiah')) {
         <div class="rx-signatures-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.78rem; color: #0f172a; margin-top: 0.5rem;">
             <!-- Kolom Kiri: Peserta -->
             <div style="text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="visibility: hidden; font-weight: 500; user-select: none;">&nbsp;</div>
-                    <div style="font-weight: 700; color: #0f172a; margin-top: 0.15rem;">Peserta</div>
-                </div>
-                <div class="rx-signature-space" style="margin-top: 0.35rem; font-weight: 700; color: #0f172a;">
-                    <div class="rx-sign-box" style="height: 52px;"></div>
-                    ( <span id="rxSignPatient">Adila Angelina</span> )
+                <div style="display: inline-flex; flex-direction: column; align-items: center; text-align: center; min-width: 150px; width: fit-content;">
+                    <div>
+                        <div style="visibility: hidden; font-weight: 500; user-select: none;">&nbsp;</div>
+                        <div style="font-weight: 700; color: #0f172a; margin-top: 0.15rem;">Peserta</div>
+                    </div>
+                    <div class="rx-signature-space" style="margin-top: 0.35rem; font-weight: 700; color: #0f172a; width: 100%;">
+                        <div class="rx-sign-box" style="height: 52px;"></div>
+                        ( <span id="rxSignPatient">Adila Angelina</span> )
+                    </div>
                 </div>
             </div>
 
