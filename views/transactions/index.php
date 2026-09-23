@@ -615,15 +615,15 @@ if (!function_exists('formatRupiah')) {
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;" class="mb-3">
                 <div class="form-group">
                     <label for="edit_lens_price">Biaya Lensa (Rp)</label>
-                    <input type="number" name="lens_price" id="edit_lens_price" class="form-control" placeholder="0" oninput="recalcEditModalTotal()">
+                    <input type="number" name="lens_price" id="edit_lens_price" class="form-control" placeholder="0" step="any" oninput="recalcEditModalTotal()">
                 </div>
                 <div class="form-group">
                     <label for="edit_frame_price">Biaya Frame (Rp)</label>
-                    <input type="number" name="frame_price" id="edit_frame_price" class="form-control" placeholder="0" oninput="recalcEditModalTotal()">
+                    <input type="number" name="frame_price" id="edit_frame_price" class="form-control" placeholder="0" step="any" oninput="recalcEditModalTotal()">
                 </div>
                 <div class="form-group">
                     <label for="edit_total_price">Total Biaya (Rp)</label>
-                    <input type="number" name="total_price" id="edit_total_price" class="form-control" placeholder="0">
+                    <input type="number" name="total_price" id="edit_total_price" class="form-control" placeholder="0" step="any">
                 </div>
             </div>
 
@@ -833,15 +833,15 @@ if (!function_exists('formatRupiah')) {
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; font-size: 0.78rem; margin-bottom: 0.5rem;">
                 <div>
                     <label style="font-weight: 600; color: #334155;">1. Biaya Lensa (Rp)</label>
-                    <input type="number" id="cfgLensPrice" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
+                    <input type="number" id="cfgLensPrice" step="any" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
                 </div>
                 <div>
                     <label style="font-weight: 600; color: #334155;">2. Biaya Frame (Rp)</label>
-                    <input type="number" id="cfgFramePrice" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
+                    <input type="number" id="cfgFramePrice" step="any" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
                 </div>
                 <div>
                     <label style="font-weight: 600; color: #334155;">Di bayar BPJS (Rp)</label>
-                    <input type="number" id="cfgBpjsCover" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
+                    <input type="number" id="cfgBpjsCover" step="any" class="form-control" style="font-size: 0.78rem; padding: 0.25rem 0.5rem; height: auto;" oninput="recalcPrintBilling()">
                 </div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem; font-size: 0.78rem;">

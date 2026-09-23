@@ -423,7 +423,7 @@
                         <label for="lens_price" style="font-weight: 600;">1. Biaya Lensa (Rp)</label>
                         <div class="input-currency-wrapper">
                             <span class="currency-prefix">Rp</span>
-                            <input type="number" name="lens_price" id="lens_price" class="form-control" placeholder="0" min="0" oninput="recalcCreateTotal()">
+                            <input type="number" name="lens_price" id="lens_price" class="form-control" placeholder="0" min="0" step="any" oninput="recalcCreateTotal()">
                         </div>
                     </div>
                 </div>
@@ -433,7 +433,7 @@
                         <label for="frame_price" style="font-weight: 600;">2. Biaya Frame (Rp)</label>
                         <div class="input-currency-wrapper">
                             <span class="currency-prefix">Rp</span>
-                            <input type="number" name="frame_price" id="frame_price" class="form-control" placeholder="0" min="0" oninput="recalcCreateTotal()">
+                            <input type="number" name="frame_price" id="frame_price" class="form-control" placeholder="0" min="0" step="any" oninput="recalcCreateTotal()">
                         </div>
                     </div>
                 </div>
@@ -443,7 +443,7 @@
                         <label for="total_price" style="font-weight: 600;">Total Biaya (Rupiah)</label>
                         <div class="input-currency-wrapper">
                             <span class="currency-prefix">Rp</span>
-                            <input type="number" name="total_price" id="total_price" class="form-control" placeholder="0" min="0">
+                            <input type="number" name="total_price" id="total_price" class="form-control" placeholder="0" min="0" step="any">
                         </div>
                     </div>
                 </div>

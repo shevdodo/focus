@@ -416,7 +416,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="lens_price" style="font-weight: 600;">Harga Acuan (Rp)</label>
-                            <input type="number" name="price" id="lens_price" class="form-control" placeholder="0" min="0" step="5000">
+                            <input type="number" name="price" id="lens_price" class="form-control" placeholder="0" min="0" step="any">
                         </div>
                     </div>
                     <div class="col-6">
@@ -511,7 +511,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="frame_price" style="font-weight: 600;">Harga Bingkai (Rp)</label>
-                            <input type="number" name="price" id="frame_price_input" class="form-control" placeholder="0" min="0" step="10000">
+                            <input type="number" name="price" id="frame_price_input" class="form-control" placeholder="0" min="0" step="any">
                         </div>
                     </div>
                     <div class="col-6">
